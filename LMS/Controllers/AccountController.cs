@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+
+
 namespace LMS.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
+		private ApplicationDbContext db = new ApplicationDbContext();
+		private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+		
 
-        public AccountController()
+		public AccountController()
         {
         }
 
@@ -136,7 +140,8 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+			return View();
         }
 
         //
@@ -148,7 +153,7 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name ,CourseId=model.CourseId};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -165,8 +170,9 @@ namespace LMS.Controllers
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+			// If we got this far, something failed, redisplay form
+			
+			return View(model);
         }
 
         //
