@@ -22,3 +22,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#lmsheader {
+    background-color: black;
+    color:whitesmoke;
+}
