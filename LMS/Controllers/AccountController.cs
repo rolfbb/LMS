@@ -153,7 +153,7 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name ,CourseId=model.CourseId};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId= model.CourseId};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -171,7 +171,7 @@ namespace LMS.Controllers
             }
 
 			// If we got this far, something failed, redisplay form
-			
+			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
 			return View(model);
         }
 
