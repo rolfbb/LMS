@@ -59,7 +59,7 @@ namespace LMS.Controllers
             }
 
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 
@@ -76,7 +76,7 @@ namespace LMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 
@@ -94,7 +94,7 @@ namespace LMS.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 

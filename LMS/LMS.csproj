@@ -212,6 +212,10 @@
     <Compile Include="Migrations\201807181338178_Add LMS model.Designer.cs">
       <DependentUpon>201807181338178_Add LMS model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807202049138_ActivityTypeId.cs" />
+    <Compile Include="Migrations\201807202049138_ActivityTypeId.Designer.cs">
+      <DependentUpon>201807202049138_ActivityTypeId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Activity.cs" />
@@ -330,6 +334,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807181338178_Add LMS model.resx">
       <DependentUpon>201807181338178_Add LMS model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807202049138_ActivityTypeId.resx">
+      <DependentUpon>201807202049138_ActivityTypeId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
