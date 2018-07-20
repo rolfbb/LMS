@@ -10,7 +10,7 @@ namespace LMS.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public int TypeId { get; set; }
+        public int ActivityTypeId { get; set; }
         public int ModuleId { get; set; }
 
         // Relational properties

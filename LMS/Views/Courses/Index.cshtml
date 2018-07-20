@@ -1,7 +1,7 @@
 ﻿@model LMS.Models.CoursesViewModel
 @using LMS.Models
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Index";
 }
 
 @Html.Partial("_Header", Model.Header)
@@ -43,9 +43,9 @@
         <div class="col-sm-10">
             Courses
         </div>
-        <div class="col-sm-2">
-            @Html.ActionLink("Add Course", "Create")
-        </div>
+		<div class="col-sm-2">
+			@Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
+		</div>
     </div>
 
 

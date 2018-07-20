@@ -15,9 +15,9 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public ActionResult Index()
+        public ActionResult Index(int? ID)
         {
-            var activities = db.Activities.Include(a => a.Module).Include(a => a.Type);
+			var activities = db.Activities.Where(m => m.ModuleId == ID);
             return View(activities.ToList());
         }
 
@@ -59,7 +59,7 @@ namespace LMS.Controllers
             }
 
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 
@@ -76,7 +76,7 @@ namespace LMS.Controllers
                 return HttpNotFound();
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 
@@ -94,7 +94,7 @@ namespace LMS.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.ActivityTypeId);
             return View(activity);
         }
 
