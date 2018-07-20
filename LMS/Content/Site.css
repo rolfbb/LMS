@@ -25,5 +25,10 @@ textarea {
 
 #lmsheader {
     background-color: black;
-    color:whitesmoke;
+    color: whitesmoke;
 }
+
+div.container {
+    height: 500px;
+}
+

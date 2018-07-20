@@ -1,14 +1,26 @@
 ﻿@model LMS.Models.HeaderViewModel
-
 <header id="lmsheader">
-    <div class="container body-content">
-        <div class="row">          
-            <div class="col-sm-4">Course: @Model.CourseName</div>
-            <div class="col-sm-8">@Model.Description</div>
+    <div class="container body-content" style="height:50px;">
+        <div class="row">
+            <div class="col-sm-4">
+                @if (!Model.Empty)
+                {
+                    <span>Course: Model.CourseName</span>
+                }
+            </div>
+            <div class="col-sm-8">
+                @if (!Model.Empty)
+                {
+                    @Model.Description
+                }
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                Start Date: @Html.DisplayFor(model => model.StartDate)
+                @if (!Model.Empty)
+                {
+                    <span>Start Date: @Html.DisplayFor(model => model.StartDate) </span>
+                }
             </div>
         </div>
     </div>
