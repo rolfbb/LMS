@@ -24,9 +24,16 @@
 input,
 select,
 textarea {
-	color: black;
-	max-width: 280px;
+    max-width: 280px;
 }
+
+#lmsheader {
+    background-color: black;
+    color:whitesmoke;
+}
+
+	
+
 
 .hideme {
 	visibility: hidden;

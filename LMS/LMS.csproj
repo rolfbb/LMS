@@ -218,6 +218,7 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\HeaderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Module.cs" />
@@ -305,6 +306,7 @@
     <Content Include="Views\ActivityTypes\Details.cshtml" />
     <Content Include="Views\ActivityTypes\Edit.cshtml" />
     <Content Include="Views\ActivityTypes\Index.cshtml" />
+    <Content Include="Views\Courses\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
