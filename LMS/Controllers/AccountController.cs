@@ -1,11 +1,14 @@
-﻿using LMS.Models;
+﻿
+using LMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+
 
 
 
@@ -14,19 +17,23 @@ namespace LMS.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-		private ApplicationDbContext db = new ApplicationDbContext();
-		private ApplicationSignInManager _signInManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-		
+        private ApplicationRoleManager _roleManager;
 
-		public AccountController()
+
+
+        public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager,
+                                 ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -50,6 +57,20 @@ namespace LMS.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -140,8 +161,14 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-			return View();
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            ViewBag.Roles = list;
+
+            return View();
         }
 
         //
@@ -153,10 +180,13 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId= model.CourseId};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name,  CourseId = model.CourseId };
                 var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+
+            
+                    if (result.Succeeded)
                 {
+                    result = await UserManager.AddToRoleAsync(user.Id,model.RoleName);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -167,12 +197,16 @@ namespace LMS.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
+                   
+                
+
                 AddErrors(result);
             }
 
-			// If we got this far, something failed, redisplay form
-			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
-			return View(model);
+            // If we got this far, something failed, redisplay form
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
+            return View(model);
         }
 
         //

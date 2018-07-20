@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace LMS.Models
 {
     public class ExternalLoginConfirmationViewModel
@@ -65,7 +66,13 @@ namespace LMS.Models
     public class RegisterViewModel
     {
         public string Name { get; set; }
+
+       // [Required (ErrorMessage = "You have to choose a course!")]
         public int? CourseId { get; set; }
+
+        public string RoleName { get; set; }
+
+
 
         [Required]
         [EmailAddress]
@@ -82,6 +89,8 @@ namespace LMS.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        
     }
 
     public class ResetPasswordViewModel
