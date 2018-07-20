@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LMS.Models
 {
@@ -6,6 +7,8 @@ namespace LMS.Models
     {
         public String CourseName { get; set; }
         public String Description { get; set; }
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
     }
 }
