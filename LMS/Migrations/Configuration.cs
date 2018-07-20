@@ -52,10 +52,14 @@ namespace LMS.Migrations
 			var StudentUser = userManager.FindByName("Student@lexicon.se");
 			userManager.AddToRole(StudentUser.Id, "Student");
 
-
 			var courses = new[] {
-				new Course { Name = "Java", Description = "programming corse" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")},
-				new Course { Name = "Asp.NET", Description = "programming corse" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")} };
+				new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"),EndDate=DateTime.Parse("2017-08-10")},
+				new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"),EndDate=DateTime.Parse("2018-03-10")},
+                new Course { Name = "Java English", Description = "programming course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")},
+				new Course { Name = "IT Support", Description = "IT course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-10-10")},
+                new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")},
+                new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")}
+            };
 			db.Courses.AddOrUpdate(s => new { s.Name, s.Description }, courses);
 		}
 	}
