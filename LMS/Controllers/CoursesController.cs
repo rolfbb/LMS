@@ -21,6 +21,10 @@ namespace LMS.Controllers
             {
                 Empty = true
             };
+            var courses = db.Courses.ToList();
+            foreach (var course in courses) {               
+                var moduleCount = course.Modules.Count;
+            }
             CoursesViewModel model = new CoursesViewModel()
             {
                 Courses = db.Courses.ToList(),

@@ -17,17 +17,20 @@
             </tr>
         </thead>
 
+        @{var itemCount = 0;}
         @foreach (var item in Model)
         {
+            @{var dataTarget = "course" + itemCount;}
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                   
+                    @Html.DisplayFor(modelItem => item.Name)                   
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
+                    @Html.DisplayFor(modelItem => item.EndDate)                
                 </td>
                 <td>
                     @if (User.IsInRole("Teacher"))
