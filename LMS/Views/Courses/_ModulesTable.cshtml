@@ -1,0 +1,11 @@
+﻿@model IEnumerable<LMS.Models.Module>
+
+@foreach (var module in Model)
+{
+    <tr>
+        <td>@Html.DisplayFor(modelItem => module.Name)</td>
+        <td>@Html.DisplayFor(modelItem => module.StartDate)</td>
+        <td>@Html.DisplayFor(modelItem => module.StartDate)</td>
+        <td></td>
+    </tr>
+}

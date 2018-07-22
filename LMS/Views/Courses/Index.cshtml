@@ -1,10 +1,15 @@
 ﻿@model LMS.Models.CoursesViewModel
-@using LMS.Models
-@{
-    ViewBag.Title = "Index";
-}
+@*@using LMS.Models*@
 
-@Html.Partial("_Header", Model.Header)
+<script>
+    $(document).ready(function () {
+        alert("Ready");
+        $(".teacher").show();
+        $(".nav-link").hide();
+    });
+</script>
+
+@*@Html.Partial("_Header", Model.Header)*@
 <div class="container body-content">
     @using (Ajax.BeginForm(
         new AjaxOptions
@@ -48,5 +53,7 @@
         </div>
     </div>
 
-    @Html.Partial("_TableView", Model.Courses)
+    @Html.Partial("_CoursesTable", Model.Courses)
 </div>
+
+

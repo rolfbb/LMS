@@ -233,6 +233,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Images\logo-lexicon-small.gif" />
     <Content Include="Content\bootstrap-beagle.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -356,6 +357,9 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Courses\_CoursesTable.cshtml" />
+    <Content Include="Views\Courses\_ModulesTable.cshtml" />
+    <Content Include="Views\Courses\Course.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

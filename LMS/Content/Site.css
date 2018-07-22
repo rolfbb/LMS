@@ -1,5 +1,4 @@
 ﻿body {
-	padding-top: 50px;
 	padding-bottom: 20px;
 	background-attachment: fixed;
 	background-position: center;
@@ -44,4 +43,13 @@ div.container {
 	background-color: rgba(62, 131, 242,0.75);
 	border-radius: 25px;
 	padding-bottom: 15px;
+}
+
+#sidepanel {    
+    background-color: #343a40;
+    color: white;
+}
+
+#sidepanel > .row {
+    padding:20px;
 }

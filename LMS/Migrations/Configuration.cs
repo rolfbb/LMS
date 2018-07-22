@@ -35,12 +35,40 @@ namespace LMS.Migrations
             var userStore = new UserStore<ApplicationUser>(db);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
-            var emails = new[] { "Teacher@lexicon.se", "Student@lexicon.se" };
 
-            foreach (var email in emails)
+            var courses = new[] {
+                new Course {Id =1, Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"),EndDate=DateTime.Parse("2017-08-10")},
+                new Course {Id =2, Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"),EndDate=DateTime.Parse("2018-03-10")},
+                new Course {Id =3, Name = "Java English", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"),EndDate=DateTime.Parse("2018-08-10")},
+                new Course {Id =4, Name = "IT Support", Description = "IT course" , StartDate=DateTime.Parse("2018-04-03"),EndDate=DateTime.Parse("2018-10-10")},
+                new Course {Id =5, Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2018-03-27"),EndDate=DateTime.Parse("2018-08-10")},
+                new Course {Id =6, Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"),EndDate=DateTime.Parse("2018-08-10")}
+            };
+
+            db.Courses.AddOrUpdate(s => s.Id, courses);
+
+            var teacherEmails = new[] { "Teacher@lexicon.se", "Demitris@lexicon.se" };
+
+            foreach (var email in teacherEmails)
             {
                 if (db.Users.Any(u => u.UserName == email)) continue;
                 var user = new ApplicationUser { UserName = email, Email = email };
+
+                var result = userManager.Create(user, "aliali");
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join("\n", result.Errors));
+                }
+            }
+
+            //Delete Student to seed CourseId
+            var studentEmails = new[] { "Student@lexicon.se", "Dennis@lexicon.se" };
+
+            foreach (var email in studentEmails)
+            {
+                if (db.Users.Any(u => u.UserName == email)) continue;
+                var user = new ApplicationUser { UserName = email, Email = email, CourseId = courses[5].Id };
+
                 var result = userManager.Create(user, "aliali");
                 if (!result.Succeeded)
                 {
@@ -52,18 +80,6 @@ namespace LMS.Migrations
             userManager.AddToRole(TeacherUser.Id, "Teacher");
             var StudentUser = userManager.FindByName("Student@lexicon.se");
             userManager.AddToRole(StudentUser.Id, "Student");
-
-            var courses = new[] {
-                new Course {Id =1, Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"),EndDate=DateTime.Parse("2017-08-10")},
-                new Course {Id =2, Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"),EndDate=DateTime.Parse("2018-03-10")},
-                new Course {Id =3, Name = "Java English", Description = "programming course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")},
-                new Course {Id =4, Name = "IT Support", Description = "IT course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-10-10")},
-                new Course {Id =5, Name = "Java", Description = "programming course" , StartDate=DateTime.Now,EndDate=DateTime.Parse("2018-08-10")},
-                new Course {Id =6, Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"),EndDate=DateTime.Parse("2018-08-10")}
-            };
-
-            //db.Courses.AddOrUpdate(s => new { s.Name, s.Description }, courses);
-            db.Courses.AddOrUpdate(s => s.Id, courses);
 
             db.Modules.AddOrUpdate(m => m.Id,
 
@@ -125,7 +141,7 @@ namespace LMS.Migrations
                  {
                      Id = 7,
                      Name = "Java EE",
-                     Description = "Java Enterpise Edition",
+                     Description = "Java Enterprise Edition",
                      StartDate = DateTime.Parse("2018-03-10"),
                      EndDate = DateTime.Parse("2018-04-10"),
                      CourseId = courses[0].Id

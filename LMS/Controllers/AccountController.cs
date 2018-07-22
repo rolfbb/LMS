@@ -14,12 +14,12 @@ namespace LMS.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-		private ApplicationDbContext db = new ApplicationDbContext();
-		private ApplicationSignInManager _signInManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-		
 
-		public AccountController()
+
+        public AccountController()
         {
         }
 
@@ -58,6 +58,17 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Teacher"))
+                {
+                    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    return RedirectToAction("Course", "Courses");
+                }
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -80,7 +91,15 @@ namespace LMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    if (User.IsInRole("Teacher"))
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Course", "Courses");
+                    }
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -140,8 +159,8 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-			return View();
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+            return View();
         }
 
         //
@@ -153,7 +172,7 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId= model.CourseId};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId = model.CourseId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -170,9 +189,9 @@ namespace LMS.Controllers
                 AddErrors(result);
             }
 
-			// If we got this far, something failed, redisplay form
-			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
-			return View(model);
+            // If we got this far, something failed, redisplay form
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
+            return View(model);
         }
 
         //
@@ -395,7 +414,7 @@ namespace LMS.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

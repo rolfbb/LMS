@@ -15,19 +15,18 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Courses
+        [Authorize(Roles =("Teacher"))]
         public ActionResult Index()
         {
             HeaderViewModel header = new HeaderViewModel()
             {
                 Empty = true
             };
-            var courses = db.Courses.ToList();
-            foreach (var course in courses) {               
-                var moduleCount = course.Modules.Count;
-            }
+            var courses = db.Courses.OrderByDescending(c => c.StartDate).ToList();
+
             CoursesViewModel model = new CoursesViewModel()
             {
-                Courses = db.Courses.ToList(),
+                Courses = db.Courses.OrderByDescending(c => c.StartDate).ToList(),
                 Header = header
             };
             return View(model);
@@ -38,12 +37,31 @@ namespace LMS.Controllers
         {            
             if (active=="on")
             {
-                return PartialView("_TableView",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
+                return PartialView("_CoursesTable",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
             }
             else
             {
-                return PartialView("_TableView", db.Courses.ToList());
+                return PartialView("_CoursesTable", db.Courses.ToList());
             }
+        }
+
+        // GET: Course
+        [Authorize(Roles = ("Teacher,Student"))]
+        public ActionResult Course(int? id)
+        {
+            if (User.IsInRole("Student")) {
+                ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                var Course = db.Courses.Where(c => c.Id == CurrentUser.CourseId).FirstOrDefault();
+                //Should check if course null though it should not happen for students
+                return View(Course);
+            }
+            //Teachers should pass an Id
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Course course = db.Courses.Find(id);            
+            return View(course);
         }
 
         // GET: Courses/Details/5

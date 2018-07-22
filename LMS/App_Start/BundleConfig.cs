@@ -11,7 +11,8 @@ namespace LMS
               "~/Scripts/jquery-{version}.js",
               "~/Scripts/jquery-ui-{version}.js",
               "~/Scripts/jquery.unobtrusive*",
-              "~/Scripts/jquery.validate*"
+              "~/Scripts/jquery.validate*",
+              "~/Scripts/umd/popper.min.js"
               ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -31,9 +32,9 @@ namespace LMS
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/toggleslider.css",
-                      "~/Content/Site.css",
-                      "~/Content/navbar-fixed-left.css"));
-                        
+                      "~/Content/Site.css"
+                      //,"~/Content/navbar-fixed-left.css"
+                      ));                       
         }
     }
 }
