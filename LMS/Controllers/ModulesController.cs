@@ -11,9 +11,9 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Modules
-        public ActionResult Index()
+        public ActionResult Index(int? ID)
         {
-            var modules = db.Modules.Include(m => m.Course);
+            var modules = db.Modules.Where(m => m.CourseId== ID);
             return View(modules.ToList());
         }
 
@@ -84,7 +84,7 @@ namespace LMS.Controllers
             {
                 db.Entry(module).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { ID = module.CourseId });
             }
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
@@ -113,7 +113,7 @@ namespace LMS.Controllers
             Module module = db.Modules.Find(id);
             db.Modules.Remove(module);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { ID = module.CourseId });
         }
 
         protected override void Dispose(bool disposing)

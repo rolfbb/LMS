@@ -215,6 +215,7 @@
     <Compile Include="Models\ActivityType.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\HeaderViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Module.cs" />

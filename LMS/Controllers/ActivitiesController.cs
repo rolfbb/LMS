@@ -11,9 +11,9 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public ActionResult Index()
+        public ActionResult Index(int? ID)
         {
-            var activities = db.Activities.Include(a => a.Module).Include(a => a.Type);
+			var activities = db.Activities.Where(m => m.ModuleId == ID);
             return View(activities.ToList());
         }
 
