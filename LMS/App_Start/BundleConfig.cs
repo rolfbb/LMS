@@ -32,8 +32,7 @@ namespace LMS
                       "~/Content/bootstrap.css",
                       "~/Content/toggleslider.css",
                       "~/Content/Site.css",
-                      "~/Content/navbar-fixed-left.css"));
-                        
+                      "~/Content/navbar-fixed-left.css"));                       
         }
     }
 }

@@ -231,6 +231,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\logo-lexicon-small.gif" />
     <Content Include="Content\navbar-fixed-left.css" />
     <Content Include="Content\toggleslider.css" />
     <Content Include="favicon.ico" />

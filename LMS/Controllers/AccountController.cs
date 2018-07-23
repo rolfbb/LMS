@@ -54,6 +54,17 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Teacher") || true)
+                {
+                    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    return RedirectToAction("Course", "Courses");
+                }
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -76,7 +87,15 @@ namespace LMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    if (User.IsInRole("Teacher")|| true)
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Course", "Courses");
+                    }
+                    //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
