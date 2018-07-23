@@ -12,6 +12,9 @@ namespace LMS.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -56,13 +59,13 @@ namespace LMS.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (User.IsInRole("Teacher") || true)
+                if (User.IsInRole("Teacher"))
                 {
                     return RedirectToAction("Index", "Courses");
                 }
                 else
                 {
-                    return RedirectToAction("Course", "Courses");
+                    return RedirectToAction("Details", "Courses", new { id = 1 });
                 }
             }
             ViewBag.ReturnUrl = returnUrl;
@@ -87,15 +90,17 @@ namespace LMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    if (User.IsInRole("Teacher")|| true)
+                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+                    
+                    if (await UserManager.IsInRoleAsync(CurrentUser.Id,"Teacher"))
                     {
                         return RedirectToAction("Index", "Courses");
                     }
                     else
                     {
-                        return RedirectToAction("Course", "Courses");
+                        return RedirectToAction("Create", "Courses");
                     }
-                    //return RedirectToLocal(returnUrl);
+                //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -408,7 +413,7 @@ namespace LMS.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

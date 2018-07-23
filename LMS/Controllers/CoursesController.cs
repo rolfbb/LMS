@@ -76,7 +76,6 @@ namespace LMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(course);
         }
 
