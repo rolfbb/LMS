@@ -14,27 +14,37 @@
                     @Html.DisplayNameFor(model => model.EndDate)
                 </th>
                 <th></th>
+                <th>
+                    @Html.DisplayName("Enter Course")
+                </th>
             </tr>
         </thead>
 
-        @foreach (var item in Model)
+        @{var itemCount = 0;}
+        @foreach (var course in Model)
         {
-            <tr>
+            var dataTarget = "course" + itemCount;
+            itemCount++;
+            var backgroundColor = (itemCount % 2 == 0) ? "white" : "#F2F2F2";
+            <tr class='clickable-row' data-href='url://link-for-first-row/'>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => course.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
+                    @Html.DisplayFor(modelItem => course.StartDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
+                    @Html.DisplayFor(modelItem => course.EndDate)
                 </td>
                 <td>
                     @if (User.IsInRole("Teacher"))
                     {
-                        @Html.ActionLink("Edit/Details", "Edit", new { id = item.Id }) <span>| </span>
+                        @Html.ActionLink("Edit/Details", "Edit", new { id = course.Id }) <span>| </span>
                     }
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Delete", "Delete", new { id = course.Id })
+                </td>
+                <td>
+                    @Html.ActionLink("Enter Course", "Edit", "Courses", new { id = course.Id })
                 </td>
             </tr>
         }
