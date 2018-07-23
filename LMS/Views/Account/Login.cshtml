@@ -1,8 +1,18 @@
 ﻿@using LMS.Models
+
 @model LoginViewModel
 @{
     ViewBag.Title = "Log in";
 }
+
+<script>
+    $(document).ready(function () {
+            $(".teacher").hide();
+    });
+</script>
+@Html.Partial("_Header", new HeaderViewModel() {
+    Empty = true
+})
 
 <h2>@ViewBag.Title.</h2>
 <div class="row">
