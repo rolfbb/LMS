@@ -19,10 +19,11 @@
                 <header style="color: red;">My header</header>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                    <li>@Html.ActionLink("Add New Course", "Add", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                </ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+					<li>@Html.ActionLink("Add New Course", "Add", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+					<li>@Html.ActionLink("User List","UserListAction","Account")</li>
+				</ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
