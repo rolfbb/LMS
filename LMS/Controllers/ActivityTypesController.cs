@@ -11,7 +11,7 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ActivityTypes
-        public ActionResult Index()
+        public ActionResult Index(int? ID)
         {
             return View(db.ActivityTypes.ToList());
         }
