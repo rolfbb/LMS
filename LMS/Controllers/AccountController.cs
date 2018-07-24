@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-
-
-
 namespace LMS.Controllers
 {
     [Authorize]
@@ -180,7 +177,9 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name,  CourseId = model.CourseId };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId = model.CourseId };
+               
+
                 var result = await UserManager.CreateAsync(user, model.Password);
 
             
@@ -208,6 +207,68 @@ namespace LMS.Controllers
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
             return View(model);
         }
+
+
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult RegisterStudent()
+        {
+            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            ViewBag.Roles = list;
+
+            return View();
+        }
+
+
+
+
+
+        //
+        // POST: /Account/Register
+        public async Task<ActionResult> RegisterStudent(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                Course course = new Course();
+                user.CourseId = course.Id;
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+
+
+                if (result.Succeeded)
+                {
+                    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("RegisterStudent", "Account");
+                }
+
+
+
+
+                AddErrors(result);
+            }
+
+           
+            return View(model);
+        }
+
+
+
+
+
 
         //
         // GET: /Account/ConfirmEmail
