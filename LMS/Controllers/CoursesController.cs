@@ -20,22 +20,30 @@ namespace LMS.Controllers
             };
             CoursesViewModel model = new CoursesViewModel()
             {
-                Courses = db.Courses.ToList(),
+                //Default active courses
+                Courses = db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList(),
                 Header = header
             };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(string active,string name)
-        {               
-            if (active=="on")
+        public ActionResult Index(string active, string name)
+        {
+            if (active == "on")
             {
-                return PartialView("_TableView",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
+                if (name == "" || name =="enter name")
+                    return PartialView("_TableView", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
+                else
+                    return PartialView("_TableView", db.Courses.Where(c => c.EndDate >= DateTime.Now && c.Name.ToLower().Contains(name.ToLower())).ToList());
             }
             else
             {
-                return PartialView("_TableView", db.Courses.ToList());
+                if (name == "" || name == "enter name")
+                    return PartialView("_TableView", db.Courses.ToList());
+
+                else
+                    return PartialView("_TableView", db.Courses.Where(c => c.Name.ToLower().Contains(name.ToLower())));
             }
         }
 
