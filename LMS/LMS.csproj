@@ -298,8 +298,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Modules\Create.cshtml" />
     <Content Include="Views\Modules\Delete.cshtml" />
@@ -319,6 +317,7 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Courses\_TableView.cshtml" />
     <Content Include="Views\Courses\_Header.cshtml" />
+    <Content Include="Views\Account\UserListAction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
