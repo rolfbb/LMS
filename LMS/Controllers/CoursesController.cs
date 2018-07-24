@@ -32,14 +32,14 @@ namespace LMS.Controllers
         {
             if (active == "on")
             {
-                if (name == null || name =="enter name")
+                if (name == "" || name =="enter name")
                     return PartialView("_TableView", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
                 else
                     return PartialView("_TableView", db.Courses.Where(c => c.EndDate >= DateTime.Now && c.Name.ToLower().Contains(name.ToLower())).ToList());
             }
             else
             {
-                if (name == null || name == "enter name")
+                if (name == "" || name == "enter name")
                     return PartialView("_TableView", db.Courses.ToList());
 
                 else
