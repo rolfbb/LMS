@@ -28,7 +28,7 @@ namespace LMS.Controllers
 
         [HttpPost]
         public ActionResult Index(string active,string name)
-        {            
+        {               
             if (active=="on")
             {
                 return PartialView("_TableView",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
