@@ -17,7 +17,9 @@ namespace LMS.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
@@ -79,6 +81,17 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Teacher"))
+                {
+                    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    return RedirectToAction("Details", "Courses", new { id = 1 });
+                }
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -101,7 +114,17 @@ namespace LMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+                    
+                    if (await UserManager.IsInRoleAsync(CurrentUser.Id,"Teacher"))
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create", "Courses");
+                    }
+                //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -429,7 +452,7 @@ namespace LMS.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //

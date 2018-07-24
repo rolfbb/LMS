@@ -5,6 +5,7 @@ namespace LMS.Models
 {
     public class HeaderViewModel
     {
+        public bool Empty { get; set; }
         public String CourseName { get; set; }
         public String Description { get; set; }
         [DataType(DataType.Date)]
