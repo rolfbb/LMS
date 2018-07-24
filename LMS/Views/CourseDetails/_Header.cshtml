@@ -1,0 +1,18 @@
+﻿@model LMS.Models.HeaderViewModel
+<header id="lmsheader">
+    <div class="container body-content" style="height:50px;">
+        <div class="row">
+            <div class="col-sm-4">
+                <span>Course: @Model.CourseName</span>
+            </div>
+            <div class="col-sm-8">
+                @Model.Description
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <span>Start Date: @Html.DisplayFor(model => model.StartDate) </span>
+            </div>
+        </div>
+    </div>
+</header>

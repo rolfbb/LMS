@@ -14,9 +14,6 @@
                     @Html.DisplayNameFor(model => model.EndDate)
                 </th>
                 <th></th>
-                <th>
-                    @Html.DisplayName("Enter Course")
-                </th>
             </tr>
         </thead>
 
@@ -28,7 +25,7 @@
             var backgroundColor = (itemCount % 2 == 0) ? "white" : "#F2F2F2";
             <tr class='clickable-row' data-href='url://link-for-first-row/'>
                 <td>
-                    @Html.ActionLink(course.Name, "Index","Modules", new {ID = course.Id },null)
+                    @Html.ActionLink(course.Name, "Index", "CourseDetails", new { id = course.Id }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => course.StartDate)
@@ -39,13 +36,10 @@
                 <td>
                     @if (User.IsInRole("Teacher"))
                     {
-                        @Html.ActionLink("Edit/Details", "Edit", new { id = course.Id }) <span>| </span>
+                        @Html.ActionLink("Edit/Details", "Edit","CourseDetails", new { id = course.Id },null) <span>| </span>
                     }
-                    @Html.ActionLink("Delete", "Delete", new { id = course.Id })
-                </td>
-                <td>
-                    @Html.ActionLink("Enter Course", "Details", new { id = course.Id })
-                </td>
+                    @Html.ActionLink("Delete", "Delete","Courses", new { id = course.Id }, null)
+                </td>          
             </tr>
         }
     </table>

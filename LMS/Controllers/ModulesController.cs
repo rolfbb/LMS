@@ -10,13 +10,6 @@ namespace LMS.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Modules
-        public ActionResult Index(int? ID)
-        {
-            var modules = db.Modules.Where(m => m.CourseId== ID);
-            return View(modules.ToList());
-        }
-
         // GET: Modules/Details/5
         public ActionResult Details(int? id)
         {
