@@ -120,7 +120,7 @@ namespace LMS.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Create", "Courses");
+                        return RedirectToAction("Details", "Courses", new { id = 1 });
                     }
                 //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
