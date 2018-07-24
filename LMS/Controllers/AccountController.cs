@@ -553,9 +553,14 @@ namespace LMS.Controllers
 
 				//db.Users.Where(u => u.Roles.Where(i => i.RoleId.Contains());
 				case "Teacher":
-					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0)
+					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0  && b == null)
 					{
 						return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList());
+					}
+					else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b != null)
+					{
+						var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList();
+						return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
 					}
 					else
 					{
@@ -565,9 +570,14 @@ namespace LMS.Controllers
 
 
 				case "Student":
-					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0)
+					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b == null)
 					{
 						return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList());
+					}
+					else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b != null)
+					{
+						var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+						return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
 					}
 					else
 					{
@@ -578,10 +588,10 @@ namespace LMS.Controllers
 				default:
 					if (a == null && b == null)
 					{ return View(UserList); }
-					else if (a == null && b != null)
-					{
-						return View(UserList.Where(i => i.Name.ToString() == b).ToList());
-					}
+					//else if (a != null && b != null)
+					//{
+					//	return View(UserList.Where(i => i.Name.ToString() == b).ToList());
+					//}
 					else
 					{
 						ViewBag.output = ("....The List is empty....");
