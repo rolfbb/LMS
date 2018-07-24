@@ -14,27 +14,27 @@ using System.Web.Mvc;
 
 namespace LMS.Controllers
 {
-    [Authorize]
-    public class AccountController : Controller
-    {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
-        private ApplicationRoleManager _roleManager;
+	[Authorize]
+	public class AccountController : Controller
+	{
+		private ApplicationDbContext db = new ApplicationDbContext();
+		private ApplicationSignInManager _signInManager;
+		private ApplicationUserManager _userManager;
+		private ApplicationRoleManager _roleManager;
 
 
 
-        public AccountController()
-        {
-        }
+		public AccountController()
+		{
+		}
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager,
-                                 ApplicationRoleManager roleManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            RoleManager = roleManager;
-        }
+		public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager,
+								 ApplicationRoleManager roleManager)
+		{
+			UserManager = userManager;
+			SignInManager = signInManager;
+			RoleManager = roleManager;
+		}
 
 		public ApplicationSignInManager SignInManager
 		{
@@ -48,31 +48,31 @@ namespace LMS.Controllers
 			}
 		}
 
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
+		public ApplicationUserManager UserManager
+		{
+			get
+			{
+				return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			}
+			private set
+			{
+				_userManager = value;
+			}
+		}
 
 
 
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
-        }
+		public ApplicationRoleManager RoleManager
+		{
+			get
+			{
+				return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+			}
+			private set
+			{
+				_roleManager = value;
+			}
+		}
 
 		//
 		// GET: /Account/Login
@@ -156,38 +156,38 @@ namespace LMS.Controllers
 			}
 		}
 
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+		//
+		// GET: /Account/Register
+		[AllowAnonymous]
+		public ActionResult Register()
+		{
+			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
 
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var role in RoleManager.Roles)
-                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
-            ViewBag.Roles = list;
+			List<SelectListItem> list = new List<SelectListItem>();
+			foreach (var role in RoleManager.Roles)
+				list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+			ViewBag.Roles = list;
 
-            return View();
-        }
+			return View();
+		}
 
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name,  CourseId = model.CourseId };
-                var result = await UserManager.CreateAsync(user, model.Password);
+		//
+		// POST: /Account/Register
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Register(RegisterViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId = model.CourseId };
+				var result = await UserManager.CreateAsync(user, model.Password);
 
-            
-                    if (result.Succeeded)
-                {
-                    result = await UserManager.AddToRoleAsync(user.Id,model.RoleName);
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+				if (result.Succeeded)
+				{
+					result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+					await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
 					// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
 					// Send an email with this link
@@ -195,19 +195,19 @@ namespace LMS.Controllers
 					// var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 					// await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
-                }
+					return RedirectToAction("Index", "Home");
+				}
 
-                   
-                
 
-                AddErrors(result);
-            }
 
-            // If we got this far, something failed, redisplay form
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
-            return View(model);
-        }
+
+				AddErrors(result);
+			}
+
+			// If we got this far, something failed, redisplay form
+			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
+			return View(model);
+		}
 
 		//
 		// GET: /Account/ConfirmEmail
@@ -523,14 +523,18 @@ namespace LMS.Controllers
 		// GET: Members
 		public ActionResult UserListAction(string a, string b)
 		{
-			var UserList = db.Users..ToList();
+			var x = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
+			var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+
+			var UserList = db.Users.ToList();
 			switch (a)
 			{
+
+				//db.Users.Where(u => u.Roles.Where(i => i.RoleId.Contains());
 				case "Teacher":
-					var U = UserList.Where(i => i.Roles.ToString() == "Teacher");
-					if (UserList.Where(i => i.Roles.ToString() == "Teacher").ToList().Count() > 0)
+					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0)
 					{
-						return View(UserList.Where(i => i.Roles.ToString() == "Teacher").ToList());
+						return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList());
 					}
 					else
 					{
@@ -540,9 +544,9 @@ namespace LMS.Controllers
 
 
 				case "Student":
-					if (UserList.Where(i => i.Roles.ToString() == "Student").ToList().Count() > 0)
+					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0)
 					{
-						return View(UserList.Where(i => i.Roles.ToString() == "Student").ToList());
+						return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList());
 					}
 					else
 					{
