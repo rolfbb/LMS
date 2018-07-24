@@ -36,7 +36,7 @@
                     @*@if (!Request.IsAuthenticated)
                         <li class="teacher">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
                     <li class="teacher">@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                    <li class="teacher">@Html.ActionLink("Users", "Index", "Users", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                    <li class="teacher">@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                     @if (Request.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
