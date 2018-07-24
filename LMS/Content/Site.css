@@ -1,23 +1,19 @@
 ﻿body {
-	padding-top: 50px;
-	padding-bottom: 20px;
-	background-attachment: fixed;
-	background-position: center;
-	/*color: #fff;*/
+    padding-top: 50px;
+    padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-	padding-top: 25px;
-	padding-left: 15px;
-	padding-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-	white-space: normal;
+    white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -29,18 +25,10 @@ textarea {
 
 #lmsheader {
     background-color: black;
-    color:whitesmoke;
+    color: whitesmoke;
 }
 
-	
-
-
-.hideme {
-	visibility: hidden;
+div.container {
+    height: 500px;
 }
 
-.tablebackground {
-	background-color: rgba(62, 131, 242,0.75);
-	border-radius: 25px;
-	padding-bottom: 15px;
-}

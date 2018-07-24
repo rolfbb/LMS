@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -13,7 +14,29 @@ namespace LMS.Controllers
         // GET: Courses
         public ActionResult Index()
         {
-            return View(db.Courses.ToList());
+            HeaderViewModel header = new HeaderViewModel()
+            {
+                Empty = true
+            };
+            CoursesViewModel model = new CoursesViewModel()
+            {
+                Courses = db.Courses.ToList(),
+                Header = header
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(string active,string name)
+        {            
+            if (active=="on")
+            {
+                return PartialView("_TableView",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
+            }
+            else
+            {
+                return PartialView("_TableView", db.Courses.ToList());
+            }
         }
 
         // GET: Courses/Details/5
@@ -50,7 +73,6 @@ namespace LMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(course);
         }
 
