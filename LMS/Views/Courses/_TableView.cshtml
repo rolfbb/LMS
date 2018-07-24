@@ -28,7 +28,7 @@
             var backgroundColor = (itemCount % 2 == 0) ? "white" : "#F2F2F2";
             <tr class='clickable-row' data-href='url://link-for-first-row/'>
                 <td>
-                    @Html.DisplayFor(modelItem => course.Name)
+                    @Html.ActionLink(course.Name, "Index","Modules", new {ID = course.Id },null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => course.StartDate)
