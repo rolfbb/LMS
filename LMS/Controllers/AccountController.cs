@@ -85,11 +85,12 @@ namespace LMS.Controllers
                 {
                     return RedirectToAction("Index", "Courses");
                 }
-                //else
-                //{
-                //    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                //    return RedirectToAction("Details", "CourseDetails", new { id = CurrentUser.CourseId });
-                //}
+                else
+                {
+                    var userId = User.Identity.GetUserId();
+                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Id == userId);
+                    return RedirectToAction("Index", "CourseDetails", new { id = CurrentUser.CourseId });
+                }
             }
             ViewBag.ReturnUrl = returnUrl;
             return View();
