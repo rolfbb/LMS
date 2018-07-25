@@ -74,25 +74,25 @@ namespace LMS.Controllers
 			}
 		}
 
-        //
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Teacher"))
-                {
-                    return RedirectToAction("Index", "Courses");
-                }
-                else
-                {
-                    return RedirectToAction("Details", "Courses", new { id = 1 });
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
+		//
+		// GET: /Account/Login
+		[AllowAnonymous]
+		public ActionResult Login(string returnUrl)
+		{
+			if (User.Identity.IsAuthenticated)
+			{
+				if (User.IsInRole("Teacher"))
+				{
+					return RedirectToAction("Index", "Courses");
+				}
+				else
+				{
+					return RedirectToAction("Details", "Courses", new { id = 1 });
+				}
+			}
+			ViewBag.ReturnUrl = returnUrl;
+			return View();
+		}
 
 		//
 		// POST: /Account/Login
@@ -106,33 +106,33 @@ namespace LMS.Controllers
 				return View(model);
 			}
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                    
-                    if (await UserManager.IsInRoleAsync(CurrentUser.Id,"Teacher"))
-                    {
-                        return RedirectToAction("Index", "Courses");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Create", "Courses");
-                    }
-                //return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
-        }
+			// This doesn't count login failures towards account lockout
+			// To enable password failures to trigger account lockout, change to shouldLockout: true
+			var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+			switch (result)
+			{
+				case SignInStatus.Success:
+					ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+
+					if (await UserManager.IsInRoleAsync(CurrentUser.Id, "Teacher"))
+					{
+						return RedirectToAction("Index", "Courses");
+					}
+					else
+					{
+						return RedirectToAction("Create", "Courses");
+					}
+				//return RedirectToLocal(returnUrl);
+				case SignInStatus.LockedOut:
+					return View("Lockout");
+				case SignInStatus.RequiresVerification:
+					return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+				case SignInStatus.Failure:
+				default:
+					ModelState.AddModelError("", "Invalid login attempt.");
+					return View(model);
+			}
+		}
 
 		//
 		// GET: /Account/VerifyCode
@@ -443,15 +443,15 @@ namespace LMS.Controllers
 			return View(model);
 		}
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
-        }
+		//
+		// POST: /Account/LogOff
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult LogOff()
+		{
+			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+			return RedirectToAction("Login", "Account");
+		}
 
 		//
 		// GET: /Account/ExternalLoginFailure
@@ -553,7 +553,7 @@ namespace LMS.Controllers
 
 				//db.Users.Where(u => u.Roles.Where(i => i.RoleId.Contains());
 				case "Teacher":
-					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0  && b == null)
+					if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b == null)
 					{
 						return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList());
 					}
@@ -577,8 +577,27 @@ namespace LMS.Controllers
 					else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b != null)
 					{
 						var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
-						return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
+						if (TeacherListWithName.Where(i => i.Name.ToString() == b).Count() > 0)
+						{
+							return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
+						}
+						else if (db.Users.Where(c => c.Course.Name == b).Count() > 0 && b != null)
+						{
+							var CourseName = db.Users.Where(c => c.Course.Name == b);
+							//var yq = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+							//var studentlistforspecifice = db.Users.Where(q => q.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+							//var t = db.Courses.Where(c => c.Name == b);
+
+							return View(CourseName.ToList());
+						}
+						else
+						{
+							ViewBag.output = (".... There is no Student....");
+							return View(empty);
+						}
+
 					}
+
 					else
 					{
 						ViewBag.output = (".... There is no Student....");
@@ -588,10 +607,7 @@ namespace LMS.Controllers
 				default:
 					if (a == null && b == null)
 					{ return View(UserList); }
-					//else if (a != null && b != null)
-					//{
-					//	return View(UserList.Where(i => i.Name.ToString() == b).ToList());
-					//}
+				
 					else
 					{
 						ViewBag.output = ("....The List is empty....");
@@ -607,5 +623,28 @@ namespace LMS.Controllers
 
 			return RedirectToAction("UserListAction", new { a = filter, b = Search });
 		}
+
+
+
+
+
+		public ActionResult UserListActionforStudent()
+		{
+			var userid = User.Identity.GetUserId();
+			var courseid = db.Users.FirstOrDefault(m => m.Id == userid).CourseId;
+			var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+			var studentlistforspecifice = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+
+			if (studentlistforspecifice.Where(u => u.CourseId == courseid).ToList().Count() > 0)
+			{
+				return View(studentlistforspecifice.Where(u => u.CourseId == courseid).ToList());
+			}
+			else
+			{
+				ViewBag.output = (".... There is no Students....");
+				return View(empty);
+			}
+		}
+
 	}
 }
