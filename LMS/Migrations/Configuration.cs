@@ -47,12 +47,12 @@ namespace LMS.Migrations
 
 			db.Courses.AddOrUpdate(s => s.Id, courses);
 
-			var teacherEmails = new[] { "Teacher@lexicon.se", "Demitris@lexicon.se" };
+			var teacherEmails = new[] { "Teacher@lexicon.se", "Teacher2@lexicon.se", "Demitris@lexicon.se" };
 
 			foreach (var email in teacherEmails)
 			{
 				if (db.Users.Any(u => u.UserName == email)) continue;
-				var user = new ApplicationUser { UserName = email, Email = email };
+				var user = new ApplicationUser { UserName = email, Email = email,Name=email};
 
 				var result = userManager.Create(user, "aliali");
 				if (!result.Succeeded)
@@ -62,12 +62,12 @@ namespace LMS.Migrations
 			}
 
 			//Delete Student to seed CourseId
-			var studentEmails = new[] { "Student@lexicon.se", "Dennis@lexicon.se" };
+			var studentEmails = new[] { "Student@lexicon.se", "Dennis@lexicon.se", "Rolf@lexicon.se", "Ali@lexicon.se", "Reza@lexicon.se" };
 
 			foreach (var email in studentEmails)
 			{
 				if (db.Users.Any(u => u.UserName == email)) continue;
-				var user = new ApplicationUser { UserName = email, Email = email, CourseId = courses[5].Id };
+				var user = new ApplicationUser { UserName = email, Email = email, Name=email,CourseId = courses[5].Id };
 
 				var result = userManager.Create(user, "aliali");
 				if (!result.Succeeded)
