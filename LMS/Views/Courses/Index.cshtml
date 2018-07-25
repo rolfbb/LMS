@@ -1,8 +1,27 @@
 ﻿@model LMS.Models.CoursesViewModel
 @using LMS.Models
-@{
-	ViewBag.Title = "Index";
-}
+
+<script>
+    $(function () {
+        $('#test').change(function () {
+            alert('test')
+            var self = $(this);
+            var url = self.data('url');
+            var id = self.attr('id');
+            var value = self.prop('checked');
+
+            $.ajax({
+                url: url,
+                data: { id: id },
+                type: 'POST',
+                InsertionMode = InsertionMode.Replace,
+                success: function (response) {
+                    alert(response);
+                }
+            });
+        });
+    });
+</script>
 
 @Html.Partial("_Header", Model.Header)
 <div class="container body-content">
@@ -17,37 +36,30 @@
         <label for="Test"></label>
         <div class="row">
             <div class="col-sm-4">
-                <h2>Active Course</h2>
-            </div>
-            <div class="col-sm-4">
-                <h2>Name</h2>
+                <h2>Courses</h2>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
-                <label class="switch">
-                    <input type="checkbox" checked name="active">
-                    <span class="slider round"></span>
-                </label>
+            <div class="col-sm-1">
+                @*<label class="switch">*@
+                <input type="checkbox" checked name="active" id="test">
+                @*  <span class="slider round"></span>*@
+                @*  </label>*@
             </div>
-            <div class="col-sm-4">
-                <input type="search" , value="enter name" , name="name" ,id="name" />
-            </div>
-            <div class="col-sm-4">
+            <div class="col-sm-1">
                 <input type="submit" , value="Filter" />
             </div>
         </div>
     }
 
     <div class="row">
-        <div class="col-sm-10">
-            Courses
+        <div class="col-sm-11">
+            
         </div>
-		<div class="col-sm-2">
-			@Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
-		</div>
+        <div class="col-sm-1 pull-right">
+            @Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
+        </div>
     </div>
 
-
-    @Html.Partial("_TableView", Model.Courses)
+    @Html.Partial("_Courses", Model.Courses)
 </div>

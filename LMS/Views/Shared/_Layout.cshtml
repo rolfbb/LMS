@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 <!DOCTYPE html>
 <html>
-<head> 
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
@@ -21,7 +21,6 @@
             {
                 @Html.ActionLink(User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             }
-
         </a>
         <div class="container">
             <div class="navbar-header">
@@ -31,15 +30,34 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-					<li>@Html.ActionLink("Add New Course", "Add", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-					<li>@Html.ActionLink("User List","UserListAction","Account")</li>
-					<li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>
-				</ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						@if (User.IsInRole("Teacher"))
+						{
+						<li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+						<li>@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+						<li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>
+						}
+						else
+						{
+						<li>@Html.ActionLink("Student List", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+						}
+						@if (Request.IsAuthenticated)
+						{
+						using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+						{
+						@Html.AntiForgeryToken()
+
+						<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+						}
+						}
+
+						@*@Html.Partial("_LoginPartial")*@
+					</ul>
+                </div>
+            }
         </div>
     </div>
     @RenderBody()

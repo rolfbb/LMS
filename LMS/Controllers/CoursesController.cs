@@ -20,39 +20,27 @@ namespace LMS.Controllers
             };
             CoursesViewModel model = new CoursesViewModel()
             {
-                Courses = db.Courses.ToList(),
+                //Default active courses
+                Courses = db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList(),
                 Header = header
             };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Index(string active,string name)
-        {            
-            if (active=="on")
+        public ActionResult Index(string active)
+        {
+            if (active == "on")
             {
-                return PartialView("_TableView",db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());             
+                    return PartialView("_Courses", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
             }
             else
             {
-                return PartialView("_TableView", db.Courses.ToList());
+                    return PartialView("_Courses", db.Courses.ToList());
             }
         }
 
-        // GET: Courses/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            return View(course);
-        }
+       
 
         // GET: Courses/Create
         public ActionResult Create()
@@ -70,37 +58,6 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 db.Courses.Add(course);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(course);
-        }
-
-        // GET: Courses/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Course course = db.Courses.Find(id);
-            if (course == null)
-            {
-                return HttpNotFound();
-            }
-            return View(course);
-        }
-
-        // POST: Courses/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate")] Course course)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

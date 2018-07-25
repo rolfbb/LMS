@@ -194,6 +194,7 @@
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\ActivityTypesController.cs" />
     <Compile Include="Controllers\ApplicationRoleManager.cs" />
+    <Compile Include="Controllers\CourseDetailsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -298,14 +299,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Modules\Create.cshtml" />
     <Content Include="Views\Modules\Delete.cshtml" />
     <Content Include="Views\Modules\Details.cshtml" />
     <Content Include="Views\Modules\Edit.cshtml" />
-    <Content Include="Views\Modules\Index.cshtml" />
+    <Content Include="Views\CourseDetails\_Modules.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />
@@ -317,8 +316,12 @@
     <Content Include="Views\ActivityTypes\Edit.cshtml" />
     <Content Include="Views\ActivityTypes\Index.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
-    <Content Include="Views\Courses\_TableView.cshtml" />
+    <Content Include="Views\Courses\_Courses.cshtml" />
     <Content Include="Views\Courses\_Header.cshtml" />
+    <Content Include="Views\Account\UserListAction.cshtml" />
+    <Content Include="Views\CourseDetails\_Header.cshtml" />
+    <Content Include="Views\CourseDetails\Index.cshtml" />
+    <Content Include="Views\CourseDetails\Edit.cshtml" />
     <Content Include="Views\Account\UserListActionforStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
