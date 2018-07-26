@@ -322,6 +322,7 @@
     <Content Include="Views\CourseDetails\_Header.cshtml" />
     <Content Include="Views\CourseDetails\Index.cshtml" />
     <Content Include="Views\CourseDetails\Edit.cshtml" />
+    <Content Include="Views\Account\UserListActionforStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
