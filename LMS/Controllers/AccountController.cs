@@ -74,25 +74,25 @@ namespace LMS.Controllers
 			}
 		}
 
-        //
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Teacher"))
-                {
-                    return RedirectToAction("Index", "Courses");
-                }
-                else
-                {
-                    return RedirectToAction("Details", "Courses", new { id = 1 });
-                }
-            }
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
+		//
+		// GET: /Account/Login
+		[AllowAnonymous]
+		public ActionResult Login(string returnUrl)
+		{
+			if (User.Identity.IsAuthenticated)
+			{
+				if (User.IsInRole("Teacher"))
+				{
+					return RedirectToAction("Index", "Courses");
+				}
+				else
+				{
+					return RedirectToAction("Details", "Courses", new { id = 1 });
+				}
+			}
+			ViewBag.ReturnUrl = returnUrl;
+			return View();
+		}
 
 		//
 		// POST: /Account/Login
@@ -106,33 +106,33 @@ namespace LMS.Controllers
 				return View(model);
 			}
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                    
-                    if (await UserManager.IsInRoleAsync(CurrentUser.Id,"Teacher"))
-                    {
-                        return RedirectToAction("Index", "Courses");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Details", "Courses", new { id = 1 });
-                    }
-                //return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
-        }
+			// This doesn't count login failures towards account lockout
+			// To enable password failures to trigger account lockout, change to shouldLockout: true
+			var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+			switch (result)
+			{
+				case SignInStatus.Success:
+					ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+					
+					if (await UserManager.IsInRoleAsync(CurrentUser.Id,"Teacher"))
+					{
+						return RedirectToAction("Index", "Courses");
+					}
+					else
+					{
+						return RedirectToAction("Details", "Courses", new { id = 1 });
+					}
+				//return RedirectToLocal(returnUrl);
+				case SignInStatus.LockedOut:
+					return View("Lockout");
+				case SignInStatus.RequiresVerification:
+					return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+				case SignInStatus.Failure:
+				default:
+					ModelState.AddModelError("", "Invalid login attempt.");
+					return View(model);
+			}
+		}
 
 		//
 		// GET: /Account/VerifyCode
@@ -443,15 +443,15 @@ namespace LMS.Controllers
 			return View(model);
 		}
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
-        }
+		//
+		// POST: /Account/LogOff
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult LogOff()
+		{
+			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+			return RedirectToAction("Login", "Account");
+		}
 
 		//
 		// GET: /Account/ExternalLoginFailure
