@@ -560,7 +560,8 @@ namespace LMS.Controllers
                 case "Teacher":
                     if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b == null)
                     {
-                        return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList());
+                        var step1 = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList();
+                        return View(step1);
                     }
                     else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b != null)
                     {
