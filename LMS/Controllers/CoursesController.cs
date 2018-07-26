@@ -45,6 +45,7 @@ namespace LMS.Controllers
         // GET: Courses/Create
         public ActionResult Create()
         {
+           
             return View();
         }
 
@@ -59,8 +60,9 @@ namespace LMS.Controllers
             {
                 db.Courses.Add(course);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","CourseDetails",new {id=course.Id});
             }
+           
             return View(course);
         }
 

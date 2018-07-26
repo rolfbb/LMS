@@ -26,9 +26,10 @@ namespace LMS.Controllers
         }
 
         // GET: Modules/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+            ViewBag.CourseId = id;
+            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
             return View();
         }
 
@@ -41,11 +42,12 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
+              
                 db.Modules.Add(module);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","CourseDetails",new {id= module.CourseId });
             }
-
+            ViewBag.courseis =module.Id;
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
         }
@@ -77,7 +79,7 @@ namespace LMS.Controllers
             {
                 db.Entry(module).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { ID = module.CourseId });
+                return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
             }
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
             return View(module);
@@ -106,7 +108,7 @@ namespace LMS.Controllers
             Module module = db.Modules.Find(id);
             db.Modules.Remove(module);
             db.SaveChanges();
-            return RedirectToAction("Index", new { ID = module.CourseId });
+            return RedirectToAction("Index","CourseDetails" ,new { id = module.CourseId });
         }
 
         protected override void Dispose(bool disposing)
