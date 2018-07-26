@@ -2,7 +2,6 @@
 using LMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,7 +121,10 @@ namespace LMS.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "CourseDetails", new { id = CurrentUser.CourseId });
+                        return RedirectToAction("Index", "CourseDetails", new
+                        {
+                            id = CurrentUser.CourseId
+                        });
                     }
                 //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
@@ -408,6 +410,16 @@ namespace LMS.Controllers
         }
 
         //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login", "Account");
+        }
+
+        //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
@@ -445,15 +457,15 @@ namespace LMS.Controllers
             return View(model);
         }
 
-		//
-		// POST: /Account/LogOff
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult LogOff()
-		{
-			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-			return RedirectToAction("Login", "Account");
-		}
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login", "Account");
+        }
 
         //
         // GET: /Account/ExternalLoginFailure
