@@ -2,6 +2,7 @@
 using LMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -407,16 +408,6 @@ namespace LMS.Controllers
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
         }
 
         //
