@@ -1,0 +1,10 @@
+﻿@model LMS.Models.Course
+@using LMS.Models
+
+
+@Html.Partial("_Header", new HeaderViewModel() {
+CourseName = Model.Name,
+Description = Model.Description,
+StartDate = Model.StartDate
+})
+@Html.Partial("_Modules", Model.Modules)

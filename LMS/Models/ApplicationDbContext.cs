@@ -21,5 +21,9 @@ namespace LMS.Models
         public System.Data.Entity.DbSet<LMS.Models.Activity> Activities { get; set; }
 
         public System.Data.Entity.DbSet<LMS.Models.ActivityType> ActivityTypes { get; set; }
-    }
+
+		//public System.Data.Entity.DbSet<LMS.Models.ApplicationUser> ApplicationUsers { get; set; }
+
+		//public System.Data.Entity.DbSet<LMS.Models.ApplicationUser> ApplicationUsers { get; set; }
+	}
 }

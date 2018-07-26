@@ -76,6 +76,19 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Teacher"))
+                {
+                    return RedirectToAction("Index", "Courses");
+                }
+                else
+                {
+                    var userId = User.Identity.GetUserId();
+                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Id == userId);
+                    return RedirectToAction("Index", "CourseDetails", new { id = CurrentUser.CourseId });
+                }
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -98,7 +111,20 @@ namespace LMS.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Email == model.Email);
+
+                    if (await UserManager.IsInRoleAsync(CurrentUser.Id, "Teacher"))
+                    {
+                        return RedirectToAction("Index", "Courses");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "CourseDetails", new
+                        {
+                            id = CurrentUser.CourseId
+                        });
+                    }
+                //return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -178,14 +204,12 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name, CourseId = model.CourseId };
-               
-
                 var result = await UserManager.CreateAsync(user, model.Password);
 
-            
-                    if (result.Succeeded)
+
+                if (result.Succeeded)
                 {
-                    result = await UserManager.AddToRoleAsync(user.Id,model.RoleName);
+                    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -197,8 +221,8 @@ namespace LMS.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                   
-                
+
+
 
                 AddErrors(result);
             }
@@ -490,7 +514,7 @@ namespace LMS.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
@@ -579,5 +603,112 @@ namespace LMS.Controllers
             }
         }
         #endregion
+        private List<ApplicationUser> empty = new List<ApplicationUser>();
+
+        // GET: Members
+        public ActionResult UserListAction(string a, string b)
+        {
+            var x = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
+            var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+
+            var UserList = db.Users.ToList();
+            switch (a)
+            {
+
+                //db.Users.Where(u => u.Roles.Where(i => i.RoleId.Contains());
+                case "Teacher":
+                    if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b == null)
+                    {
+                        return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList());
+                    }
+                    else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b != null)
+                    {
+                        var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList();
+                        return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
+                    }
+                    else
+                    {
+                        ViewBag.output = (".... There is no teacher....");
+                        return View(empty);
+                    }
+
+
+                case "Student":
+                    if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b == null)
+                    {
+                        return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList());
+                    }
+                    else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b != null)
+                    {
+                        var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+                        if (TeacherListWithName.Where(i => i.Name.ToString() == b).Count() > 0)
+                        {
+                            return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
+                        }
+                        else if (db.Users.Where(c => c.Course.Name == b).Count() > 0 && b != null)
+                        {
+                            var CourseName = db.Users.Where(c => c.Course.Name == b);
+                            //var yq = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+                            //var studentlistforspecifice = db.Users.Where(q => q.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+                            //var t = db.Courses.Where(c => c.Name == b);
+
+                            return View(CourseName.ToList());
+                        }
+                        else
+                        {
+                            ViewBag.output = (".... There is no Student....");
+                            return View(empty);
+                        }
+
+                    }
+
+                    else
+                    {
+                        ViewBag.output = (".... There is no Student....");
+                        return View(empty);
+                    }
+
+                default:
+                    if (a == null && b == null)
+                    { return View(UserList); }
+
+                    else
+                    {
+                        ViewBag.output = ("....The List is empty....");
+                        return View(empty);
+                    }
+            }
+        }
+
+        [HttpPost, ActionName("Search")]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchConfirmed(string filter, string Search)
+        {
+
+            return RedirectToAction("UserListAction", new { a = filter, b = Search });
+        }
+
+
+
+
+
+        public ActionResult UserListActionforStudent()
+        {
+            var userid = User.Identity.GetUserId();
+            var courseid = db.Users.FirstOrDefault(m => m.Id == userid).CourseId;
+            var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+            var studentlistforspecifice = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
+
+            if (studentlistforspecifice.Where(u => u.CourseId == courseid).ToList().Count() > 0)
+            {
+                return View(studentlistforspecifice.Where(u => u.CourseId == courseid).ToList());
+            }
+            else
+            {
+                ViewBag.output = (".... There is no Students....");
+                return View(empty);
+            }
+        }
+
     }
 }

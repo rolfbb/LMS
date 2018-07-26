@@ -1,61 +1,67 @@
-﻿@model IEnumerable<LMS.Models.Course>
+﻿@model LMS.Models.CoursesViewModel
 @using LMS.Models
-@{
-	ViewBag.Title = "Index";
-}
 
-@Html.Partial("_Header", new HeaderViewModel() {
-    CourseName = "NG18 - .Net Påbyggnadsutbildning",
-    Description = "Välkommen till kursportalen för klass NG18 Här hittar ni under utbildningens gång scheman, material och uppgiftningsbeskrivningar.",
-    StartDate = DateTime.Now
-})
+@{ViewBag.Title = "Courses"; }
+    
+<script>
+    $(function () {
+        $('#test').change(function () {
+            alert('test')
+            var self = $(this);
+            var url = self.data('url');
+            var id = self.attr('id');
+            var value = self.prop('checked');
 
+            $.ajax({
+                url: url,
+                data: { id: id },
+                type: 'POST',
+                InsertionMode = InsertionMode.Replace,
+                success: function (response) {
+                    alert(response);
+                }
+            });
+        });
+    });
+</script>
+
+@Html.Partial("_Header", Model.Header)
 <div class="container body-content">
-    <div class="row">
-        <div class="col-sm-10">
-            Courses
+    @using (Ajax.BeginForm(
+        new AjaxOptions
+        {
+            HttpMethod = "post",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "coursestable"
+        }))
+    {
+        <label for="Test"></label>
+        <div class="row">
+            <div class="col-sm-4">
+                <h2>Courses</h2>
+            </div>
         </div>
-		<div class="col-sm-2">
-			@Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
-		</div>
+        <div class="row">
+            <div class="col-sm-1">
+                @*<label class="switch">*@
+                <input type="checkbox" checked name="active" id="test">
+                @*  <span class="slider round"></span>*@
+                @*  </label>*@
+            </div>
+            <div class="col-sm-1">
+                <input type="submit" , value="Filter" />
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-sm-11">
+            
+        </div>
+        <div class="col-sm-1 pull-right">
+            @Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
+        </div>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <thead class="">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @if (User.IsInRole("Teacher"))
-                    {
-                        @Html.ActionLink("Edit/Details", "Edit", new { id = item.Id }) <span>| </span>
-                    }
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </table>
+    @Html.Partial("_Courses", Model.Courses)
 </div>
