@@ -28,22 +28,15 @@ namespace LMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string active, string name)
+        public ActionResult Index(string active)
         {
             if (active == "on")
             {
-                if (name == "" || name =="enter name")
                     return PartialView("_Courses", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
-                else
-                    return PartialView("_Courses", db.Courses.Where(c => c.EndDate >= DateTime.Now && c.Name.ToLower().Contains(name.ToLower())).ToList());
             }
             else
             {
-                if (name == "" || name == "enter name")
                     return PartialView("_Courses", db.Courses.ToList());
-
-                else
-                    return PartialView("_Courses", db.Courses.Where(c => c.Name.ToLower().Contains(name.ToLower())));
             }
         }
 
