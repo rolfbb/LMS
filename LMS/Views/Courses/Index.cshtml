@@ -22,46 +22,45 @@
 
 <div class="container body-content">
     @*@using (Ajax.BeginForm(
-        new AjaxOptions
+            new AjaxOptions
+            {
+                HttpMethod = "post",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "coursestable"
+            }))
         {
-            HttpMethod = "post",
-            InsertionMode = InsertionMode.Replace,
-            UpdateTargetId = "coursestable"
-        }))
-    {
-        <label for="Test"></label>
-        <div class="row">
-            <div class="col-sm-4">
-                <h2>Courses</h2>
+            <label for="Test"></label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h2>Courses</h2>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-1">
-                <input type="checkbox" checked name="active" id="test">
+            <div class="row">
+                <div class="col-sm-1">
+                    <input type="checkbox" checked name="active" id="test">
+                </div>
+                <div class="col-sm-1">
+                    <input type="submit" , value="Filter" />
+                </div>
             </div>
-            <div class="col-sm-1">
-                <input type="submit" , value="Filter" />
-            </div>
-        </div>
-    }*@
+        }*@
 
-    <dl class="dl-horizontal">
-        <dt>
-            Courses:
-        </dt>
-        <dd>
-            <div id=checkbox>
-                <form>
-                    @Html.RadioButton("filter", "Active") <span>Active</span>
-                    @Html.RadioButton("filter", "All") <span>All</span>
-                </form>
-            </div>
-        </dd>
-        @ViewBag.output
-    </dl>
     <div class="row">
         <div class="col-sm-11">
-
+            <dl class="dl-horizontal">
+                <dt>
+                    Courses:
+                </dt>
+                <dd>
+                    <div id=checkbox>
+                        <form>
+                            @Html.RadioButton("filter", "Active") <span>Active</span>
+                            @Html.RadioButton("filter", "All") <span>All</span>
+                        </form>
+                    </div>
+                </dd>
+                @ViewBag.output
+            </dl>
         </div>
         <div class="col-sm-1 pull-right">
             @Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })
