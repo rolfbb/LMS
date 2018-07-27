@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LMS.Models
 {
@@ -16,5 +17,6 @@ namespace LMS.Models
         // Relational properties
         public virtual Module Module { get; set; }
         public virtual ActivityType Type { get; set; }
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

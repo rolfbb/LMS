@@ -100,5 +100,41 @@ namespace LMS.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // GET: Courses/Edit
+        public ActionResult Edit(string id)
+        {
+
+            if (id == "")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Course course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+          
+            return View(course);
+        }
+
+        // POST: Courses/Edit
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Name,StartDate,EndDate,Description")]Course course)
+        {
+            if (ModelState.IsValid)
+            {
+
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(course);
+        }
     }
 }

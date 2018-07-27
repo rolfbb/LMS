@@ -23,6 +23,6 @@ namespace LMS.Models
         public System.Data.Entity.DbSet<LMS.Models.ActivityType> ActivityTypes { get; set; }
         public object UserProfiles { get; internal set; }
 
-        
+        public System.Data.Entity.DbSet<LMS.Models.Document> Documents { get; set; }
     }
 }

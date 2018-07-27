@@ -14,5 +14,6 @@ namespace LMS.Models
         // Relational properties
         public virtual ICollection<ApplicationUser> Students { get; set; }
         public virtual ICollection<Module> Modules { get; set; }
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
