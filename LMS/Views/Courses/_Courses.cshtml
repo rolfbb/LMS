@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LMS.Models.Course>
 
 <div id="coursestable">
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered">
         <thead class="">
             <tr>
                 <th>
@@ -22,8 +22,11 @@
         {
             var dataTarget = "course" + itemCount;
             itemCount++;
-            var backgroundColor = (itemCount % 2 == 0) ? "white" : "#F2F2F2";
-            <tr class='clickable-row' data-href='url://link-for-first-row/'>
+            var active = course.EndDate > DateTime.Now ? "active" : "inactive";
+            //Should be moved to css
+            var backgroundColor = course.EndDate > DateTime.Now ? "white" : "#F2F2F2";
+
+            <tr class='clickable-row @active' data-href='url://link-for-first-row/' style="background-color:@backgroundColor">
                 <td>
                     @Html.ActionLink(course.Name, "Index", "CourseDetails", new { id = course.Id }, null)
                 </td>
