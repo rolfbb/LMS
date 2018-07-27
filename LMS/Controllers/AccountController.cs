@@ -4,7 +4,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +14,7 @@ using System.Web.Mvc;
 namespace LMS.Controllers
 {
     [Authorize]
+    [System.Runtime.InteropServices.Guid("3918E8C1-140B-4665-8486-E513714DD6CF")]
     public class AccountController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -709,6 +712,91 @@ namespace LMS.Controllers
                 return View(empty);
             }
         }
+
+
+
+        // GET: Account/Edit
+        public ActionResult Edit(string id)
+        {
+
+            if (id == "")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            //ViewBag.courseId = user.CourseId;
+            return View(user);
+        }
+
+        // POST: Account/Edit
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Name,CourseId,Email,UserName")] ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                  
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("UserListAction");
+            }
+        
+            return View(user);
+        }
+
+
+
+        public ActionResult Details(string id) 
+        {
+            if (id == "")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // GET: Modules/Delete
+        public ActionResult Delete(string id)
+        {
+            if (id == "")
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Modules/Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            ApplicationUser user = db.Users.Find(id);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("UserListAction");
+        }
+
+
+
+
+
 
     }
 }
