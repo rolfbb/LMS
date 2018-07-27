@@ -136,8 +136,9 @@ namespace LMS.Migrations
         private static Activity[] AddActivities(ApplicationDbContext db, ActivityType[] activityTypes, Module[] modules)
         {
             var activities = new[] {
-                new Activity { Name = "Java", Description = "Java Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[1].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
-                new Activity { Name = "C#", Description = "C# Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[2].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
+                new Activity { Name = "Java", Description = "Java Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[0].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
+                new Activity { Name = "C#", Description = "C# Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[6].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
+
             };
 
             db.Activities.AddOrUpdate(a => new { a.Name, a.StartDate }, activities);

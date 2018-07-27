@@ -1,0 +1,56 @@
+﻿@model IEnumerable<LMS.Models.Activity>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="well">
+    <div class="row ">
+        <div class="col-md-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </div>
+        <div class="col-md-3">
+            @Html.DisplayNameFor(model => model.Type.Description)
+        </div>
+        <div class="col-md-2">
+            @*@Html.DisplayNameFor(model => model.Description)*@
+            @Html.DisplayNameFor(model => model.StartDate)
+        </div>
+        <div class="col-md-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </div>
+        <div class="col-md-3">
+
+        </div>
+
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2">
+
+                @Html.DisplayFor(modelItem => item.Name)
+            </div>
+            <div class="col-md-3">
+
+                @Html.DisplayFor(modelItem => item.Type.Description)
+            </div>
+            @*@Html.DisplayFor(modelItem => item.Description)*@
+            <div class="col-md-2">
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </div>
+            <div class="col-md-2">
+
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </div>
+            <div class="col-md-3">
+                @if (User.IsInRole("Teacher"))
+                {
+                    @Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
+
+                    @Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
+                }
+                @Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
+            </div>
+        }
+    </div>
+</div>

@@ -11,9 +11,9 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public ActionResult Index(int? ID)
+        public ActionResult Index(/*int? ID*/)
         {
-			var activities = db.Activities.Where(m => m.ModuleId == ID);
+			var activities = db.Activities/*.Where(m => m.ModuleId == ID)*/;
             return View(activities.ToList());
         }
 
@@ -67,6 +67,7 @@ namespace LMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Activity activity = db.Activities.Find(id);
+            
             if (activity == null)
             {
                 return HttpNotFound();
@@ -84,10 +85,12 @@ namespace LMS.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity)
         {
             if (ModelState.IsValid)
-            {
+            {              
+
                 db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //Activity activity2 = db.Activities.Find(activity.Id);
+                return RedirectToAction("Index", "CourseDetails");//new {id = /*activity2.Module.CourseId*/});
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
