@@ -10,8 +10,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-4">
                 <span>Start Date: @Html.DisplayFor(model => model.StartDate) </span>
+            </div>
+            <div>
+                @{ if (User.IsInRole("Teacher"))
+                    {
+                        @Html.ActionLink("Edit Course", "Edit", "CourseDetails", new { @class = "btn btn-success btn-medium", id = Model.CourseId }, null)
+                    }
+                }
             </div>
         </div>
     </div>
