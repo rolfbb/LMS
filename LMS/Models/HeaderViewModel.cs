@@ -7,6 +7,7 @@ namespace LMS.Models
     {
         public bool Empty { get; set; }
         public String CourseName { get; set; }
+        public int CourseId;
         public String Description { get; set; }
         [DataType(DataType.Date)]
         //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
