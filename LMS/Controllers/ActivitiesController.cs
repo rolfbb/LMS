@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -13,7 +14,7 @@ namespace LMS.Controllers
         // GET: Activities
         public ActionResult Index(/*int? ID*/)
         {
-			var activities = db.Activities/*.Where(m => m.ModuleId == ID)*/;
+            var activities = db.Activities/*.Where(m => m.ModuleId == ID)*/;
             return View(activities.ToList());
         }
 
@@ -67,7 +68,7 @@ namespace LMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Activity activity = db.Activities.Find(id);
-            
+
             if (activity == null)
             {
                 return HttpNotFound();
@@ -85,17 +86,38 @@ namespace LMS.Controllers
         public ActionResult Edit([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity)
         {
             if (ModelState.IsValid)
-            {              
-
-                db.Entry(activity).State = EntityState.Modified;
-                db.SaveChanges();
-                //Activity activity2 = db.Activities.Find(activity.Id);
-                return RedirectToAction("Index", "CourseDetails");//new {id = /*activity2.Module.CourseId*/});
+            {
+                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                //bool dateErrors = false;
+                //if (activity.StartDate < module.StartDate)
+                //{
+                //    ModelState.AddModelError("StartDate", "Earliest allowed start date is " + module.StartDate);
+                //    dateErrors = true;
+                //}
+                //if (activity.EndDate > module.EndDate)
+                //{
+                //    ModelState.AddModelError("EndDate", "Latest allowed end date is " + module.StartDate);
+                //    dateErrors = true;
+                //}
+                //if (activity.StartDate > activity.EndDate)
+                //{
+                //    ModelState.AddModelError("EndDate", "End date can't be earlier than start date");
+                //    dateErrors = true;
+                //}
+                if (Util.Validation.DateRangeValidation(this,module,activity))
+                {
+                    db.Entry(activity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                }
+                activity.Module = module;
             }
             ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
             return View(activity);
         }
+
+
 
         // GET: Activities/Delete/5
         public ActionResult Delete(int? id)
@@ -131,5 +153,5 @@ namespace LMS.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+    }  
 }
