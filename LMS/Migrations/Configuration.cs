@@ -4,6 +4,7 @@ namespace LMS.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Net.Mail;
@@ -31,7 +32,7 @@ namespace LMS.Migrations
             Module[] modules = AddModules(db, courses);
             ActivityType[] activityTypes = AddActivityTypes(db);
             Activity[] activities = AddActivities(db, activityTypes, modules);
-
+            Activity[] activities2 = AddActivities2(db, activityTypes, modules);
         }
 
         private static Course[] AddCourses(ApplicationDbContext db)
@@ -132,6 +133,37 @@ namespace LMS.Migrations
             db.SaveChanges();
             return activityTypes;
         }
+        private static Random gen = new Random();
+
+        private static Activity[] AddActivities2(ApplicationDbContext db, ActivityType[] activityTypes, Module[] modules)
+        {
+            TimeSpan twoDays = new TimeSpan(48, 0, 0);
+            var activitiesList = new List<Activity>();
+            foreach (var module in modules) {
+                var actStartDate = module.StartDate;
+                var actEndDate = actStartDate.AddDays(2);
+                var activityCount = 0;
+                while (actEndDate < module.EndDate) {
+                    Activity activity = new Activity {
+                        Name = "Activity" + activityCount,
+                        Description = "Descr " + module.Name,
+                        TypeId = activityTypes[gen.Next(activityTypes.Length)].Id,
+                        ModuleId = module.Id,
+                        StartDate = actStartDate,
+                        EndDate = actEndDate
+                    };
+                    activitiesList.Add(activity);
+                    actStartDate = actEndDate.AddDays(1);
+                    actEndDate = actStartDate.AddDays(gen.Next(3));
+                    activityCount++;
+                }
+            }
+            var activities = activitiesList.ToArray();
+            db.Activities.AddOrUpdate(a => new { a.Name, a.StartDate },activities );
+            db.SaveChanges();
+            return activities;
+        }
+
 
         private static Activity[] AddActivities(ApplicationDbContext db, ActivityType[] activityTypes, Module[] modules)
         {
@@ -141,6 +173,7 @@ namespace LMS.Migrations
             };
 
             db.Activities.AddOrUpdate(a => new { a.Name, a.StartDate }, activities);
+            db.SaveChanges();
             return activities;
         }
 

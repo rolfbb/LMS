@@ -13,12 +13,12 @@ namespace LMS.Util
             bool validationOk = true;
             if (subRange.StartDate < dateRange.StartDate)
             {
-                ctr.ModelState.AddModelError("StartDate", "Earliest allowed start date is " + dateRange.StartDate);
+                ctr.ModelState.AddModelError("StartDate", "Earliest allowed start date is " + dateRange.StartDate.ToString("MM/dd/yyyy"));
                 validationOk = false;
             }
             if (subRange.EndDate > dateRange.EndDate)
             {
-                ctr.ModelState.AddModelError("EndDate", "Latest allowed end date is " + dateRange.EndDate);
+                ctr.ModelState.AddModelError("EndDate", "Latest allowed end date is " + dateRange.EndDate.ToString("MM/dd/yyyy"));
                 validationOk = false;
             }
             if (subRange.StartDate > dateRange.EndDate)

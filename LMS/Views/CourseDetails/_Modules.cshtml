@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<div class="container ">
+<div class="container">
     <div class="row">
         <div class="col-md-10">
             @*<h2><span class="label label-default label3">Modules</span></h2>*@
@@ -37,48 +37,52 @@
             <div class="col-md-2">
             </div>
         </div>
+        <div class="panel-group" id="module-accordion">
+            @foreach (var item in Model.Modules.OrderByDescending(m => m.StartDate))
+            {
+                var collapseId = "collapse" + item.Id;
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#module-accordion" href="#@collapseId">
+                                <div class="well" style="background-color:ghostwhite">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </div>
+                                        <div class="col-md-3">
 
-        foreach (var item in Model.Modules.OrderByDescending(m => m.StartDate))
-        {
-            //col++;
-            <div class="well">
-                @*<div class="row">
-                        <div class="col-md-offset-10 col-md-2">
-                            @if (col == 1 && User.IsInRole("Teacher"))
-                            {
-                                @Html.ActionLink("Add Module", "Create", "Modules", new { courseId = item.CourseId }, null)
-                            }
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </div>
+                                        <div class="col-md-3">
+                                            @if (User.IsInRole("Teacher"))
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
+                                                @Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
+                                            }
+                                            @Html.ActionLink("Details", "Details", "Modules", new { id = item.Id }, null)
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="@collapseId" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @Html.Partial("_Activities", new ActivityTableViewModel() {
+                               Activities= item.Activities,
+                               ModuleId=item.Id})
                         </div>
-                    </div>*@
-                <div class="row">
-                    <div class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </div>
-                    <div class="col-md-3">
-
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </div>
-                    <div class="col-md-3">
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            @Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
-
-                            @Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
-                            @*@Html.ActionLink("Add activity", "Create", "Activity", new { moduleId = item.Id }, null)<span> |</span>*@
-                        }
-                        @Html.ActionLink("Details", "Details", "Modules", new { id = item.Id }, null)
                     </div>
                 </div>
-                @Html.Partial("_Activities", new ActivityTableViewModel() {
-                   Activities= item.Activities,
-                   ModuleId=item.Id})
-            </div>
-        }
+            }
+        </div>
     }
 </div>
+

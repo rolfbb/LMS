@@ -24,15 +24,12 @@
                 @Html.DisplayName("End Date")
             </div>
             <div class="col-md-3">
-
             </div>
-
         </div>
         <div class="row">
             @foreach (var item in Model.Activities)
             {
                 <div class="col-md-2">
-
                     @Html.DisplayFor(modelItem => item.Name)
                 </div>
                 <div class="col-md-3">
@@ -44,7 +41,6 @@
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </div>
                 <div class="col-md-2">
-
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </div>
                 <div class="col-md-3">
@@ -58,6 +54,5 @@
                 </div>
             }
         </div>
-
     </div>
 }

@@ -71,11 +71,10 @@ namespace LMS.Controllers
                     db.Activities.Add(activity);
                     db.SaveChanges();
                     return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
-                }
-                return RedirectToAction("Index");
+                }               
             }
 
-            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            ActivityCreateViewModel model = Mapper.Map<Activity, ActivityCreateViewModel>(activity);
             //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
             model.CourseId = CourseId;
             model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
@@ -151,9 +150,10 @@ namespace LMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Activity activity = db.Activities.Find(id);
+            Module module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
             db.Activities.Remove(activity);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
         }
 
         protected override void Dispose(bool disposing)
