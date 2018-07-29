@@ -3,7 +3,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using LMS.Models;
+using LMS.ViewModels;
+using LMS.ViewModels.Activity;
 
 namespace LMS.Controllers
 {
@@ -34,11 +37,22 @@ namespace LMS.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create()
+        // For now we assume we have a correct moduleId, otherwise we need mode che
+        public ActionResult Create(int? moduleId)
         {
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description");
-            return View();
+            var module = db.Modules.FirstOrDefault(m => m.Id == moduleId);
+            ActivityCreateViewModel model = new ActivityCreateViewModel()
+            {
+                Name = "",
+                Description = "",
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                ModuleId = module.Id,
+                CourseId = module.CourseId,
+                //SelectModule = new SelectList(db.Modules, "Id", "Name", moduleId),
+                SelectType = new SelectList(db.ActivityTypes, "Id", "Description")
+            };
+            return View(model);
         }
 
         // POST: Activities/Create
@@ -46,18 +60,26 @@ namespace LMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity,int CourseId)
         {
             if (ModelState.IsValid)
             {
-                db.Activities.Add(activity);
-                db.SaveChanges();
+                //Activity activity = Mapper.Map<ActivityEditViewModel,Activity>(activityVM);
+                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                if (Util.Validation.DateRangeValidation(this, module, activity))
+                {
+                    db.Activities.Add(activity);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                }
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.CourseId = CourseId;
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
 
         // GET: Activities/Edit/5
@@ -73,9 +95,15 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+
+            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+            model.CourseId = module.CourseId;
+                
+            //model.ModuleId = activity.ModuleId;
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
 
         // POST: Activities/Edit/5
@@ -88,23 +116,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
-                //bool dateErrors = false;
-                //if (activity.StartDate < module.StartDate)
-                //{
-                //    ModelState.AddModelError("StartDate", "Earliest allowed start date is " + module.StartDate);
-                //    dateErrors = true;
-                //}
-                //if (activity.EndDate > module.EndDate)
-                //{
-                //    ModelState.AddModelError("EndDate", "Latest allowed end date is " + module.StartDate);
-                //    dateErrors = true;
-                //}
-                //if (activity.StartDate > activity.EndDate)
-                //{
-                //    ModelState.AddModelError("EndDate", "End date can't be earlier than start date");
-                //    dateErrors = true;
-                //}
-                if (Util.Validation.DateRangeValidation(this,module,activity))
+                if (Util.Validation.DateRangeValidation(this, module, activity))
                 {
                     db.Entry(activity).State = EntityState.Modified;
                     db.SaveChanges();
@@ -112,12 +124,11 @@ namespace LMS.Controllers
                 }
                 activity.Module = module;
             }
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
-
-
 
         // GET: Activities/Delete/5
         public ActionResult Delete(int? id)
@@ -153,5 +164,5 @@ namespace LMS.Controllers
             }
             base.Dispose(disposing);
         }
-    }  
+    }
 }

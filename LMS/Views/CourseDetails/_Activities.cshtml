@@ -1,56 +1,63 @@
-﻿@model IEnumerable<LMS.Models.Activity>
+﻿@*@model IEnumerable<LMS.Models.Activity>*@
+@model LMS.ViewModels.Activity.ActivityTableViewModel
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<div class="well">
-    <div class="row ">
-        <div class="col-md-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </div>
-        <div class="col-md-3">
-            @Html.DisplayNameFor(model => model.Type.Description)
-        </div>
-        <div class="col-md-2">
-            @*@Html.DisplayNameFor(model => model.Description)*@
-            @Html.DisplayNameFor(model => model.StartDate)
-        </div>
-        <div class="col-md-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </div>
-        <div class="col-md-3">
+@if (User.IsInRole("Teacher"))
+{
+    @Html.ActionLink("Create new activity", "Create", "Activities", new { @class = "btn btn-primary", moduleId = Model.ModuleId }, null)
+}
 
-        </div>
-
-    </div>
-    <div class="row">
-        @foreach (var item in Model)
-        {
+@if (Model.Activities.Any())
+{
+    <div class="well">
+        <div class="row ">
             <div class="col-md-2">
-
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayName("Name")
+            </div>
+            <div class="col-md-3">
+                @Html.DisplayName("Type Description")
+            </div>
+            <div class="col-md-2">
+                @*@Html.DisplayNameFor(model => model.Description)*@
+                @Html.DisplayName("Start Date")
+            </div>
+            <div class="col-md-2">
+                @Html.DisplayName("End Date")
             </div>
             <div class="col-md-3">
 
-                @Html.DisplayFor(modelItem => item.Type.Description)
             </div>
-            @*@Html.DisplayFor(modelItem => item.Description)*@
-            <div class="col-md-2">
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </div>
-            <div class="col-md-2">
 
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </div>
-            <div class="col-md-3">
-                @if (User.IsInRole("Teacher"))
-                {
-                    @Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.Activities)
+            {
+                <div class="col-md-2">
 
-                    @Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
-                }
-                @Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
-            </div>
-        }
+                    @Html.DisplayFor(modelItem => item.Name)
+                </div>
+                <div class="col-md-3">
+
+                    @Html.DisplayFor(modelItem => item.Type.Description)
+                </div>
+                @*@Html.DisplayFor(modelItem => item.Description)*@
+                <div class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </div>
+                <div class="col-md-2">
+
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </div>
+                <div class="col-md-3">
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
+
+                        @Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
+                    }
+                    @Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
+                </div>
+            }
+        </div>
+
     </div>
-</div>
+}

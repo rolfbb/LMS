@@ -1,6 +1,6 @@
 ﻿@model LMS.Models.Course
 @using LMS.Models
-
+@using LMS.ViewModels.Module
 
 @Html.Partial("_Header", new HeaderViewModel() {
 CourseName = Model.Name,
@@ -8,4 +8,8 @@ Description = Model.Description,
 StartDate = Model.StartDate,
 CourseId=Model.Id
 })
-@Html.Partial("_Modules", Model.Modules)
+@Html.Partial("_Modules", new ModuleTableViewModel() {
+    Modules = Model.Modules,
+    CourseId = Model.Id
+}
+)

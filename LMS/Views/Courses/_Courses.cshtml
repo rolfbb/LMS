@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LMS.Models.Course>
 
 <div id="coursestable">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <thead class="">
             <tr>
                 <th>
@@ -20,15 +20,17 @@
         @{var itemCount = 0;}
         @foreach (var course in Model)
         {
-            var dataTarget = "course" + itemCount;
+            var dataTarget = "/CourseDetails/Index/" + @course.Id;
             itemCount++;
-            var active = course.EndDate > DateTime.Now ? "active" : "inactive";
+            var active = course.EndDate > DateTime.Now ? "activecourse" : "inactivecourse";
             //Should be moved to css
             var backgroundColor = course.EndDate > DateTime.Now ? "white" : "#F2F2F2";
 
-            <tr class='clickable-row @active' data-href='url://link-for-first-row/' style="background-color:@backgroundColor">
+            <tr class='clickable-row @active' @*style="background-color:@backgroundColor"*@>
                 <td>
-                    @Html.ActionLink(course.Name, "Index", "CourseDetails", new { id = course.Id }, null)
+                    <a data-href='@dataTarget'></a>
+                    @Html.DisplayFor(modelItem => course.Name)
+                    @*                    @Html.ActionLink(course.Name, "Index", "CourseDetails", new { id = course.Id }, null)*@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => course.StartDate)
@@ -38,11 +40,11 @@
                 </td>
                 <td>
                     @*@if (User.IsInRole("Teacher"))
-                    {
-                        @Html.ActionLink("Edit/Details", "Edit","CourseDetails", new { id = course.Id },null) <span>| </span>
-                    }*@
-                    @Html.ActionLink("Delete", "Delete","Courses", new { id = course.Id }, null)
-                </td>          
+                        {
+                            @Html.ActionLink("Edit/Details", "Edit","CourseDetails", new { id = course.Id },null) <span>| </span>
+                        }*@
+                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = course.Id }, null)
+                </td>
             </tr>
         }
     </table>

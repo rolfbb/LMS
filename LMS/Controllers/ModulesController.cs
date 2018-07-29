@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using LMS.Models;
+using LMS.ViewModels.Module;
 
 namespace LMS.Controllers
 {
@@ -26,11 +28,17 @@ namespace LMS.Controllers
         }
 
         // GET: Modules/Create
-        public ActionResult Create(int? id)
+        public ActionResult Create(int? courseId)
         {
-            ViewBag.CourseId = id;
-            //ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-            return View();
+            var course = db.Courses.FirstOrDefault(c => c.Id == courseId);
+            ModuleCreateViewModel model = new ModuleCreateViewModel()
+            {
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                CourseId = course.Id,
+                //SelectCourse = new SelectList(db.Modules, "Id", "Name", course.Id),
+            };
+            return View(model);
         }
 
         // POST: Modules/Create
@@ -42,14 +50,17 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-              
-                db.Modules.Add(module);
-                db.SaveChanges();
-                return RedirectToAction("Index","CourseDetails",new {id= module.CourseId });
+                var course = db.Courses.FirstOrDefault(c => c.Id == module.CourseId);
+                if (Util.Validation.DateRangeValidation(this, course, module))
+                {
+                    db.Modules.Add(module);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                }
             }
-            ViewBag.courseis =module.Id;
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
-            return View(module);
+            ModuleCreateViewModel model = Mapper.Map<Module, ModuleCreateViewModel>(module);
+            //model.SelectCourse = new SelectList(db.Modules, "Id", "Name", module.Id);
+            return View(model);
         }
 
         // GET: Modules/Edit/5
@@ -64,7 +75,7 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
             return View(module);
         }
 
@@ -77,11 +88,15 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(module).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                var course = db.Courses.FirstOrDefault(c => c.Id == module.CourseId);
+                if (Util.Validation.DateRangeValidation(this, course, module))
+                {
+                    db.Entry(module).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
+                }
             }
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", module.CourseId);
+            //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
             return View(module);
         }
 
@@ -108,7 +123,7 @@ namespace LMS.Controllers
             Module module = db.Modules.Find(id);
             db.Modules.Remove(module);
             db.SaveChanges();
-            return RedirectToAction("Index","CourseDetails" ,new { id = module.CourseId });
+            return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
         }
 
         protected override void Dispose(bool disposing)

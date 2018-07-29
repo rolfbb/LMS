@@ -5,12 +5,10 @@
 }
 
 <h2>Create</h2>
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Course</h4>
         <hr />
@@ -56,7 +54,8 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index","CourseDetails",new { id= ViewBag.courseId},null)
+    @Html.ActionLink("Back to List", "Index", "Courses")
+    @*Html.ActionLink("Back to List", "Index","Courses",new { id= ViewBag.courseId},null)*@
 </div>
 
 @section Scripts {

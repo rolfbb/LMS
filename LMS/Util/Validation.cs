@@ -18,7 +18,7 @@ namespace LMS.Util
             }
             if (subRange.EndDate > dateRange.EndDate)
             {
-                ctr.ModelState.AddModelError("EndDate", "Latest allowed end date is " + dateRange.StartDate);
+                ctr.ModelState.AddModelError("EndDate", "Latest allowed end date is " + dateRange.EndDate);
                 validationOk = false;
             }
             if (subRange.StartDate > dateRange.EndDate)
