@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,6 @@ namespace LMS.Models
         // Relational properties
         public virtual Module Module { get; set; }
         public virtual ActivityType Type { get; set; }
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
