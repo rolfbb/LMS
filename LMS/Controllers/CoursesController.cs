@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using LMS.Models;
+using LMS.Util;
 
 namespace LMS.Controllers
 {
@@ -58,7 +59,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var now = DateTime.Now;
-                
+                now = Util.Validation.DateWithZeroHourMin(now);
                 bool validationOk = true;
                 if (course.StartDate < now)
                 {
