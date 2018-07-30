@@ -207,25 +207,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Migrations\201807300755160_addvalidationfields.cs" />
-    <Compile Include="Migrations\201807300755160_addvalidationfields.Designer.cs">
-      <DependentUpon>201807300755160_addvalidationfields.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807181258023_Initial db.cs" />
-    <Compile Include="Migrations\201807181258023_Initial db.Designer.cs">
-      <DependentUpon>201807181258023_Initial db.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807181338178_Add LMS model.cs" />
-    <Compile Include="Migrations\201807181338178_Add LMS model.Designer.cs">
-      <DependentUpon>201807181338178_Add LMS model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807271312520_Add Document Model.cs" />
-    <Compile Include="Migrations\201807271312520_Add Document Model.Designer.cs">
-      <DependentUpon>201807271312520_Add Document Model.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -367,20 +351,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807181258023_Initial db.resx">
-      <DependentUpon>201807181258023_Initial db.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807181338178_Add LMS model.resx">
-      <DependentUpon>201807181338178_Add LMS model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807271312520_Add Document Model.resx">
-      <DependentUpon>201807271312520_Add Document Model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807300755160_addvalidationfields.resx">
-      <DependentUpon>201807300755160_addvalidationfields.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
