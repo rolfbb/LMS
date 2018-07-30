@@ -4,6 +4,7 @@ namespace LMS.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
     using System.Net.Mail;
@@ -31,7 +32,7 @@ namespace LMS.Migrations
             Module[] modules = AddModules(db, courses);
             ActivityType[] activityTypes = AddActivityTypes(db);
             Activity[] activities = AddActivities(db, activityTypes, modules);
-
+            Activity[] activities2 = AddActivities2(db, activityTypes, modules);
         }
 
         private static Course[] AddCourses(ApplicationDbContext db)
@@ -56,10 +57,10 @@ namespace LMS.Migrations
                 new Module { Name = "Spring", Description = "A framework" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-04-10"), CourseId = courses[0].Id },
                 new Module { Name = "C#", Description = "Object Orientation, LINQ" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2017-11-29"), CourseId = courses[1].Id },
                 new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2017-12-01"), EndDate=DateTime.Parse("2018-01-01"), CourseId = courses[1].Id },
-                new Module { Name = "Bootstrap 3", Description = "Dynamic Web pages" , StartDate=DateTime.Parse("2018-05-10"), EndDate=DateTime.Parse("2018-05-16"), CourseId = courses[0].Id },
+                new Module { Name = "Bootstrap 3", Description = "Dynamic Web pages" , StartDate=DateTime.Parse("2018-05-10"), EndDate=DateTime.Parse("2018-05-16"), CourseId = courses[5].Id },
                 new Module { Name = "Scrum", Description = "Agile Teamwork" , StartDate=DateTime.Parse("2018-07-20"), EndDate=DateTime.Parse("2018-08-10"), CourseId = courses[5].Id },
                 new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2018-05-17"), EndDate=DateTime.Parse("2018-06-15"), CourseId = courses[5].Id },
-                new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[0].Id },
+                new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[5].Id },
             };
 
             db.Modules.AddOrUpdate(m => new { m.Name, m.StartDate }, modules);
@@ -132,15 +133,47 @@ namespace LMS.Migrations
             db.SaveChanges();
             return activityTypes;
         }
+        private static Random gen = new Random();
+
+        private static Activity[] AddActivities2(ApplicationDbContext db, ActivityType[] activityTypes, Module[] modules)
+        {
+            TimeSpan twoDays = new TimeSpan(48, 0, 0);
+            var activitiesList = new List<Activity>();
+            foreach (var module in modules) {
+                var actStartDate = module.StartDate;
+                var actEndDate = actStartDate.AddDays(2);
+                var activityCount = 0;
+                while (actEndDate < module.EndDate) {
+                    Activity activity = new Activity {
+                        Name = "Activity" + activityCount,
+                        Description = "Descr " + module.Name,
+                        TypeId = activityTypes[gen.Next(activityTypes.Length)].Id,
+                        ModuleId = module.Id,
+                        StartDate = actStartDate,
+                        EndDate = actEndDate
+                    };
+                    activitiesList.Add(activity);
+                    actStartDate = actEndDate.AddDays(1);
+                    actEndDate = actStartDate.AddDays(gen.Next(3));
+                    activityCount++;
+                }
+            }
+            var activities = activitiesList.ToArray();
+            db.Activities.AddOrUpdate(a => new { a.Name, a.ModuleId },activities );
+            db.SaveChanges();
+            return activities;
+        }
+
 
         private static Activity[] AddActivities(ApplicationDbContext db, ActivityType[] activityTypes, Module[] modules)
         {
             var activities = new[] {
-                new Activity { Name = "Java", Description = "Java Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[1].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
-                new Activity { Name = "C#", Description = "C# Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[2].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
+                new Activity { Name = "Java", Description = "Java Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[0].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
+                new Activity { Name = "C#", Description = "C# Code-Along", TypeId = activityTypes[1].Id, ModuleId = modules[6].Id,  StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10")},
             };
 
             db.Activities.AddOrUpdate(a => new { a.Name, a.StartDate }, activities);
+            db.SaveChanges();
             return activities;
         }
 

@@ -32,20 +32,19 @@ namespace LMS.Controllers
         {
             if (active == "on")
             {
-                    return PartialView("_Courses", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
+                return PartialView("_Courses", db.Courses.Where(c => c.EndDate >= DateTime.Now).ToList());
             }
             else
             {
-                    return PartialView("_Courses", db.Courses.ToList());
+                return PartialView("_Courses", db.Courses.ToList());
             }
         }
 
-       
+
 
         // GET: Courses/Create
         public ActionResult Create()
         {
-           
             return View();
         }
 
@@ -58,11 +57,26 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Courses.Add(course);
-                db.SaveChanges();
-                return RedirectToAction("Index","CourseDetails",new {id=course.Id});
+                var now = DateTime.Now;
+                
+                bool validationOk = true;
+                if (course.StartDate < now)
+                {
+                    ModelState.AddModelError("StartDate", "Earliest allowed start date is " + now.ToString("MM/dd/yyyy"));
+                    validationOk = false;
+                }
+                if (course.StartDate > course.EndDate)
+                {
+                    ModelState.AddModelError("EndDate", "Endate must be > Startdate " + now.ToString("MM/dd/yyyy"));
+                    validationOk = false;
+                }
+                if (validationOk)
+                {
+                    db.Courses.Add(course);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
+                }
             }
-           
             return View(course);
         }
 

@@ -8,10 +8,17 @@
         $("input:radio").click(function () {
             active = $("input:radio:first").prop("checked");
             if (active) {
-                $(".inactive").hide();
+                $(".inactivecourse").hide();
             }
             else {
-                $(".inactive").show();
+                $(".inactivecourse").show();
+            }
+        });
+
+        $('#coursestable tr').click(function () {             
+            var href = $(this).find('a').attr("data-href");           
+            if (href) {
+                window.location = href;                
             }
         });
     });

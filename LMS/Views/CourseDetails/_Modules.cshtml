@@ -1,66 +1,88 @@
-﻿@model IEnumerable<LMS.Models.Module>
-
+﻿@model LMS.ViewModels.Module.ModuleTableViewModel
+@using LMS.ViewModels.Activity
 @{
     ViewBag.Title = "Index";
 }
 
-<div class="container tablebackground">
-    <h2>Modules</h2>
-    <div class="col-md-offset-10 col-md-2">
-        @*<p>
-                @Html.ActionLink("Add Module", "Create","Modules",null, new { @class = "btn btn-success btn-large" })
-            </p>*@
-    </div>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th></th>
-        </tr>
-        @{ int col = 0; }
-        @foreach (var item in Model)
-        {
-            col++;
-            if (col == 1 && User.IsInRole("Teacher"))
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            @*<h2><span class="label label-default label3">Modules</span></h2>*@
+            @Html.Label("Modules", new { @class = "label label-default", courseId = Model.CourseId })
+            @*<span class="text-bold text-xl-center">Modules</span>*@
+        </div>
+        <div class="col-md-2 pull-right">
+            @*@Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })*@
+            @if (User.IsInRole("Teacher"))
             {
-                @Html.ActionLink("Add Module", "Create", "Modules",  new { id = item.CourseId },null)               
+                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
             }
+        </div>
+    </div>
+    @if (Model.Modules.Any())
+    {
+        <div class="row">
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div class="col-md-3">
+                @Html.DisplayNameFor(model => model.Description)
+            </div>
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </div>
+            <div class="col-md-2">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <div class="panel-group" id="module-accordion">
+            @foreach (var item in Model.Modules.OrderByDescending(m => m.StartDate))
+            {
+                var collapseId = "collapse" + item.Id;
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#module-accordion" href="#@collapseId">
+                                <div class="well" style="background-color:ghostwhite">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </div>
+                                        <div class="col-md-3">
 
-
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @if (User.IsInRole("Teacher"))
-                    {
-                        @Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
-
-                        @Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
-                    }
-                    @Html.ActionLink("Details", "Details", "Modules", new { id = item.Id }, null) 
-                </td>
-            </tr>
-        }
-
-    </table>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                        </div>
+                                        <div class="col-md-2">
+                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                        </div>
+                                        <div class="col-md-3">
+                                            @if (User.IsInRole("Teacher"))
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
+                                                @Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
+                                            }
+                                            @Html.ActionLink("Details", "Details", "Modules", new { id = item.Id }, null)
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="@collapseId" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            @Html.Partial("_Activities", new ActivityTableViewModel() {
+                               Activities= item.Activities,
+                               ModuleId=item.Id})
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
+

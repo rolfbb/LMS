@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
-namespace LMS.Models
+namespace LMS.ViewModels.Activity
 {
-    public class Module : DateRange
+    public class ActivityCreateViewModel
     {
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required, DataType(DataType.MultilineText)]
+        [Required]
         public string Description { get; set; }
+
         [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
-        [DataType(DataType.Date)]    
+
+        [DataType(DataType.Date)]
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
+        public int ModuleId { get; set; }
         public int CourseId { get; set; }
 
-        // Relational properties
-        public virtual Course Course { get; set; }
-        public virtual ICollection<Activity> Activities { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
+        //public SelectList SelectModule { get; set; }
+        public SelectList SelectType { get; set; }
     }
 }

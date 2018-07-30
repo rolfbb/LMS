@@ -1,8 +1,12 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using LMS.Models;
+using LMS.ViewModels;
+using LMS.ViewModels.Activity;
 
 namespace LMS.Controllers
 {
@@ -11,9 +15,9 @@ namespace LMS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Activities
-        public ActionResult Index(int? ID)
+        public ActionResult Index(/*int? ID*/)
         {
-			var activities = db.Activities.Where(m => m.ModuleId == ID);
+            var activities = db.Activities/*.Where(m => m.ModuleId == ID)*/;
             return View(activities.ToList());
         }
 
@@ -33,11 +37,22 @@ namespace LMS.Controllers
         }
 
         // GET: Activities/Create
-        public ActionResult Create()
+        // For now we assume we have a correct moduleId, otherwise we need mode che
+        public ActionResult Create(int? moduleId)
         {
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description");
-            return View();
+            var module = db.Modules.FirstOrDefault(m => m.Id == moduleId);
+            ActivityCreateViewModel model = new ActivityCreateViewModel()
+            {
+                Name = "",
+                Description = "",
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                ModuleId = module.Id,
+                CourseId = module.CourseId,
+                //SelectModule = new SelectList(db.Modules, "Id", "Name", moduleId),
+                SelectType = new SelectList(db.ActivityTypes, "Id", "Description")
+            };
+            return View(model);
         }
 
         // POST: Activities/Create
@@ -45,18 +60,25 @@ namespace LMS.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,StartDate,EndDate,TypeId,ModuleId")] Activity activity,int CourseId)
         {
             if (ModelState.IsValid)
             {
-                db.Activities.Add(activity);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //Activity activity = Mapper.Map<ActivityEditViewModel,Activity>(activityVM);
+                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                if (Util.Validation.DateRangeValidation(this, module, activity))
+                {
+                    db.Activities.Add(activity);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                }               
             }
 
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+            ActivityCreateViewModel model = Mapper.Map<Activity, ActivityCreateViewModel>(activity);
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.CourseId = CourseId;
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
 
         // GET: Activities/Edit/5
@@ -67,13 +89,20 @@ namespace LMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Activity activity = db.Activities.Find(id);
+
             if (activity == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+
+            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+            model.CourseId = module.CourseId;
+                
+            //model.ModuleId = activity.ModuleId;
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
 
         // POST: Activities/Edit/5
@@ -85,13 +114,19 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(activity).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                if (Util.Validation.DateRangeValidation(this, module, activity))
+                {
+                    db.Entry(activity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
+                }
+                activity.Module = module;
             }
-            ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
-            ViewBag.TypeId = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
-            return View(activity);
+            ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
+            //model.SelectModule = new SelectList(db.Modules, "Id", "Name", activity.ModuleId);
+            model.SelectType = new SelectList(db.ActivityTypes, "Id", "Description", activity.TypeId);
+            return View(model);
         }
 
         // GET: Activities/Delete/5
@@ -115,9 +150,10 @@ namespace LMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Activity activity = db.Activities.Find(id);
+            Module module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
             db.Activities.Remove(activity);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
         }
 
         protected override void Dispose(bool disposing)
