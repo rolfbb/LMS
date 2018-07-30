@@ -9,7 +9,8 @@
                   {
                       HttpMethod = "post",
                       InsertionMode = InsertionMode.Replace,
-                      UpdateTargetId = "target"
+                      UpdateTargetId = "target",
+                      OnSuccess = "OnAjaxRequestSuccess"
                   }))
 {
     @Html.AntiForgeryToken()

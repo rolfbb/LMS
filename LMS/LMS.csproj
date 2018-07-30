@@ -343,7 +343,7 @@
     <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\CourseDetails\_Activities.cshtml" />
     <Content Include="Views\Modules\_Edit.cshtml" />
-    <Content Include="Views\Modules\_EditSucces.cshtml" />
+    <Content Include="Views\Modules\_EditSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
