@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@*@Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")*@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
@@ -41,6 +41,7 @@
             @foreach (var item in Model.Modules.OrderByDescending(m => m.StartDate))
             {
                 var collapseId = "collapse" + item.Id;
+                var editDelDetailsId = "edd" + item.Id;
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -63,6 +64,22 @@
                                         <div class="col-md-3">
                                             @if (User.IsInRole("Teacher"))
                                             {
+                                                <div class="ajaxLink btn btn-info btn-sm">
+                                                @Ajax.ActionLink("Edit Module test", "Edit","Modules",new { id = item.Id },
+                                                   new AjaxOptions {
+                                                       UpdateTargetId = editDelDetailsId,
+                                                       InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                                       HttpMethod = "GET", // <-- HTTP method
+
+                                                       //    OnBegin = "OnAjaxRequestBegin",
+                                                       //    OnFailure = "OnAjaxRequestFailure",
+                                                       //    OnSuccess = "OnAjaxRequestSuccess",
+                                                       //    OnComplete = "OnAjaxRequestComplete"
+                                                   })
+                                                </div>
+
+                                                @*<a class="btn btn-info btn-sm" href="/CourseDetails/Create">Edit</a>*@
+                                                @*@Html.ActionLink("Edit", "Create", null, new { @class = "btn btn-info btn-sm" })*@
                                                 @Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
                                                 @Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
                                             }
@@ -73,6 +90,7 @@
                             </a>
                         </h4>
                     </div>
+                    <div id=@editDelDetailsId> </div>
                     <div id="@collapseId" class="panel-collapse collapse">
                         <div class="panel-body">
                             @Html.Partial("_Activities", new ActivityTableViewModel() {
