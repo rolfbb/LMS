@@ -149,6 +149,7 @@ namespace LMS.Controllers
             }
 
             return View(course);
-        }
+        }
+
     }
 }
