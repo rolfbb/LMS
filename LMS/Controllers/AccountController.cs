@@ -223,13 +223,12 @@ namespace LMS.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
-
-
-
-
                 AddErrors(result);
             }
-
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            ViewBag.Roles = list;
             // If we got this far, something failed, redisplay form
             ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", model.CourseId);
             return View(model);

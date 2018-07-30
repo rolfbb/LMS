@@ -159,7 +159,7 @@ namespace LMS.Migrations
                 }
             }
             var activities = activitiesList.ToArray();
-            db.Activities.AddOrUpdate(a => new { a.Name, a.StartDate },activities );
+            db.Activities.AddOrUpdate(a => new { a.Name, a.ModuleId },activities );
             db.SaveChanges();
             return activities;
         }

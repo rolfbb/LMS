@@ -7,7 +7,9 @@ namespace LMS.Models
     public class Activity : DateRange
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required,DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [DataType(DataType.Date)]
         [Display(Name="Start Date")]
