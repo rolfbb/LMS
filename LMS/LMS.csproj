@@ -207,22 +207,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Migrations\201807301657267_Add property to document model.cs" />
-    <Compile Include="Migrations\201807301657267_Add property to document model.Designer.cs">
-      <DependentUpon>201807301657267_Add property to document model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807301753407_changing the file content extension.cs" />
-    <Compile Include="Migrations\201807301753407_changing the file content extension.Designer.cs">
-      <DependentUpon>201807301753407_changing the file content extension.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807302015332_change the Foreign key .cs" />
-    <Compile Include="Migrations\201807302015332_change the Foreign key .Designer.cs">
-      <DependentUpon>201807302015332_change the Foreign key .cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807302037374_change userid value to non nullable and set the validation for name to be required.cs" />
-    <Compile Include="Migrations\201807302037374_change userid value to non nullable and set the validation for name to be required.Designer.cs">
-      <DependentUpon>201807302037374_change userid value to non nullable and set the validation for name to be required.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -370,20 +354,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807301657267_Add property to document model.resx">
-      <DependentUpon>201807301657267_Add property to document model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807301753407_changing the file content extension.resx">
-      <DependentUpon>201807301753407_changing the file content extension.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807302015332_change the Foreign key .resx">
-      <DependentUpon>201807302015332_change the Foreign key .cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807302037374_change userid value to non nullable and set the validation for name to be required.resx">
-      <DependentUpon>201807302037374_change userid value to non nullable and set the validation for name to be required.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
