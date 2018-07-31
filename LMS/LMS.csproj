@@ -344,7 +344,7 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Documents\Delete.cshtml" />
+    <Content Include="Views\Documents\DeleteCourseDocument.cshtml" />
     <Content Include="Views\Documents\DetailsCourse.cshtml" />
     <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
     <Content Include="Views\CourseDetails\_Activities.cshtml" />
@@ -355,6 +355,8 @@
     <Content Include="Views\Documents\IndexDocumentActivity.cshtml" />
     <Content Include="Views\Documents\DetailsModule.cshtml" />
     <Content Include="Views\Documents\DetailsActivity.cshtml" />
+    <Content Include="Views\Documents\DeleteModuleDocument.cshtml" />
+    <Content Include="Views\Documents\DeleteActivityDocument.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
