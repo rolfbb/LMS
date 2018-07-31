@@ -17,11 +17,22 @@ namespace LMS.Controllers
 		private ApplicationDbContext db = new ApplicationDbContext();
 
 		// GET: Documents
-		public ActionResult Index()
+		public ActionResult IndexDocumentCourse(int id)
 		{
-			var documents = db.Documents.Include(d => d.Activity).Include(d => d.Course).Include(d => d.Module);
+			var documents = db.Documents.Where(c => c.CourseId == id && c.ModuleId == null && c.ActivityId == null);
 			return View(documents.ToList());
 		}
+		public ActionResult IndexDocumentModule(int id)
+		{
+			var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
+			return View(documents.ToList());
+		}
+		public ActionResult IndexDocumentActivity(int id)
+		{
+			var documents = db.Documents.Where(c => c.ActivityId == id);
+			return View(documents.ToList());
+		}
+
 
 
 
@@ -41,7 +52,33 @@ namespace LMS.Controllers
 
 
 		// GET: Documents/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult DetailsCourse(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+		public ActionResult DetailsModule(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+		public ActionResult DetailsActivity(int? id)
 		{
 			if (id == null)
 			{
@@ -114,7 +151,7 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("IndexDocumentCourse", "Documents", new { id = document.CourseId });
 
 			}
 			else
@@ -141,7 +178,7 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
 
 			}
 			else
@@ -169,7 +206,8 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("IndexDocumentActivity", "Documents", new { id = document.ActivityId });
+
 
 			}
 			else
@@ -179,7 +217,7 @@ namespace LMS.Controllers
 			}
 		}
 
-		
+
 
 		//// GET: Documents/Edit/5
 		//public ActionResult Edit(int? id)

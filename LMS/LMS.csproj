@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201807310920070_change userid from int to string in documents.Designer.cs">
       <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807311345203_add validation to property.cs" />
+    <Compile Include="Migrations\201807311345203_add validation to property.Designer.cs">
+      <DependentUpon>201807311345203_add validation to property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -340,15 +344,17 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Documents\Create.cshtml" />
     <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\Details.cshtml" />
-    <Content Include="Views\Documents\Edit.cshtml" />
-    <Content Include="Views\Documents\Index.cshtml" />
+    <Content Include="Views\Documents\DetailsCourse.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
     <Content Include="Views\CourseDetails\_Activities.cshtml" />
     <Content Include="Views\Documents\UploadDocumentModule.cshtml" />
     <Content Include="Views\Documents\UploadDocumentActivity.cshtml" />
     <Content Include="Views\Documents\UploadDocumentCourse.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentModule.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentActivity.cshtml" />
+    <Content Include="Views\Documents\DetailsModule.cshtml" />
+    <Content Include="Views\Documents\DetailsActivity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -365,6 +371,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201807310920070_change userid from int to string in documents.resx">
       <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807311345203_add validation to property.resx">
+      <DependentUpon>201807311345203_add validation to property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

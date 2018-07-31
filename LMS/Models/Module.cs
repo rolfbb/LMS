@@ -7,8 +7,8 @@ namespace LMS.Models
     public class Module : DateRange
     {
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+		[Required, Display(Name = "Module")]
+		public string Name { get; set; }
         [Required, DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [DataType(DataType.Date)]

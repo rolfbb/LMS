@@ -7,7 +7,7 @@ namespace LMS.Models
     public class Course : DateRange
     {
         public int Id { get; set; }
-        [Required]
+        [Required ,Display(Name = "Course")]
         public string Name { get; set; }
         [Required,DataType(DataType.MultilineText)]
         public string Description { get; set; }
