@@ -39,7 +39,6 @@
                             <li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                             <li>@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                             <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-
                         }
                         else
                         {
@@ -63,12 +62,12 @@
         </div>
     </div>
     @RenderBody()
-    <div class="container body-content">
+    @*<div class="container body-content">
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - Lexicon LMS</p>
         </footer>
-    </div>
+    </div>*@
 
     @RenderSection("scripts", required: false)
 </body>

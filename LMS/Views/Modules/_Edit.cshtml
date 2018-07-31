@@ -3,18 +3,18 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<h1>module _EDIT TEST</h1>
 @using (Ajax.BeginForm(
                   new AjaxOptions
                   {
                       HttpMethod = "post",
                       InsertionMode = InsertionMode.Replace,
-                      UpdateTargetId = "target",
+                      UpdateTargetId = "editform",
                       OnSuccess = "OnAjaxRequestSuccess"
                   }))
 {
     @Html.AntiForgeryToken()
-    <div id="target">
+    <div id="editform">
         <div class="form-horizontal">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
