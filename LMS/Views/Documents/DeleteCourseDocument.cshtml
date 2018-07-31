@@ -12,7 +12,7 @@
     <hr />
     <dl class="dl-horizontal">
        
-
+		@Html.HiddenFor(model=>model.CourseId)
         <dt>
             @Html.DisplayNameFor(model => model.Course.Name)
         </dt>
@@ -57,11 +57,11 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("DeleteCourseDocument","Documents")) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="DeleteCourseDocument" class="btn btn-default" /> |
+            <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "IndexDocumentCourse", new { id = Model.CourseId })
         </div>
     }

@@ -207,14 +207,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Migrations\201807310920070_change userid from int to string in documents.cs" />
-    <Compile Include="Migrations\201807310920070_change userid from int to string in documents.Designer.cs">
-      <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807311345203_add validation to property.cs" />
-    <Compile Include="Migrations\201807311345203_add validation to property.Designer.cs">
-      <DependentUpon>201807311345203_add validation to property.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -369,14 +361,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807310920070_change userid from int to string in documents.resx">
-      <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201807311345203_add validation to property.resx">
-      <DependentUpon>201807311345203_add validation to property.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,25 +1,26 @@
 ﻿@model LMS.Models.HeaderViewModel
 <header id="lmsheader">
-    <div class="container body-content" style="height:50px;">
-        <div class="row">
-            <div class="col-sm-4">
-                <span>Course: @Model.CourseName</span>
-            </div>
-            <div class="col-sm-8">
-                @Model.Description
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <span>Start Date: @Html.DisplayFor(model => model.StartDate) </span>
-            </div>
-            <div>
-                @{ if (User.IsInRole("Teacher"))
-                    {
-                        @Html.ActionLink("Edit Course", "Edit", "CourseDetails", new { @class = "btn btn-success btn-medium", id = Model.CourseId }, null)
-                    }
-                }
-            </div>
-        </div>
-    </div>
+	<div class="container body-content" style="height:50px;">
+		<div class="row">
+			<div class="col-sm-4">
+				<span>Course: @Model.CourseName</span>
+			</div>
+			<div class="col-sm-8">
+				Description: @Model.Description
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<span>Start Date: @Html.DisplayFor(model => model.StartDate) </span>
+			</div>
+			<div>
+				@{ if (User.IsInRole("Teacher"))
+					{
+						@Html.ActionLink("Edit Course", "Edit", "CourseDetails", new { @class = "btn btn-success btn-medium", id = Model.CourseId }, null)
+					}
+				}
+			</div>
+		</div>
+	</div>
+
 </header>

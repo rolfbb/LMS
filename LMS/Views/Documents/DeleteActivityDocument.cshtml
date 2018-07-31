@@ -12,7 +12,7 @@
     <hr />
     <dl class="dl-horizontal">
        
-
+		@Html.HiddenFor(model=>model.ActivityId)
         <dt>
             @Html.DisplayNameFor(model => model.Activity.Name)
         </dt>
@@ -61,7 +61,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="DeleteActivityDocument" class="btn btn-default" /> |
+            <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "IndexDocumentActivity", new { id = Model.ActivityId })
         </div>
     }
