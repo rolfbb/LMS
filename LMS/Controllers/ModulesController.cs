@@ -76,7 +76,7 @@ namespace LMS.Controllers
                 return HttpNotFound();
             }
             if (Request.IsAjaxRequest())
-                return PartialView("_Edit",module);
+                return PartialView("_Edit", module);
             //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
             return View(module);
         }
@@ -96,7 +96,9 @@ namespace LMS.Controllers
                     db.Entry(module).State = EntityState.Modified;
                     db.SaveChanges();
                     if (Request.IsAjaxRequest())
-                        return PartialView("_EditSuccess");
+                        return PartialView("_Module");
+                    //return PartialView("_EditSuccess");
+
                     return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
                 }
             }

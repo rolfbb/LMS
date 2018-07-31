@@ -1,0 +1,58 @@
+﻿@model LMS.ViewModels.Module.ModuleViewModel
+@using LMS.ViewModels.Activity
+
+<div id="@Model.Module.Id">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
+                        <div class="well" style="background-color:ghostwhite">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(modelItem => Model.Module.Name)
+                                </div>
+                                <div class="col-md-3">
+                                    @Html.DisplayFor(modelItem => Model.Module.Description)
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(modelItem => Model.Module.StartDate)
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(modelItem => Model.Module.EndDate)
+                                </div>
+                                <div class="col-md-3">
+                                    @if (User.IsInRole("Teacher"))
+                                    {
+                                        <div class="ajaxLink btn btn-info btn-sm">
+                                            @Ajax.ActionLink("Edit Module test", "Edit","Modules",new { id = Model.Module.Id },
+                                               new AjaxOptions {
+                                                   UpdateTargetId = Model.EditDelDetailsId,
+                                                   InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                                   HttpMethod = "GET", // <-- HTTP method
+
+                                                   //    OnBegin = "OnAjaxRequestBegin",
+                                                   //    OnFailure = "OnAjaxRequestFailure",
+                                                   //    OnSuccess = "OnAjaxRequestSuccess",
+                                                   //    OnComplete = "OnAjaxRequestComplete"
+                                               })
+                                        </div>
+                                        @Html.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, null)<span> |</span>
+                                        @Html.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, null)<span> |</span>
+                                    }
+                                    @Html.ActionLink("Details", "Details", "Modules", new { id = Model.Module.Id }, null)
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </h4>
+            </div>
+            <div id=@Model.EditDelDetailsId> </div>
+            <div id="@Model.CollapseId" class="panel-collapse collapse">
+                <div class="panel-body">
+                    @Html.Partial("_Activities", new ActivityTableViewModel() {
+                   Activities= Model.Module.Activities,
+                   ModuleId= Model.Module.Id})
+                </div>
+            </div>
+        </div>
+</div>
