@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS.Models;
+using Microsoft.AspNet.Identity;
 
 namespace LMS.Controllers
 {
@@ -55,28 +56,61 @@ namespace LMS.Controllers
 		}
 
 		// GET: Documents/Create
-		public ActionResult Create()
+		public ActionResult UploadDocumentCourse(int id)
 		{
-			ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name");
-			ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
-			ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name");
-			return View();
+			Document doc = new Document()
+			{
+				CourseId = id,
+				UserId = User.Identity.GetUserId()
+			};
+
+			return View(doc);
 		}
 
+		// GET: Documents/Create
+		public ActionResult UploadDocumentModule(int id)
+		{
+
+			var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
+			Document doc = new Document()
+			{
+				ModuleId = id,
+				CourseId = courseId,
+				UserId = User.Identity.GetUserId()
+			};
+
+			return View(doc);
+		}
+		public ActionResult UploadDocumentActivity(int id)
+		{
+
+			var moduleId = db.Activities.Where(c => c.Id == id).Select(w => w.ModuleId).FirstOrDefault();
+			var courseId = db.Modules.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
+			Document doc = new Document()
+			{
+				ActivityId = id,
+				ModuleId = moduleId,
+				CourseId = courseId,
+				UserId = User.Identity.GetUserId()
+			};
+
+			return View(doc);
+		}
 		// POST: Documents/Create
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
 		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "Id,Name,Description,TimeStamp,OwnerId,CourseId,ModuleId,ActivityId")] Document document, HttpPostedFileBase FILE)
+		public ActionResult UploadDocumentCourse([Bind(Include = "Id,Name,Description,UserId,CourseId")] Document document, HttpPostedFileBase FILE)
 		{
-			
+
 			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
 			{
 
 				Stream str = FILE.InputStream;
 				BinaryReader Br = new BinaryReader(str);
 				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+				document.TimeStamp = DateTime.Now;
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
@@ -85,13 +119,67 @@ namespace LMS.Controllers
 			}
 			else
 			{
-				ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", document.ActivityId);
-				ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", document.CourseId);
-				ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", document.ModuleId);
-				ViewBag.file="Select file Please";
+				ViewBag.file = "Select file Please";
 				return View(document);
 			}
 		}
+		// POST: Documents/Create
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
+		{
+
+			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
+			{
+
+				Stream str = FILE.InputStream;
+				BinaryReader Br = new BinaryReader(str);
+				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+				document.TimeStamp = DateTime.Now;
+				document.FileContent = FileDet;
+				db.Documents.Add(document);
+				db.SaveChanges();
+				return RedirectToAction("Index");
+
+			}
+			else
+			{
+				ViewBag.file = "Select file Please";
+				return View(document);
+			}
+		}
+
+		// POST: Documents/Create
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult UploadDocumentActivity([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId,ActivityId")] Document document, HttpPostedFileBase FILE)
+		{
+
+			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
+			{
+
+				Stream str = FILE.InputStream;
+				BinaryReader Br = new BinaryReader(str);
+				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+				document.TimeStamp = DateTime.Now;
+				document.FileContent = FileDet;
+				db.Documents.Add(document);
+				db.SaveChanges();
+				return RedirectToAction("Index");
+
+			}
+			else
+			{
+				ViewBag.file = "Select file Please";
+				return View(document);
+			}
+		}
+
+		
 
 		// GET: Documents/Edit/5
 		public ActionResult Edit(int? id)
