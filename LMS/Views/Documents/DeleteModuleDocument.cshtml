@@ -11,7 +11,7 @@
     <h4>Document</h4>
     <hr />
     <dl class="dl-horizontal">
-       
+       @Html.HiddenFor(model=>model.ModuleId)
 
         <dt>
             @Html.DisplayNameFor(model => model.Module.Name)
@@ -61,7 +61,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="DeleteModuleDocument" class="btn btn-default" /> |
+            <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "IndexDocumentModule", new { id = Model.ModuleId })
         </div>
     }

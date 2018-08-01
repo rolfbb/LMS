@@ -2,73 +2,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/lsm")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/lsm")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-left">
-        <a class="navbar-brand" href="#">
-            <img src="~/Content/Images/logo-lexicon-small.gif" alt="Logo" style="width:80px;">
+	<div class="navbar navbar-inverse navbar-fixed-left">
+		<a class="navbar-brand" href="#">
+			<img src="~/Content/Images/logo-lexicon-small.gif" alt="Logo" style="width:200px; height:55px">
 
-            @if (Request.IsAuthenticated)
-            {
-                @Html.ActionLink(User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-            }
-        </a>
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        @if (User.IsInRole("Teacher"))
-                        {
-                            <li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>                    
-                            @*<li>@Html.ActionLink("Student List", "Index", "CourseDetails", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
-                        }
-                        @if (Request.IsAuthenticated)
-                        {
-                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                @Html.AntiForgeryToken()
+			@*@if (Request.IsAuthenticated)
+				{
+					@Html.ActionLink(User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+				}*@
 
-                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                            }
-                        }
+		</a>
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			@if (User.Identity.IsAuthenticated)
+			{
 
-                        @*@Html.Partial("_LoginPartial")*@
-                    </ul>
-                </div>
-            }
-        </div>
-    </div>
-    @RenderBody()
-    @*<div class="container body-content">
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Lexicon LMS</p>
-        </footer>
-    </div>*@
+				<div class="navbar-collapse collapse">
+					<hr />
+					<ul class="nav navbar-nav navbar-right">
 
-    @RenderSection("scripts", required: false)
+						<li>@Html.ActionLink(User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+						@if (User.IsInRole("Teacher"))
+						{
+							<li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+							<li>@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+							<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+
+						}
+						else
+						{
+							<li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>
+
+						}
+					</ul>
+
+					<div class="col-md-5">
+						@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+						{
+							@Html.AntiForgeryToken()
+							<a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+						}
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+	@RenderBody()
+	@*<div class="container body-content">
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - Lexicon LMS</p>
+		</footer>
+	</div>*@
+
+	@RenderSection("scripts", required: false)
 </body>
 </html>
