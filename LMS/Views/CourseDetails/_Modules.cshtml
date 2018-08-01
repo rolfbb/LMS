@@ -16,10 +16,11 @@
 		</div>
 		<div class="col-md-3 pull-right">
 			@if (User.IsInRole("Teacher"))
-			{
-				<p>@Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { @class = "btn btn-primary", id = Model.CourseId }, null)</p>
-				<p>@Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)</p>
-			}
+	{
+		<p>@Html.ActionLink("Add course Document", "UploadDocumentCourse", "Documents", new { @class = "btn btn-primary", id = Model.CourseId }, null)</p>
+		@*<p>@Html.ActionLink("Course Document", "UploadDocumentCourse", "Documents", new { @class = "btn btn-primary", id = Model.CourseId }, null)</p>*@
+		<p>@Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)</p>
+}
 		</div>
 	</div>
 	@if (Model.Modules.Any())
@@ -66,7 +67,7 @@
 										<div class="col-md-3">
 											@if (User.IsInRole("Teacher"))
 											{
-												@Html.ActionLink("Add Document", "UploadDocumentModule", "Documents", new { id = item.Id }, null)<span> |</span>
+												@Html.ActionLink("Add Module Document", "UploadDocumentModule", "Documents", new { id = item.Id }, null)<span> |</span>
 												@Html.ActionLink("Edit", "Edit", "Modules", new { id = item.Id }, null)<span> |</span>
 												@Html.ActionLink("Delete", "Delete", "Modules", new { id = item.Id }, null)<span> |</span>
 											}

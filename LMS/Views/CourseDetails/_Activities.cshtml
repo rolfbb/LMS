@@ -46,7 +46,7 @@
 				<div class="col-md-3">
 					@if (User.IsInRole("Teacher"))
 	{
-				@Html.ActionLink("Add Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
+				@Html.ActionLink("Add Activity Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
 				@Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
 
 				@Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
