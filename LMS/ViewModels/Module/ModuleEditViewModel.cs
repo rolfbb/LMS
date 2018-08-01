@@ -11,8 +11,11 @@ namespace LMS.ViewModels.Module
     {
         public int Id { get; set; }
         [Required]
+        [StringLength(30)]
         public string Name { get; set; }
         [Required]
+        [StringLength(255)]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
@@ -23,5 +26,7 @@ namespace LMS.ViewModels.Module
         public int CourseId { get; set; }
 
         public SelectList SelectCourse { get; set; }
+
+        public string DatabaseModified;
     }
 }
