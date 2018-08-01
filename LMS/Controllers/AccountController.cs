@@ -287,7 +287,7 @@ namespace LMS.Controllers
                 AddErrors(result);
             }
 
-           
+
             return View(model);
         }
 
@@ -613,7 +613,8 @@ namespace LMS.Controllers
             IQueryable<ApplicationUser> users;
             if (b != null)
             {
-                users = db.Users.Where(u => u.Name.ToLower().Contains(b.ToLower()));
+                users = db.Users.Where(u => u.Name.ToLower().Contains(b.ToLower())
+                || u.Course.Name.ToLower().Contains(b.ToLower()));
             }
             else
             {
@@ -629,7 +630,7 @@ namespace LMS.Controllers
                     users = users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x));
                     if (!users.Any())
                     {
-                        ViewBag.output = (".... There is no teacher....");                       
+                        ViewBag.output = (".... There is no teacher....");
                     }
                     return View(users.ToList());
 
@@ -709,18 +710,18 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                  
+
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("UserListAction");
             }
-        
+
             return View(user);
         }
 
 
 
-        public ActionResult Details(string id) 
+        public ActionResult Details(string id)
         {
             if (id == "")
             {

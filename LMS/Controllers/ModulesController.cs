@@ -130,9 +130,18 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Module module = db.Modules.Find(id);
+            var documents = db.Documents.Where(m => m.ModuleId == id);
+            db.Documents.RemoveRange(documents);
+            db.SaveChanges();
+
+            var activities = db.Activities.Where(a => a.ModuleId == id);
+            db.Activities.RemoveRange(activities);
+            db.SaveChanges();
+
+            Module module = db.Modules.FirstOrDefault(m => m.Id == id);
             db.Modules.Remove(module);
             db.SaveChanges();
+
             return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
         }
 
