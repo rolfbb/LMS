@@ -2,8 +2,16 @@
 @using LMS.ViewModels.Module
 
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Index";
 }
+
+
+<div class="col-md-offset-10 col-md-2">
+	@if (User.IsInRole("Teacher"))
+	{
+		@Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { @class = "btn btn-primary", id = Model.CourseId }, null)
+	}
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-10">

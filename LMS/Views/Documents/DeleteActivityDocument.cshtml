@@ -11,6 +11,8 @@
     <h4>Document</h4>
     <hr />
     <dl class="dl-horizontal">
+       
+
         <dt>
             @Html.DisplayNameFor(model => model.Activity.Name)
         </dt>
@@ -19,21 +21,7 @@
             @Html.DisplayFor(model => model.Activity.Name)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Module.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Module.Name)
-        </dd>
+        
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -60,11 +48,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
+           User
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OwnerId)
+            @Html.DisplayFor(model => model.UserId)
         </dd>
 
     </dl>
@@ -73,8 +61,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="DeleteActivityDocument" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "IndexDocumentActivity", new { id = Model.ActivityId })
         </div>
     }
 </div>

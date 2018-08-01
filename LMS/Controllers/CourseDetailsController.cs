@@ -16,7 +16,7 @@ namespace LMS.Controllers
         // GET: CourseDetails/1
         public ActionResult Index(int? id)
         {
-            if (id == null)
+            if (id == null)	
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

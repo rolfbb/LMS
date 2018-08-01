@@ -10,6 +10,10 @@
     <h4>Document</h4>
     <hr />
     <dl class="dl-horizontal">
+        
+
+       
+
         <dt>
             @Html.DisplayNameFor(model => model.Activity.Name)
         </dt>
@@ -18,21 +22,7 @@
             @Html.DisplayFor(model => model.Activity.Name)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Module.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Module.Name)
-        </dd>
+      
 
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -58,17 +48,17 @@
             @Html.DisplayFor(model => model.TimeStamp)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
-        </dt>
+		<dt>
+			User
+		</dt>
 
         <dd>
-            @Html.DisplayFor(model => model.OwnerId)
+            @Html.DisplayFor(model => model.UserId)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "IndexDocumentActivity", new { id = Model.ActivityId })
 </p>

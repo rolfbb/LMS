@@ -66,9 +66,8 @@ namespace LMS.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        //[StringLength(100)]
-        public string Name { get; set; }
+		[Required, Display(Name = "User"), StringLength(30)]
+		public string Name { get; set; }
 
        // [Required (ErrorMessage = "You have to choose a course!")]
         public int? CourseId { get; set; }
