@@ -5,8 +5,10 @@ using System.Net;
 using System.Web.Mvc;
 using LMS.Models;
 
+
 namespace LMS.Controllers
 {
+    [Authorize(Roles = "Teacher, Student")]
     public class CourseDetailsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -8,40 +8,55 @@
                     <a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
                         <div class="well" style="background-color:ghostwhite">
                             <div class="row">
-                                <div class="col-md-2">
+                                @{var nameId = "Module" + @Model.Module.Id + "Name";}
+                                <div class="col-md-2" id=@nameId>
                                     @Html.DisplayFor(modelItem => Model.Module.Name)
                                 </div>
-                                <div class="col-md-3">
+                                @{var description = "Module" + @Model.Module.Id + "Description";}
+                                <div class="col-md-3" id=@description>
                                     @Html.DisplayFor(modelItem => Model.Module.Description)
                                 </div>
-                                <div class="col-md-2">
+                                @{var startDate = "Module" + @Model.Module.Id + "StartDate";}
+                                <div class="col-md-2" id=@startDate>
                                     @Html.DisplayFor(modelItem => Model.Module.StartDate)
                                 </div>
-                                <div class="col-md-2">
+                                @{var endDate = "Module" + @Model.Module.Id + "EndDate";}
+                                <div class="col-md-2" id=@endDate>
                                     @Html.DisplayFor(modelItem => Model.Module.EndDate)
                                 </div>
                                 <div class="col-md-3">
                                     @if (User.IsInRole("Teacher"))
                                     {
                                         <div class="ajaxLink btn btn-info btn-sm">
-                                            @Ajax.ActionLink("Edit Module test", "Edit","Modules",new { id = Model.Module.Id },
+                                            @Ajax.ActionLink("Edit", "Edit","Modules",new { id = Model.Module.Id },
                                                new AjaxOptions {
                                                    UpdateTargetId = Model.EditDelDetailsId,
                                                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                                                    HttpMethod = "GET", // <-- HTTP method
-
-                                                   //    OnBegin = "OnAjaxRequestBegin",
-                                                   //    OnFailure = "OnAjaxRequestFailure",
-                                                   //    OnSuccess = "OnAjaxRequestSuccess",
-                                                   //    OnComplete = "OnAjaxRequestComplete"
                                                })
                                         </div>
-                                        @Html.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, null)<span> |</span>
-                                        @Html.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, null)<span> |</span>
+                                        @*@Html.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, null)<span> |</span>*@
+                                        <div class="ajaxLink btn btn-info btn-sm">
+                                            @Ajax.ActionLink("Delete", "Delete","Modules",new { id = Model.Module.Id },
+                                               new AjaxOptions {
+                                                   UpdateTargetId = Model.EditDelDetailsId,
+                                                   InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                                   HttpMethod = "GET", // <-- HTTP method
+                                               })
+                                        </div>
+                                        @*@Html.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, null)<span> |</span>*@
                                     }
-                                    @Html.ActionLink("Details", "Details", "Modules", new { id = Model.Module.Id }, null)
+                                    @*<div class="ajaxLink btn btn-info btn-sm">
+                                        @Ajax.ActionLink("Details", "Details","Modules",new { id = Model.Module.Id },
+                                           new AjaxOptions {
+                                               UpdateTargetId = Model.EditDelDetailsId,
+                                               InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                               HttpMethod = "GET", // <-- HTTP method
+                                           })*@
+
+                                        @*@Html.ActionLink("Details", "Details", "Modules", new { id = Model.Module.Id }, null)*@
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                     </a>
                 </h4>

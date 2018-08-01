@@ -8,6 +8,7 @@ using LMS.Util;
 
 namespace LMS.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

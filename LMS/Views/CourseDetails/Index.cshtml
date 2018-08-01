@@ -3,13 +3,52 @@
 @using LMS.ViewModels.Module
 <script>
     function OnAjaxRequestSuccess() {
-        alert("Ajax");
+        //alert("Ajax Success");
+        let modified = $(".DbChanged");
+        if (modified.length !== 0) {
+            let moduleId = modified.find("#Id").val();
+            console.log(moduleId, "moduleId");
+            let name = modified.find("#Name").val();
+            console.log(name,"Name");
+            let description = modified.find("#Description").val();
+            console.log(description, "Descr");
+
+            let startDate = modified.find("#StartDate").val();
+            console.log(startDate, "StartDate");
+
+            let endDate = modified.find("#EndDate").val();
+            console.log(endDate, "EndDate");
+            let targetName = "#Module" + moduleId + "Name";
+            //let targetJQ = $(targetName);
+            let targetDescription = "#Module" + moduleId + "Description";
+            let targetStartDate = "#Module" + moduleId + "StartDate";
+            let targetEndDate = "#Module" + moduleId + "EndDate";
+            $(targetName).text(name);
+            $(targetDescription).text(description);
+            $(targetStartDate).text(startDate);
+            $(targetEndDate).text(endDate);
+            console.log(targetName);
+            console.log(modified.length, "Modified");
+            console.log(modified.length, "CourseId");
+            modified.fadeOut("slow");
+        }
+    }
+
+    function OnAjaxRequestBegin() {
+        //alert("Ajax Begin");
+    }
+
+    function OnAjaxRequestFailure() {
+        //alert("Ajax Failure");
+    }
+    function OnAjaxRequestComplete() {
+        //alert("Ajax Complete");
     }
     //$(document).ready()
     //$(document).ajaxSuccess(function () {
     //    alert("ajax success");
     //    $(".log").text("Triggered ajaxSuccess handler.");
-   // });
+    //});
 </script>
 @Html.Partial("_Header", new HeaderViewModel() {
 CourseName = Model.Name,

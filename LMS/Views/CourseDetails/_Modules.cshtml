@@ -1,6 +1,5 @@
 ﻿@model LMS.ViewModels.Module.ModuleTableViewModel
 @using LMS.ViewModels.Module
-@using LMS.ViewModels.Activity
 
 @{
     ViewBag.Title = "Index";
@@ -8,12 +7,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-            @*<h2><span class="label label-default label3">Modules</span></h2>*@
             @Html.Label("Modules", new { @class = "label label-default", courseId = Model.CourseId })
-            @*<span class="text-bold text-xl-center">Modules</span>*@
         </div>
         <div class="col-md-2 pull-right">
-            @*@Html.ActionLink("Add Course", "Create", null, new { @class = "btn btn-success btn-large" })*@
             @if (User.IsInRole("Teacher"))
             {
                 @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)

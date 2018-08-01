@@ -36,7 +36,6 @@ namespace LMS.Controllers
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 CourseId = course.Id,
-                //SelectCourse = new SelectList(db.Modules, "Id", "Name", course.Id),
             };
             return View(model);
         }
@@ -59,7 +58,6 @@ namespace LMS.Controllers
                 }
             }
             ModuleCreateViewModel model = Mapper.Map<Module, ModuleCreateViewModel>(module);
-            //model.SelectCourse = new SelectList(db.Modules, "Id", "Name", module.Id);
             return View(model);
         }
 
@@ -75,10 +73,13 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
+            ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
+            model.DatabaseModified = "DbUnchanged";
             if (Request.IsAjaxRequest())
-                return PartialView("_Edit", module);
-            //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
-            return View(module);
+            {
+                return PartialView("_Edit", model);
+            }
+            return View("_Edit",model);
         }
 
         // POST: Modules/Edit/5
@@ -96,14 +97,17 @@ namespace LMS.Controllers
                     db.Entry(module).State = EntityState.Modified;
                     db.SaveChanges();
                     if (Request.IsAjaxRequest())
-                        //return PartialView("_Module");
-                        return PartialView("_EditSuccess");
-
+                    {
+                        ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
+                        moduleEditVM.DatabaseModified = "DbChanged";
+                        return PartialView("_Edit",moduleEditVM);
+                    }
                     return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
                 }
             }
-            //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
-            return View(module);
+            ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
+            model.DatabaseModified = "DbUnchanged";
+            return View("_Edit",model);
         }
 
         // GET: Modules/Delete/5
@@ -118,7 +122,7 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-            return View(module);
+            return PartialView("_Delete",module);
         }
 
         // POST: Modules/Delete/5
