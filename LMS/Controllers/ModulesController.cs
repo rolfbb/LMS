@@ -19,7 +19,7 @@ namespace LMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Module module = db.Modules.Find(id);
+            Module module = db.Module.Find(id);
             if (module == null)
             {
                 return HttpNotFound();
@@ -53,7 +53,7 @@ namespace LMS.Controllers
                 var course = db.Courses.FirstOrDefault(c => c.Id == module.CourseId);
                 if (Util.Validation.DateRangeValidation(this, course, module))
                 {
-                    db.Modules.Add(module);
+                    db.Module.Add(module);
                     db.SaveChanges();
                     return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
                 }
@@ -70,7 +70,7 @@ namespace LMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Module module = db.Modules.Find(id);
+            Module module = db.Module.Find(id);
             if (module == null)
             {
                 return HttpNotFound();
@@ -107,7 +107,7 @@ namespace LMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Module module = db.Modules.Find(id);
+            Module module = db.Module.Find(id);
             if (module == null)
             {
                 return HttpNotFound();
@@ -120,8 +120,8 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Module module = db.Modules.Find(id);
-            db.Modules.Remove(module);
+            Module module = db.Module.Find(id);
+            db.Module.Remove(module);
             db.SaveChanges();
             return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
         }

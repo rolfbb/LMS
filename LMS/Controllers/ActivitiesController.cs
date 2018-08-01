@@ -40,7 +40,7 @@ namespace LMS.Controllers
         // For now we assume we have a correct moduleId, otherwise we need mode che
         public ActionResult Create(int? moduleId)
         {
-            var module = db.Modules.FirstOrDefault(m => m.Id == moduleId);
+            var module = db.Module.FirstOrDefault(m => m.Id == moduleId);
             ActivityCreateViewModel model = new ActivityCreateViewModel()
             {
                 Name = "",
@@ -65,7 +65,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 //Activity activity = Mapper.Map<ActivityEditViewModel,Activity>(activityVM);
-                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                var module = db.Module.FirstOrDefault(m => m.Id == activity.ModuleId);
                 if (Util.Validation.DateRangeValidation(this, module, activity))
                 {
                     db.Activities.Add(activity);
@@ -96,7 +96,7 @@ namespace LMS.Controllers
             }
 
             ActivityEditViewModel model = Mapper.Map<Activity, ActivityEditViewModel>(activity);
-            var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+            var module = db.Module.FirstOrDefault(m => m.Id == activity.ModuleId);
             model.CourseId = module.CourseId;
                 
             //model.ModuleId = activity.ModuleId;
@@ -114,7 +114,7 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+                var module = db.Module.FirstOrDefault(m => m.Id == activity.ModuleId);
                 if (Util.Validation.DateRangeValidation(this, module, activity))
                 {
                     db.Entry(activity).State = EntityState.Modified;
@@ -150,7 +150,7 @@ namespace LMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Activity activity = db.Activities.Find(id);
-            Module module = db.Modules.FirstOrDefault(m => m.Id == activity.ModuleId);
+            Module module = db.Module.FirstOrDefault(m => m.Id == activity.ModuleId);
             db.Activities.Remove(activity);
             db.SaveChanges();
             return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });

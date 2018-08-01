@@ -71,7 +71,7 @@ namespace LMS.Controllers
 		public ActionResult UploadDocumentModule(int id)
 		{
 
-			var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
+			var courseId = db.Module.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
 			{
 				ModuleId = id,
@@ -85,7 +85,7 @@ namespace LMS.Controllers
 		{
 
 			var moduleId = db.Activities.Where(c => c.Id == id).Select(w => w.ModuleId).FirstOrDefault();
-			var courseId = db.Modules.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
+			var courseId = db.Module.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
 			{
 				ActivityId = id,

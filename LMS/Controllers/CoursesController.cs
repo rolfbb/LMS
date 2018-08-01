@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -58,7 +59,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var now = DateTime.Now;
-                
+
                 bool validationOk = true;
                 if (course.StartDate < now)
                 {
@@ -101,6 +102,54 @@ namespace LMS.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
+
+            var modules = db.Module.Where(m => m.CourseId == course.Id);
+            var allActiv = new List<Activity>();
+            var allDoc = new List<Document>();
+
+            foreach (var module in modules)
+            {
+                var activities = db.Activities.Where(a => a.ModuleId == module.Id);
+                allActiv.Concat(activities);
+            }
+
+            foreach (var activity in allActiv)
+            {
+                var docs = db.Documents.Where(a => a.ActivityId == activity.Id);
+                allDoc.Concat(docs);
+            }
+
+            allDoc.Concat(db.Documents.Where(a => a.CourseId == id));
+
+            foreach (var mod in modules)
+            {
+                var docs = db.Documents.Where(doc => doc.ModuleId == mod.Id);
+                allDoc.Concat(docs);
+            }
+
+            allDoc = db.Documents.ToList();
+
+            db.Documents.RemoveRange(allDoc);
+            db.SaveChanges();
+
+            db.Activities.RemoveRange(allActiv);
+            db.SaveChanges();
+
+            db.Module.RemoveRange(modules);
+            db.SaveChanges();
+
+
+
+
+            var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+            var studentlistforspecifice = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y));
+            var members = studentlistforspecifice.Where(u => u.CourseId == course.Id);
+            foreach (var member in members)
+            {
+                db.Users.Remove(member);
+
+            }
+            db.SaveChanges();
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -129,7 +178,7 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-          
+
             return View(course);
         }
 

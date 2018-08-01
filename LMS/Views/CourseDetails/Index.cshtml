@@ -3,10 +3,10 @@
 @using LMS.ViewModels.Module
 
 @Html.Partial("_Header", new HeaderViewModel() {
-CourseName = Model.Name,
-Description = Model.Description,
-StartDate = Model.StartDate,
-CourseId=Model.Id
+    CourseName = Model.Name,
+    Description = Model.Description,
+    StartDate = Model.StartDate,
+    CourseId =Model.Id
 })
 @Html.Partial("_Modules", new ModuleTableViewModel() {
     Modules = Model.Modules,

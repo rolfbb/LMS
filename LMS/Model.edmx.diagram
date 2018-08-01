@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="86186d3c77cf465e804058fac52a8d47" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Activities" Width="1.5" PointX="8" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ActivityTypes" Width="1.5" PointX="11.625" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetRoles" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserClaims" Width="1.5" PointX="8.125" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserLogins" Width="1.5" PointX="7.875" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3.875" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Courses" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Documents" Width="1.5" PointX="0.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Modules" Width="1.5" PointX="4.625" PointY="10.125" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_dbo_Activities_dbo_ActivityTypes_TypeId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Activities_dbo_Modules_ModuleId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Documents_dbo_Activities_ActivityId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUsers_dbo_Courses_CourseId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Documents_dbo_AspNetUsers_User_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Documents_dbo_Courses_CourseId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Modules_dbo_Courses_CourseId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_Documents_dbo_Modules_ModuleId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
