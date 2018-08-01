@@ -287,7 +287,7 @@ namespace LMS.Controllers
                 AddErrors(result);
             }
 
-           
+
             return View(model);
         }
 
@@ -610,76 +610,44 @@ namespace LMS.Controllers
         // GET: Members
         public ActionResult UserListAction(string a, string b)
         {
+            IQueryable<ApplicationUser> users;
+            if (b != null)
+            {
+                users = db.Users.Where(u => u.Name.ToLower().Contains(b.ToLower())
+                || u.Course.Name.ToLower().Contains(b.ToLower()));
+            }
+            else
+            {
+                users = db.Users;
+            }
+
             var x = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
             var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
 
-            var UserList = db.Users.ToList();
             switch (a)
             {
-
-                //db.Users.Where(u => u.Roles.Where(i => i.RoleId.Contains());
                 case "Teacher":
-                    if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b == null)
-                    {
-                        var step1 = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList();
-                        return View(step1);
-                    }
-                    else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList().Count() > 0 && b != null)
-                    {
-                        var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x)).ToList();
-                        return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
-                    }
-                    else
+                    users = users.Where(u => u.Roles.Select(r => r.RoleId).Contains(x));
+                    if (!users.Any())
                     {
                         ViewBag.output = (".... There is no teacher....");
-                        return View(empty);
                     }
-
+                    return View(users.ToList());
 
                 case "Student":
-                    if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b == null)
+                    users = users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y));
+                    if (!users.Any())
                     {
-                        return View(db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList());
+                        ViewBag.output = (".... There is no student....");
                     }
-                    else if (db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList().Count() > 0 && b != null)
-                    {
-                        var TeacherListWithName = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y)).ToList();
-                        if (TeacherListWithName.Where(i => i.Name.ToString() == b).Count() > 0)
-                        {
-                            return View(TeacherListWithName.Where(i => i.Name.ToString() == b).ToList());
-                        }
-                        else if (db.Users.Where(c => c.Course.Name == b).Count() > 0 && b != null)
-                        {
-                            var CourseName = db.Users.Where(c => c.Course.Name == b);
-                            //var yq = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
-                            //var studentlistforspecifice = db.Users.Where(q => q.Roles.Select(r => r.RoleId).Contains(y)).ToList();
-                            //var t = db.Courses.Where(c => c.Name == b);
-
-                            return View(CourseName.ToList());
-                        }
-                        else
-                        {
-                            ViewBag.output = (".... There is no Student....");
-                            return View(empty);
-                        }
-
-                    }
-
-                    else
-                    {
-                        ViewBag.output = (".... There is no Student....");
-                        return View(empty);
-                    }
+                    return View(users.ToList());
 
                 default:
-                    if (a == null && b == null)
-                    { return View(UserList); }
-
-                    else
+                    if (!users.Any())
                     {
                         ViewBag.output = ("....The List is empty....");
-                        return View(empty);
                     }
+                    return View(users.ToList());
             }
         }
 
@@ -742,18 +710,18 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                  
+
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("UserListAction");
             }
-        
+
             return View(user);
         }
 
 
 
-        public ActionResult Details(string id) 
+        public ActionResult Details(string id)
         {
             if (id == "")
             {

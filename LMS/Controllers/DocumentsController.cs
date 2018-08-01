@@ -245,10 +245,12 @@ namespace LMS.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteCourseDocument(int id)
 		{
+
 			Document document = db.Documents.Find(id);
+			var courseid = document.CourseId;
 			db.Documents.Remove(document);
 			db.SaveChanges();
-			return RedirectToAction("IndexDocumentCourse", new { id = document.CourseId });
+			return RedirectToAction("IndexDocumentCourse", new { id = courseid });
 		}
 
 		// GET: Documents/Delete/5
@@ -272,9 +274,10 @@ namespace LMS.Controllers
 		public ActionResult DeleteModuleDocument(int id)
 		{
 			Document document = db.Documents.Find(id);
+			var Moduleid = document.ModuleId;
 			db.Documents.Remove(document);
 			db.SaveChanges();
-			return RedirectToAction("IndexDocumentModule", new { id = document.ModuleId });
+			return RedirectToAction("IndexDocumentModule", new { id = Moduleid });
 		}
 
 
@@ -299,10 +302,12 @@ namespace LMS.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteActivityDocument(int id)
 		{
+			
 			Document document = db.Documents.Find(id);
+			var Activityid = document.ActivityId;
 			db.Documents.Remove(document);
 			db.SaveChanges();
-			return RedirectToAction("IndexDocumentActivity", new { id = document.ActivityId });
+			return RedirectToAction("IndexDocumentActivity", new { id = Activityid });
 		}
 
 

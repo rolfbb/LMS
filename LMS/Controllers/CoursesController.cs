@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using LMS.Models;
+using LMS.Util;
 
 namespace LMS.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class CoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -58,7 +61,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var now = DateTime.Now;
-                
+                now = Util.Validation.DateWithZeroHourMin(now);
                 bool validationOk = true;
                 if (course.StartDate < now)
                 {
@@ -100,7 +103,35 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var documents = db.Documents.Where(m => m.CourseId == id);
+            db.Documents.RemoveRange(documents);
+            db.SaveChanges();
+
             Course course = db.Courses.Find(id);
+
+            var modules = db.Modules.Where(m => m.CourseId == course.Id);
+            var allActiv = new List<Activity>();
+
+            foreach (var module in modules)
+            {
+                var activities = db.Activities.Where(a => a.ModuleId == module.Id);
+                allActiv.Concat(activities);
+            }
+                        
+            db.Activities.RemoveRange(allActiv);
+            db.SaveChanges();
+
+            db.Modules.RemoveRange(modules);
+            db.SaveChanges();
+
+            var y = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+            var studentlistforspecifice = db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(y));
+            var members = studentlistforspecifice.Where(u => u.CourseId == course.Id);
+            foreach (var member in members)
+            {
+                db.Users.Remove(member);
+            }
+            db.SaveChanges();
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");

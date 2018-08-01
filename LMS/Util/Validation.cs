@@ -9,7 +9,8 @@ namespace LMS.Util
 {
     public class Validation
     {
-        public static bool DateRangeValidation(Controller ctr,DateRange dateRange,DateRange subRange) {
+        public static bool DateRangeValidation(Controller ctr, DateRange dateRange, DateRange subRange)
+        {
             bool validationOk = true;
             if (subRange.StartDate < dateRange.StartDate)
             {
@@ -27,6 +28,19 @@ namespace LMS.Util
                 validationOk = false;
             }
             return validationOk;
-        }        
+        }
+
+        public static DateTime DateWithZeroHourMin(DateTime dateTime)
+        {
+            return new DateTime(
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                0,
+                0,
+                0,
+                0,
+                dateTime.Kind);
+        }
     }
 }
