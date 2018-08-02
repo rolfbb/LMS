@@ -8,35 +8,35 @@
 
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Activity.Name)
-        </th>
-       
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeStamp)
-        </th>
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Activity.Name)
+		</th>
+
+		<th>
+			@Html.DisplayNameFor(model => model.Name)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Description)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.TimeStamp)
+		</th>
 		<th>
 			User
 		</th>
-		
-    </tr>
+
+	</tr>
 
 @foreach (var item in Model) {
 	<tr>
 		<td>
 			@Html.DisplayFor(modelItem => item.Activity.Name)
 		</td>
-		
-		
+
+
 		<td>
-			@Html.ActionLink(item.Name, "DownLoadFile","Documents", new { id = item.Id },null)
+			@Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
 		</td>
 		<td>
 			@Html.DisplayFor(modelItem => item.Description)
@@ -47,9 +47,12 @@
 		<td>
 			@Html.DisplayFor(modelItem => item.UserId)
 		</td>
-		
 		<td>
-		
+			@{if (item.TimeStamp == item.Activity.StartDate) { } }
+
+		</td>
+
+		<td>
 			@Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
 			@Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
 		</td>

@@ -27,14 +27,50 @@ namespace LMS.Controllers
 			var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
 			return View(documents.ToList());
 		}
+
+
 		public ActionResult IndexDocumentActivity(int id)
 		{
-			var documents = db.Documents.Where(c => c.ActivityId == id);
-			return View(documents.ToList());
+			
+
+			//var currentActivity = db.Activities.Find(id);
+			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
+
+			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
+			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+			
+			//Student+ assignment
+			if (User.IsInRole("Student") && TypeId == AssignmentId)
+			{
+				var alldocuments = db.Documents.Where(c => c.ActivityId == id);
+				var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
+				var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
+				List<Document> docList = new List<Document>();
+				foreach (var item in teacher)
+				{
+					foreach (var item1 in alldocuments)
+					{
+						if (item1.UserId == item.Id)
+						{
+							docList.Add(item1);
+						}
+					}
+				}
+				//Teacher+ assignment
+				var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
+				foreach (var item in documents)
+				{
+					docList.Add(item);
+				}
+				return View(docList);
+			}
+		//both without ASSIGNMENT
+			else
+			{
+				var documents = db.Documents.Where(c => c.ActivityId == id);
+			}
+			return View();
 		}
-
-
-
 
 		[HttpGet]
 		public FileResult DownLoadFile(int id)
@@ -46,10 +82,6 @@ namespace LMS.Controllers
 			return File(Document, "pdf");
 
 		}
-
-
-
-
 
 		// GET: Documents/Details/5
 		public ActionResult DetailsCourse(int? id)
@@ -302,7 +334,7 @@ namespace LMS.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteActivityDocument(int id)
 		{
-			
+
 			Document document = db.Documents.Find(id);
 			var Activityid = document.ActivityId;
 			db.Documents.Remove(document);
