@@ -29,7 +29,7 @@
                     <div class="col-md-2">
                         @if (User.IsInRole("Teacher"))
                         {
-                            <div class="ajaxLink btn btn-info btn-sm">
+                            <div class="ajaxLink btn btn-default btn-sm">
                                 @Ajax.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, new AjaxOptions
                                 {
                                     UpdateTargetId = editDelId,
@@ -38,7 +38,7 @@
                                 })
                             </div>
 
-                            <div class="ajaxLink btn btn-info btn-sm">
+                            <div class="ajaxLink btn btn-default btn-sm">
                                 @Ajax.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, new AjaxOptions
                                 {
                                     UpdateTargetId = editDelId,
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="col-md-2">
-                        <div class="ajaxLink btn btn-info btn-sm">
+                        <div class="ajaxLink btn btn-default btn-sm">
                             @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Module.Id }, new AjaxOptions
                             {
                                 UpdateTargetId = editDelId,
@@ -60,7 +60,7 @@
                         </div>
                         @if (User.IsInRole("Student"))
                         {
-                            <div class="ajaxLink btn btn-info btn-sm">
+                            <div class="ajaxLink btn btn-default btn-sm">
                                 @Ajax.ActionLink(@nrOfDocs + "", "IndexDocumentModule", "Documents", new { id = Model.Module.Id }, new AjaxOptions
                            {
                                UpdateTargetId = editDelId,
