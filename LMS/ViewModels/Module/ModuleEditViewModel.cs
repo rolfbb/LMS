@@ -26,7 +26,7 @@ namespace LMS.ViewModels.Module
         public int CourseId { get; set; }
 
         public SelectList SelectCourse { get; set; }
-
+        public string AjaxUpdateTarget => "Module" + Id;
         public string DatabaseModified;
     }
 }

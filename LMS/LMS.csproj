@@ -315,7 +315,7 @@
     <Content Include="Views\Modules\Delete.cshtml" />
     <Content Include="Views\Modules\Details.cshtml" />
     <Content Include="Views\Modules\Edit.cshtml" />
-    <Content Include="Views\CourseDetails\_Modules.cshtml" />
+    <Content Include="Views\CourseDetails\_ModulesOld.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />
@@ -332,7 +332,7 @@
     <Content Include="Views\Account\UserListAction.cshtml" />
     <Content Include="Views\CourseDetails\_Header.cshtml" />
     <Content Include="Views\CourseDetails\Index.cshtml" />
-    <Content Include="Views\CourseDetails\Edit.cshtml" />
+    <Content Include="Views\CourseDetails\EditTemp.cshtml" />
     <Content Include="Views\Account\UserListActionforStudent.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
@@ -340,7 +340,7 @@
     <Content Include="Views\Documents\DeleteCourseDocument.cshtml" />
     <Content Include="Views\Documents\DetailsCourse.cshtml" />
     <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
-    <Content Include="Views\CourseDetails\_Activities.cshtml" />
+    <Content Include="Views\Activities\_Activities.cshtml" />
     <Content Include="Views\Documents\UploadDocumentModule.cshtml" />
     <Content Include="Views\Documents\UploadDocumentActivity.cshtml" />
     <Content Include="Views\Documents\UploadDocumentCourse.cshtml" />
@@ -352,8 +352,10 @@
     <Content Include="Views\Documents\DeleteActivityDocument.cshtml" />
     <Content Include="Views\Modules\_Edit.cshtml" />
     <Content Include="Views\Modules\_EditSuccess.cshtml" />
-    <Content Include="Views\CourseDetails\_Module.cshtml" />
+    <Content Include="Views\Modules\_Module.cshtml" />
     <Content Include="Views\Modules\_Delete.cshtml" />
+    <Content Include="Views\Modules\_ModuleInfoEditDel.cshtml" />
+    <Content Include="Views\Modules\_Modules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

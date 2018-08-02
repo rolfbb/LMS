@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using LMS.Models;
 using LMS.ViewModels.Module;
+using LMS.ViewModels.Module;
 
 namespace LMS.Controllers
 {
@@ -79,7 +80,7 @@ namespace LMS.Controllers
             {
                 return PartialView("_Edit", model);
             }
-            return View("_Edit",model);
+            return View("_Edit", model);
         }
 
         // POST: Modules/Edit/5
@@ -98,9 +99,16 @@ namespace LMS.Controllers
                     db.SaveChanges();
                     if (Request.IsAjaxRequest())
                     {
-                        ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
-                        moduleEditVM.DatabaseModified = "DbChanged";
-                        return PartialView("_Edit",moduleEditVM);
+                        module.Activities = db.Activities.Where(act => act.ModuleId == module.Id).ToList();
+                        ModuleViewModel viewModel = new ModuleViewModel()
+                        {
+                            Module = module
+                        };
+                        return PartialView("_Module", viewModel);
+                        
+                        //ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
+                        //moduleEditVM.DatabaseModified = "DbChanged";
+                        //return PartialView("_Edit", moduleEditVM);
                     }
                     return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
                 }

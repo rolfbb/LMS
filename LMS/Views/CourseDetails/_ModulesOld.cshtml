@@ -64,12 +64,12 @@
 		<div class="panel-group" id="module-accordion">
 			@foreach (var module in Model.Modules.OrderByDescending(m => m.StartDate))
 			{
-				@Html.Partial("_Module", new ModuleViewModel()
-				{
-					CollapseId = "collapse" + module.Id,
-					EditDelDetailsId = "edd" + module.Id,
-					Module = module
-				})
+				@Html.Partial("~/Views/Modules/_Module.cshtml", new ModuleViewModel()
+           {
+               CollapseId = "collapse" + module.Id,
+               EditDelDetailsId = "edd" + module.Id,
+               Module = module
+           })
 			}
 		</div>
 	}

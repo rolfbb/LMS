@@ -22,9 +22,16 @@ namespace LMS.Controllers
 			var documents = db.Documents.Where(c => c.CourseId == id && c.ModuleId == null && c.ActivityId == null);
 			return View(documents.ToList());
 		}
+
 		public ActionResult IndexDocumentModule(int id)
 		{
 			var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(documents.ToList());
+
+            }
+
 			return View(documents.ToList());
 		}
 		public ActionResult IndexDocumentActivity(int id)
@@ -101,13 +108,12 @@ namespace LMS.Controllers
 				UserId = User.Identity.GetUserId()
 			};
 
-			return View(doc);
+			return PartialView(doc);
 		}
 
 		// GET: Documents/Create
 		public ActionResult UploadDocumentModule(int id)
 		{
-
 			var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
 			{
@@ -115,8 +121,8 @@ namespace LMS.Controllers
 				CourseId = courseId,
 				UserId = User.Identity.GetUserId()
 			};
-
-			return View(doc);
+                
+			return PartialView(doc);
 		}
 		public ActionResult UploadDocumentActivity(int id)
 		{
@@ -131,7 +137,7 @@ namespace LMS.Controllers
 				UserId = User.Identity.GetUserId()
 			};
 
-			return View(doc);
+			return PartialView(doc);
 		}
 		// POST: Documents/Create
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
