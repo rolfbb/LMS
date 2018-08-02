@@ -31,14 +31,14 @@ namespace LMS.Controllers
 
 		public ActionResult IndexDocumentActivity(int id)
 		{
-			
+
 
 			//var currentActivity = db.Activities.Find(id);
 			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
 
 			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
 			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
-			
+			List<Document> documents;
 			//Student+ assignment
 			if (User.IsInRole("Student") && TypeId == AssignmentId)
 			{
@@ -57,19 +57,19 @@ namespace LMS.Controllers
 					}
 				}
 				//Teacher+ assignment
-				var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
-				foreach (var item in documents)
+				var documents1 = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
+				foreach (var item in documents1)
 				{
 					docList.Add(item);
 				}
 				return View(docList);
 			}
-		//both without ASSIGNMENT
+			//both without ASSIGNMENT
 			else
 			{
-				var documents = db.Documents.Where(c => c.ActivityId == id);
+				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
 			}
-			return View();
+			return View(documents);
 		}
 
 		[HttpGet]
