@@ -1,0 +1,79 @@
+﻿@model LMS.ViewModels.Module.ModuleViewModel
+
+@{
+    var editDelId = "ModEditDel" + @Model.Module.Id;
+    var nrOfDocs = Model.Module.Documents.Count();
+}
+<div class="well" style="background-color:ghostwhite">
+
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
+                <div class="row">
+                    @{var nameId = "Module" + @Model.Module.Id + "Name";}
+                    <div class="col-md-2" id=@nameId>
+                        @Html.DisplayFor(modelItem => Model.Module.Name)
+                    </div>
+                    @{var description = "Module" + @Model.Module.Id + "Description";}
+                    <div class="col-md-2" id=@description>
+                        @Html.DisplayFor(modelItem => Model.Module.Description)
+                    </div>
+                    @{var startDate = "Module" + @Model.Module.Id + "StartDate";}
+                    <div class="col-md-2" id=@startDate>
+                        @Html.DisplayFor(modelItem => Model.Module.StartDate)
+                    </div>
+                    @{var endDate = "Module" + @Model.Module.Id + "EndDate";}
+                    <div class="col-md-2" id=@endDate>
+                        @Html.DisplayFor(modelItem => Model.Module.EndDate)
+                    </div>
+                    <div class="col-md-2">
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <div class="ajaxLink btn btn-info btn-sm">
+                                @Ajax.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, new AjaxOptions
+                                {
+                                    UpdateTargetId = editDelId,
+                                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                    HttpMethod = "GET", // <-- HTTP method
+                                })
+                            </div>
+
+                            <div class="ajaxLink btn btn-info btn-sm">
+                                @Ajax.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, new AjaxOptions
+                                {
+                                    UpdateTargetId = editDelId,
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "GET",
+                                })
+                            </div>
+                        }
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="ajaxLink btn btn-info btn-sm">
+                            @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Module.Id }, new AjaxOptions
+                            {
+                                UpdateTargetId = editDelId,
+                                InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                HttpMethod = "GET", // <-- HTTP method
+                            })
+                        </div>
+                        @if (User.IsInRole("Student"))
+                        {
+                            <div class="ajaxLink btn btn-info btn-sm">
+                                @Ajax.ActionLink(@nrOfDocs + "", "IndexDocumentModule", "Documents", new { id = Model.Module.Id }, new AjaxOptions
+                           {
+                               UpdateTargetId = editDelId,
+                               InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                               HttpMethod = "GET", // <-- HTTP method
+                           })
+                            </div>
+                        }
+                    </div>
+                </div>
+    </div>
+    </a>
+    </h4>
+    <div id=@editDelId> </div>
+</div>
+

@@ -352,10 +352,10 @@
     <Content Include="Views\Documents\DeleteActivityDocument.cshtml" />
     <Content Include="Views\Modules\_Edit.cshtml" />
     <Content Include="Views\Modules\_EditSuccess.cshtml" />
-    <Content Include="Views\Modules\_Module.cshtml" />
+    <Content Include="Views\Shared\_Module.cshtml" />
     <Content Include="Views\Modules\_Delete.cshtml" />
-    <Content Include="Views\Modules\_ModuleInfoEditDel.cshtml" />
-    <Content Include="Views\Modules\_Modules.cshtml" />
+    <Content Include="Views\Shared\_ModuleInfoEditDel.cshtml" />
+    <Content Include="Views\Shared\_Modules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

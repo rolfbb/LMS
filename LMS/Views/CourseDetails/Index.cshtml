@@ -35,14 +35,14 @@
     }
 
     function OnAjaxRequestBegin() {
-        //alert("Ajax Begin");
+        alert("Ajax Begin");
     }
 
     function OnAjaxRequestFailure() {
-        //alert("Ajax Failure");
+        alert("Ajax Failure");
     }
     function OnAjaxRequestComplete() {
-        //alert("Ajax Complete");
+        alert("Ajax Complete");
     }
 </script>
 @Html.Partial("_Header", new HeaderViewModel() {
@@ -51,7 +51,7 @@ Description = Model.Description,
 StartDate = Model.StartDate,
 CourseId=Model.Id
 })
-@Html.Partial("~/Views/Modules/_Modules.cshtml", new ModuleTableViewModel() {
+@Html.Partial("_Modules", new ModuleTableViewModel() {
     Modules = Model.Modules,
     CourseId = Model.Id
 }

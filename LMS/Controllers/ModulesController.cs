@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using LMS.Models;
 using LMS.ViewModels.Module;
-using LMS.ViewModels.Module;
 
 namespace LMS.Controllers
 {
@@ -70,6 +69,7 @@ namespace LMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Module module = db.Modules.Find(id);
+            var nrOfDocs = module.Documents.Count();
             if (module == null)
             {
                 return HttpNotFound();
@@ -99,12 +99,19 @@ namespace LMS.Controllers
                     db.SaveChanges();
                     if (Request.IsAjaxRequest())
                     {
-                        module.Activities = db.Activities.Where(act => act.ModuleId == module.Id).ToList();
+                        //module.Activities = db.Activities.Where(act => act.ModuleId == module.Id).ToList();
+                        //var moduleDb = db.Modules.Include(t=> t.Documents).FirstOrDefault(m=> m.Id == module.Id);
+                        //moduleDb.Documents= db.Documents.Where(doc)
+                        var moduleDb = db.Modules.Find(module.Id);
+                        var documents = db.Documents.Where(doc => doc.ModuleId == moduleDb.Id).ToList();
+                        moduleDb.Documents = documents;
+                        var nrOfDocs = moduleDb.Documents.Count();
                         ModuleViewModel viewModel = new ModuleViewModel()
                         {
-                            Module = module
+                            Module = moduleDb,
+                            CollapseId = "collapse" + module.Id
                         };
-                        return PartialView("_Module", viewModel);
+                        return PartialView("_ModuleInfoEditDel", viewModel);
                         
                         //ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
                         //moduleEditVM.DatabaseModified = "DbChanged";

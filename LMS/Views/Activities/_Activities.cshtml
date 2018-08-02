@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<LMS.Models.Activity>*@
-@model LMS.ViewModels.Activity.ActivityTableViewModel
+﻿@model LMS.ViewModels.Activity.ActivityTableViewModel
 
 @if (User.IsInRole("Teacher"))
 {
@@ -16,8 +15,7 @@
             <div class="col-md-3">
                 @Html.DisplayName("Type Description")
             </div>
-            <div class="col-md-2">
-                @*@Html.DisplayNameFor(model => model.Description)*@
+            <div class="col-md-2">            
                 @Html.DisplayName("Start Date")
             </div>
             <div class="col-md-2">
@@ -36,24 +34,23 @@
 
                     @Html.DisplayFor(modelItem => item.Type.Description)
                 </div>
-                @*@Html.DisplayFor(modelItem => item.Description)*@
                 <div class="col-md-2">
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </div>
                 <div class="col-md-2">
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </div>
-				<div class="col-md-3">
-					@if (User.IsInRole("Teacher"))
-	{
-				@Html.ActionLink("Add Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
-				@Html.ActionLink("Activity Document", "IndexDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
-				@Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
+                <div class="col-md-3">
+                    @if (User.IsInRole("Teacher"))
+                    {
+                        @Html.ActionLink("Add Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
+                        @Html.ActionLink("Activity Document", "IndexDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
+                        @Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
 
-				@Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
-}
-					@Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
-				</div>
+                        @Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
+                    }
+                    @Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
+                </div>
             }
         </div>
     </div>
