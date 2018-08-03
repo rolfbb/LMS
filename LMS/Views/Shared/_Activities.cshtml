@@ -5,7 +5,7 @@
     @Html.ActionLink("Create new activity", "Create", "Activities", new { @class = "btn btn-primary", moduleId = Model.ModuleId }, null)
 }
 
-@if (Model.Activities.Any())
+@if (Model.ActivitiesVM.Any())
 {
     <div class="well">
         <div class="row ">
@@ -25,14 +25,13 @@
             </div>
         </div>
         <div class="row">
-            @foreach (var item in Model.Activities)
+            @foreach (var item in Model.ActivitiesVM)
             {
                 <div class="col-md-2">
                     @Html.DisplayFor(modelItem => item.Name)
                 </div>
                 <div class="col-md-3">
-
-                    @Html.DisplayFor(modelItem => item.Type.Description)
+                    @Html.DisplayFor(modelItem => item.Description)
                 </div>
                 <div class="col-md-2">
                     @Html.DisplayFor(modelItem => item.StartDate)

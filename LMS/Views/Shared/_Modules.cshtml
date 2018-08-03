@@ -4,18 +4,6 @@
 @{
     ViewBag.Title = "Index";
 }
-
-@*<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-12"></div>
-<div class="col-md-offset-10 col-md-2">
-</div>*@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -29,23 +17,13 @@
             }
         </div>
     </div>
-    @*<div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>
-    <div class="col-md-12"></div>*@
-
-    @if (Model.Modules.Any())
+    @if (Model.ModulesVM.Any())
     {
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 @Html.DisplayNameFor(model => model.Name)
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 @Html.DisplayNameFor(model => model.Description)
             </div>
             <div class="col-md-2">
@@ -63,15 +41,18 @@
         </div>
 
         <div class="panel-group" id="module-accordion">
-            @foreach (var module in Model.Modules.OrderByDescending(m => m.StartDate))
+            @foreach (var module in Model.ModulesVM.OrderByDescending(m => m.StartDate))
             {
-                @Html.Partial("_Module", new ModuleViewModel()
-                {
-                    CollapseId = "collapse" + module.Id,
-                    EditDelDetailsId = "edd" + module.Id,
-                    Module = module
-                })
+                module.CollapseId = "collapse" + module.Id;
+                module.EditDelDetailsId = "edd" + module.Id;
+                @Html.Partial("_Module", module);
+                @*@Html.Partial("_Module", new ModuleViewModel(){
+                     ActivitiesVM = module.ActivitiesVM,
+                     CollapseId = "collapse" + module.Id,
+                     EditDelDetailsId = "edd" + module.Id*@
+               //Module = module
+           //})
             }
-        </div>
+            </div>
     }
 </div>

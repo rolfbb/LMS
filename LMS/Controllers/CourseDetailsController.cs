@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using LMS.Models;
-
+using LMS.ViewModels.Activity;
+using LMS.ViewModels.Course;
+using LMS.ViewModels.Module;
 
 namespace LMS.Controllers
 {
@@ -12,21 +16,38 @@ namespace LMS.Controllers
     public class CourseDetailsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-       
+
         // GET: CourseDetails/1
         public ActionResult Index(int? id)
         {
-            if (id == null)	
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Course course = db.Courses.Find(id);
-            
+
             if (course == null)
             {
                 return HttpNotFound();
             }
-            return View(course);
+
+            var modulesVM = new List<ModuleViewModel>();
+            foreach (var module in course.Modules)
+            {
+                ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(module);
+                moduleVM.AssignmentStatus = "Delayed";
+                List<ActivityViewModel> activitiesVM = new List<ActivityViewModel>();
+                foreach (var activity in module.Activities)
+                {
+                    activitiesVM.Add(Mapper.Map<Activity, ActivityViewModel>(activity));
+                }
+                moduleVM.ActivitiesVM = activitiesVM;
+                modulesVM.Add(moduleVM);               
+            }
+
+            CourseViewModel courseVM = Mapper.Map<Course, CourseViewModel>(course);
+            courseVM.ModulesVM = modulesVM;
+            return View(courseVM);
         }
 
         // GET: Courses/Edit/5

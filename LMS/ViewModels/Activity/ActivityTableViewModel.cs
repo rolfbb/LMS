@@ -7,7 +7,7 @@ namespace LMS.ViewModels.Activity
 {
     public class ActivityTableViewModel
     {
-        public IEnumerable<LMS.Models.Activity> Activities { get; set; }
+        public IEnumerable<ActivityViewModel> ActivitiesVM { get; set; }
         public int ModuleId { get; set; }
         public int CourseId { get; set; }
     }

@@ -1,0 +1,8 @@
+﻿@model LMS.ViewModels.Activity.ActivityViewModel
+
+<div class="panel panel-default">
+    @{var actId = "Activity" + @Model.Id; }
+    <div id=@actId>
+        @Html.Partial("_ActivityInfoEditDel", Model)
+    </div>    
+</div>

@@ -1,4 +1,4 @@
-﻿@model LMS.Models.Course
+﻿@model LMS.ViewModels.Course.CourseViewModel
 @using LMS.Models
 @using LMS.ViewModels.Module
 <script>
@@ -52,7 +52,6 @@ StartDate = Model.StartDate,
 CourseId=Model.Id
 })
 @Html.Partial("_Modules", new ModuleTableViewModel() {
-    Modules = Model.Modules,
+    ModulesVM = Model.ModulesVM,
     CourseId = Model.Id
-}
-)
+})

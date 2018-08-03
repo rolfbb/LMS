@@ -7,7 +7,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using LMS.Models;
+using LMS.ViewModels.Module;
 using Microsoft.AspNet.Identity;
 
 namespace LMS.Controllers
@@ -176,7 +178,6 @@ namespace LMS.Controllers
 
 			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
 			{
-
 				Stream str = FILE.InputStream;
 				BinaryReader Br = new BinaryReader(str);
 				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
@@ -184,7 +185,17 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
+               
+                var moduleDb = db.Modules.Find(document.ModuleId);
+                //var documents = db.Documents.Where(doc => doc.ModuleId == moduleDb.Id).ToList();
+                //moduleDb.Documents = documents;
+                //var nrOfDocs = moduleDb.Documents.Count();
+
+                ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(moduleDb);
+                moduleVM.CollapseId = "collapse" + document.ModuleId;
+
+                return PartialView("_ModuleInfoEditDel", moduleVM);
+                //return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
 
 			}
 			else

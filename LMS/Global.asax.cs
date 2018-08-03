@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LMS.Models;
 using LMS.ViewModels.Activity;
+using LMS.ViewModels.Course;
 using LMS.ViewModels.Module;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -17,10 +18,13 @@ namespace LMS
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Mapper.Initialize(cfg => {
+                cfg.CreateMap<Course, CourseViewModel>();
                 cfg.CreateMap<Activity, ActivityEditViewModel>();
                 cfg.CreateMap<Activity, ActivityCreateViewModel>();
+                cfg.CreateMap<Activity, ActivityViewModel>();
                 cfg.CreateMap<Module, ModuleCreateViewModel>();
                 cfg.CreateMap<Module, ModuleEditViewModel>();
+                cfg.CreateMap<Module, ModuleViewModel>();
             });
         }
     }

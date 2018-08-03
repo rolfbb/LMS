@@ -106,12 +106,14 @@ namespace LMS.Controllers
                         var documents = db.Documents.Where(doc => doc.ModuleId == moduleDb.Id).ToList();
                         moduleDb.Documents = documents;
                         var nrOfDocs = moduleDb.Documents.Count();
-                        ModuleViewModel viewModel = new ModuleViewModel()
-                        {
-                            Module = moduleDb,
-                            CollapseId = "collapse" + module.Id
-                        };
-                        return PartialView("_ModuleInfoEditDel", viewModel);
+                        ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(module);
+                        moduleVM.CollapseId = "collapse" + module.Id;
+                        //ModuleViewModel viewModel = new ModuleViewModel()
+                        //{
+                        //    Module = moduleDb,
+                        //    CollapseId = "collapse" + module.Id
+                        //};
+                        return PartialView("_ModuleInfoEditDel", moduleVM);
                         
                         //ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
                         //moduleEditVM.DatabaseModified = "DbChanged";

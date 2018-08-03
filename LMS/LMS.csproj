@@ -230,6 +230,8 @@
     <Compile Include="ViewModels\Activity\ActivityDeleteViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityEditViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityTableViewModel.cs" />
+    <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\Course\CourseViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleCreateViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleEditViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleTableViewModel.cs" />
@@ -340,7 +342,7 @@
     <Content Include="Views\Documents\DeleteCourseDocument.cshtml" />
     <Content Include="Views\Documents\DetailsCourse.cshtml" />
     <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
-    <Content Include="Views\Activities\_Activities.cshtml" />
+    <Content Include="Views\Shared\_Activities.cshtml" />
     <Content Include="Views\Documents\UploadDocumentModule.cshtml" />
     <Content Include="Views\Documents\UploadDocumentActivity.cshtml" />
     <Content Include="Views\Documents\UploadDocumentCourse.cshtml" />
@@ -356,6 +358,7 @@
     <Content Include="Views\Modules\_Delete.cshtml" />
     <Content Include="Views\Shared\_ModuleInfoEditDel.cshtml" />
     <Content Include="Views\Shared\_Modules.cshtml" />
+    <Content Include="Views\Shared\_Activity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
