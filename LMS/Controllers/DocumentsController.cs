@@ -31,45 +31,52 @@ namespace LMS.Controllers
 
 		public ActionResult IndexDocumentActivity(int id)
 		{
-			
+
 
 			//var currentActivity = db.Activities.Find(id);
 			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
 
 			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
 			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
-			
+			List<Document> empty = new List<Document>();
 			//Student+ assignment
 			if (User.IsInRole("Student") && TypeId == AssignmentId)
 			{
-				var alldocuments = db.Documents.Where(c => c.ActivityId == id);
-				var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
-				var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
-				List<Document> docList = new List<Document>();
-				foreach (var item in teacher)
+				if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
 				{
-					foreach (var item1 in alldocuments)
+					return View(empty);
+				}
+				else
+				{
+					var alldocuments = db.Documents.Where(c => c.ActivityId == id);
+					var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
+					var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
+					List<Document> docList = new List<Document>();
+					foreach (var item in teacher)
 					{
-						if (item1.UserId == item.Id)
+						foreach (var item1 in alldocuments)
 						{
-							docList.Add(item1);
+							if (item1.UserId == item.Id)
+							{
+								docList.Add(item1);
+							}
 						}
 					}
+					//Teacher+ assignment
+					var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
+					foreach (var item in documents)
+					{
+						docList.Add(item);
+					}
+					return View(docList);
 				}
-				//Teacher+ assignment
-				var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
-				foreach (var item in documents)
-				{
-					docList.Add(item);
-				}
-				return View(docList);
 			}
-		//both without ASSIGNMENT
+			//both without ASSIGNMENT
 			else
 			{
-				var documents = db.Documents.Where(c => c.ActivityId == id);
+				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
 			}
-			return View();
+			return View(documents);
 		}
 
 		[HttpGet]
