@@ -33,8 +33,6 @@
 		<td>
 			@Html.DisplayFor(modelItem => item.Activity.Name)
 		</td>
-
-
 		<td>
 			@Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
 		</td>
@@ -48,8 +46,7 @@
 			@Html.DisplayFor(modelItem => item.UserId)
 		</td>
 		<td>
-			@{if (item.TimeStamp == item.Activity.StartDate) { } }
-
+			@*@{if (item.TimeStamp  item.Activity.StartDate) { } }*@
 		</td>
 
 		<td>

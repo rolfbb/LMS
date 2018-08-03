@@ -74,9 +74,9 @@ namespace LMS.Controllers
 			//both without ASSIGNMENT
 			else
 			{
-				var documents = db.Documents.Where(c => c.ActivityId == id);
+				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
 			}
-			return View();
+			return View(documents);
 		}
 
 		[HttpGet]
