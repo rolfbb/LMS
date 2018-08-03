@@ -47,10 +47,15 @@
 
 								}
 							</div>
+
 							<div class="col-md-4 col-md-offset-8">
-								@Html.ActionLink("Add Document", "UploadDocumentModule", "Documents", new { id = Model.Module.Id }, null) <span>|</span>
+								@if (User.IsInRole("Teacher"))
+								{
+									@Html.ActionLink("Add Document", "UploadDocumentModule", "Documents", new { id = Model.Module.Id }, null) <span>|</span>
+								}
 								@Html.ActionLink("Module Document", "IndexDocumentModule", "Documents", new { id = Model.Module.Id }, null)
 							</div>
+
 						</div>
 					</div>
 				</a>

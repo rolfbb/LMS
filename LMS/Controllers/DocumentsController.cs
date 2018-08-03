@@ -31,53 +31,46 @@ namespace LMS.Controllers
 
 		public ActionResult IndexDocumentActivity(int id)
 		{
+			var userlist = db.Users.ToList();
+			AllDocuments allDoc = new AllDocuments();
+			var documents = db.Documents.Where(c => c.ActivityId == id).ToList();
+			var currentActivity = db.Activities.Find(id);
+			var TeacherRoleId = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
+			var StudentRoleId = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+			var ActivityTypeId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+			//if (currentActivity.TypeId == ActivityTypeId)
+			//{
+			var d = User.Identity.GetUserId();
+			var studentDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(StudentRoleId)).ToList();
+			var TeacherDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
+
+			allDoc.UL = userlist;
+			allDoc.StudentDoc = studentDokumentsForActivity;
+			allDoc.TeacherDoc = TeacherDokumentsForActivity;
+			List<AllDocuments> ALLDOCUMENT = new List<AllDocuments>();
+			ALLDOCUMENT.Add(allDoc);
+			return View(ALLDOCUMENT);
+			//}
+			//else if (User.IsInRole("Teacher") && currentActivity.TypeId == ActivityTypeId)
+			//{
+			//	var d = User.Identity.GetUserId();
+			//	var studentDokumentsForActivity = db.Documents.Where(c => c.ActivityId == id).ToList();
+			//	var TeacherDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
 
 
-			//var currentActivity = db.Activities.Find(id);
-			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
+			//	allDoc.StudentDoc = studentDokumentsForActivity;
+			//	allDoc.TeacherDoc = TeacherDokumentsForActivity;
+			//	return View(allDoc);
+			//}
 
-			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
-			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
-			List<Document> empty = new List<Document>();
-			//Student+ assignment
-			if (User.IsInRole("Student") && TypeId == AssignmentId)
-			{
-				if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
-				{
-					return View(empty);
-				}
-				else
-				{
-					var alldocuments = db.Documents.Where(c => c.ActivityId == id);
-					var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
-					var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
-					List<Document> docList = new List<Document>();
-					foreach (var item in teacher)
-					{
-						foreach (var item1 in alldocuments)
-						{
-							if (item1.UserId == item.Id)
-							{
-								docList.Add(item1);
-							}
-						}
-					}
-					//Teacher+ assignment
-					var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
-					foreach (var item in documents)
-					{
-						docList.Add(item);
-					}
-					return View(docList);
-				}
-			}
-			//both without ASSIGNMENT
-			else
-			{
-				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
-			}
-			return View(documents);
+			//else
+			//{
+			//	allDoc.STUDENTTEACHERDoc = documents;
+			//	return View(documents);
+			//}
 		}
+
+
 
 		[HttpGet]
 		public FileResult DownLoadFile(int id)

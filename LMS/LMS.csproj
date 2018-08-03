@@ -211,6 +211,7 @@
     <Compile Include="Migrations\201808021103048_Add property to activity type.Designer.cs">
       <DependentUpon>201808021103048_Add property to activity type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\AllDocuments.cs" />
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
