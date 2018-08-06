@@ -226,33 +226,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Courses.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Documents.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201807310920070_change userid from int to string in documents.cs" />
-    <Compile Include="Migrations\201807310920070_change userid from int to string in documents.Designer.cs">
-      <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.edmx</DependentUpon>
+    <Compile Include="Migrations\201808021103048_Add property to activity type.cs" />
+    <Compile Include="Migrations\201808021103048_Add property to activity type.Designer.cs">
+      <DependentUpon>201808021103048_Add property to activity type.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
@@ -280,6 +256,9 @@
     <Compile Include="ViewModels\Activity\ActivityDeleteViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityEditViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityTableViewModel.cs" />
+    <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\Course\CourseViewModel.cs" />
+    <Compile Include="ViewModels\Documents\UploadDocumentViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleCreateViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleEditViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleTableViewModel.cs" />
@@ -381,7 +360,6 @@
     <Content Include="Views\Modules\Delete.cshtml" />
     <Content Include="Views\Modules\Details.cshtml" />
     <Content Include="Views\Modules\Edit.cshtml" />
-    <Content Include="Views\CourseDetails\_Modules.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />
@@ -398,20 +376,28 @@
     <Content Include="Views\Account\UserListAction.cshtml" />
     <Content Include="Views\CourseDetails\_Header.cshtml" />
     <Content Include="Views\CourseDetails\Index.cshtml" />
-    <Content Include="Views\CourseDetails\Edit.cshtml" />
+    <Content Include="Views\CourseDetails\EditTemp.cshtml" />
     <Content Include="Views\Account\UserListActionforStudent.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
-    <Content Include="Views\Documents\Create.cshtml" />
-    <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\Details.cshtml" />
-    <Content Include="Views\Documents\Edit.cshtml" />
-    <Content Include="Views\Documents\Index.cshtml" />
+    <Content Include="Views\Documents\DeleteCourseDocument.cshtml" />
+    <Content Include="Views\Documents\DetailsCourse.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
     <Content Include="Views\CourseDetails\_Activities.cshtml" />
     <Content Include="Views\Documents\UploadDocumentModule.cshtml" />
     <Content Include="Views\Documents\UploadDocumentActivity.cshtml" />
     <Content Include="Views\Documents\UploadDocumentCourse.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentModule.cshtml" />
+    <Content Include="Views\Documents\IndexDocumentActivity.cshtml" />
+    <Content Include="Views\Documents\DetailsModule.cshtml" />
+    <Content Include="Views\Documents\DetailsActivity.cshtml" />
+    <Content Include="Views\Documents\DeleteModuleDocument.cshtml" />
+    <Content Include="Views\Documents\DeleteActivityDocument.cshtml" />
+    <Content Include="Views\Modules\_Edit.cshtml" />
+    <Content Include="Views\Modules\_EditSuccess.cshtml" />
+    <Content Include="Views\CourseDetails\_Module.cshtml" />
+    <Content Include="Views\Modules\_Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -427,8 +413,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807310920070_change userid from int to string in documents.resx">
-      <DependentUpon>201807310920070_change userid from int to string in documents.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808021103048_Add property to activity type.resx">
+      <DependentUpon>201808021103048_Add property to activity type.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

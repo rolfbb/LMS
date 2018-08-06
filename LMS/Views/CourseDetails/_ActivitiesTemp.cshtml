@@ -34,23 +34,28 @@
                 </div>
                 <div class="col-md-3">
 
-                    @Html.DisplayFor(modelItem => item.Type.Description)
-                </div>
-                @*@Html.DisplayFor(modelItem => item.Description)*@
-                <div class="col-md-2">
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </div>
-                <div class="col-md-2">
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </div>
+					@Html.DisplayFor(modelItem => item.Type.Description)
+				</div>
+				@*@Html.DisplayFor(modelItem => item.Description)*@
+				<div class="col-md-2">
+					@Html.DisplayFor(modelItem => item.StartDate)
+				</div>
+				<div class="col-md-2">
+					@Html.DisplayFor(modelItem => item.EndDate)
+				</div>
 				<div class="col-md-3">
 					@if (User.IsInRole("Teacher"))
 	{
 				@Html.ActionLink("Add Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
 				@Html.ActionLink("Edit", "Edit", "Activities", new { id = item.Id }, null)<span> |</span>
 
-				@Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
-}
+						@Html.ActionLink("Delete", "Delete", "Activities", new { id = item.Id }, null)<span> |</span>
+					}
+					@if (User.IsInRole("Student") && item.Type.Description == "Assignment")
+					{
+						@Html.ActionLink("Add Document", "UploadDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
+						@Html.ActionLink("Activity Document", "IndexDocumentActivity", "Documents", new { id = item.Id }, null)<span> |</span>
+					}
 					@Html.ActionLink("Details", "Details", "Activities", new { id = item.Id }, null)
 				</div>
             }

@@ -3,27 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using LMS.ViewModels.Module;
 
-namespace LMS.ViewModels.Module
+namespace LMS.ViewModels.Course
 {
-    public class ModuleEditViewModel
+    public class CourseViewModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required, Display(Name = "Course")]
         public string Name { get; set; }
-        [Required]
+        [Required, DataType(DataType.MultilineText)]
         public string Description { get; set; }
-
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
-
-        public int CourseId { get; set; }
-
-        public SelectList SelectCourse { get; set; }
-        public string AjaxUpdateTarget => "Module" + Id;
-        public string DatabaseModified;
+        public bool DelayedAssignMent { get; set; }
+        public List<ModuleViewModel> ModulesVM { get; set; }
     }
 }

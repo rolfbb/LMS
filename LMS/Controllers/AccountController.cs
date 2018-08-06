@@ -1,5 +1,4 @@
-﻿
-using LMS.Models;
+﻿using LMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -604,6 +603,7 @@ namespace LMS.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
         private List<ApplicationUser> empty = new List<ApplicationUser>();
 

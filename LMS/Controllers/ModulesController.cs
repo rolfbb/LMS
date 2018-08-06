@@ -70,13 +70,19 @@ namespace LMS.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Module module = db.Module.Find(id);
+            Module module = db.Modules.Find(id);
+            var nrOfDocs = module.Documents.Count();
             if (module == null)
             {
                 return HttpNotFound();
             }
-            //ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
-            return View(module);
+            ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
+            model.DatabaseModified = "DbUnchanged";
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Edit", model);
+            }
+            return View("_Edit",model);
         }
 
         // POST: Modules/Edit/5
@@ -93,6 +99,12 @@ namespace LMS.Controllers
                 {
                     db.Entry(module).State = EntityState.Modified;
                     db.SaveChanges();
+                    if (Request.IsAjaxRequest())
+                    {
+                        ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
+                        moduleEditVM.DatabaseModified = "DbChanged";
+                        return PartialView("_Edit",moduleEditVM);
+                    }
                     return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
                 }
             }

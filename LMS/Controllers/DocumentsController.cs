@@ -8,22 +8,81 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS.Models;
+using LMS.ViewModels.Documents;
 using Microsoft.AspNet.Identity;
 
 namespace LMS.Controllers
 {
-	public class DocumentsController : Controller
-	{
-		private ApplicationDbContext db = new ApplicationDbContext();
+    public class DocumentsController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
 
-		// GET: Documents
-		public ActionResult Index()
+        // GET: Documents
+        public ActionResult IndexDocumentCourse(int id)
+        {
+            var documents = db.Documents.Where(c => c.CourseId == id && c.ModuleId == null && c.ActivityId == null);
+            if (Request.IsAjaxRequest())
+                return PartialView(documents.ToList());
+            return View(documents.ToList());
+        }
+        public ActionResult IndexDocumentModule(int id)
+        {
+            var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
+            if (Request.IsAjaxRequest())
+                return PartialView(documents.ToList());
+            return View(documents.ToList());
+        }
+
+
+		public ActionResult IndexDocumentActivity(int id)
 		{
-			var documents = db.Documents.Include(d => d.Activity).Include(d => d.Course).Include(d => d.Module);
-			return View(documents.ToList());
+
+
+			//var currentActivity = db.Activities.Find(id);
+			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
+
+			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
+			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+			List<Document> empty = new List<Document>();
+			//Student+ assignment
+			if (User.IsInRole("Student") && TypeId == AssignmentId)
+			{
+				if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
+				{
+					return View(empty);
+				}
+				else
+				{
+					var alldocuments = db.Documents.Where(c => c.ActivityId == id);
+					var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
+					var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
+					List<Document> docList = new List<Document>();
+					foreach (var item in teacher)
+					{
+						foreach (var item1 in alldocuments)
+						{
+							if (item1.UserId == item.Id)
+							{
+								docList.Add(item1);
+							}
+						}
+					}
+					//Teacher+ assignment
+					var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
+					foreach (var item in documents)
+					{
+						docList.Add(item);
+					}
+					return View(docList);
+				}
+			}
+			//both without ASSIGNMENT
+			else
+			{
+				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
+			}
+			return View(documents);
 		}
-
-
 
 		[HttpGet]
 		public FileResult DownLoadFile(int id)
@@ -36,12 +95,34 @@ namespace LMS.Controllers
 
 		}
 
-
-
-
-
 		// GET: Documents/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult DetailsCourse(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+		public ActionResult DetailsModule(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+		public ActionResult DetailsActivity(int? id)
 		{
 			if (id == null)
 			{
@@ -55,23 +136,34 @@ namespace LMS.Controllers
 			return View(document);
 		}
 
-		// GET: Documents/Create
-		public ActionResult UploadDocumentCourse(int id)
-		{
-			Document doc = new Document()
-			{
-				CourseId = id,
-				UserId = User.Identity.GetUserId()
-			};
+        // GET: Documents/Create
+        public ActionResult UploadDocumentCourse(int id)
+        {
+            Document doc = new Document()
+            {
+                CourseId = id,
+                UserId = User.Identity.GetUserId()
+            };
+            if (Request.IsAjaxRequest())
+            {
+                UploadDocumentViewModel docVM = new UploadDocumentViewModel()
+                {
+                    //ModuleId = id,
+                    CourseId = id,
+                    UserId = User.Identity.GetUserId(),
+                    UpdateTarget = "Course" + id
+                };
+                return PartialView(docVM);
+            }
 
-			return View(doc);
-		}
+            return View(doc);
+        }
 
 		// GET: Documents/Create
 		public ActionResult UploadDocumentModule(int id)
 		{
 
-			var courseId = db.Module.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
+			var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
 			{
 				ModuleId = id,
@@ -85,7 +177,7 @@ namespace LMS.Controllers
 		{
 
 			var moduleId = db.Activities.Where(c => c.Id == id).Select(w => w.ModuleId).FirstOrDefault();
-			var courseId = db.Module.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
+			var courseId = db.Modules.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
 			{
 				ActivityId = id,
@@ -104,8 +196,8 @@ namespace LMS.Controllers
 		public ActionResult UploadDocumentCourse([Bind(Include = "Id,Name,Description,UserId,CourseId")] Document document, HttpPostedFileBase FILE)
 		{
 
-			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
-			{
+            if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
+            {
 
 				Stream str = FILE.InputStream;
 				BinaryReader Br = new BinaryReader(str);
@@ -114,53 +206,25 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("IndexDocumentCourse", "Documents", new { id = document.CourseId });
 
-			}
-			else
-			{
-				ViewBag.file = "Select file Please";
-				return View(document);
-			}
-		}
-		// POST: Documents/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
-		{
+            }
+            else
+            {
+                ViewBag.file = "Select file Please";
+                return View(document);
+            }
+        }
+        // POST: Documents/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
+        {
 
-			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
-			{
-
-				Stream str = FILE.InputStream;
-				BinaryReader Br = new BinaryReader(str);
-				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
-				document.TimeStamp = DateTime.Now;
-				document.FileContent = FileDet;
-				db.Documents.Add(document);
-				db.SaveChanges();
-				return RedirectToAction("Index");
-
-			}
-			else
-			{
-				ViewBag.file = "Select file Please";
-				return View(document);
-			}
-		}
-
-		// POST: Documents/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult UploadDocumentActivity([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId,ActivityId")] Document document, HttpPostedFileBase FILE)
-		{
-
-			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
-			{
+            if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
+            {
 
 				Stream str = FILE.InputStream;
 				BinaryReader Br = new BinaryReader(str);
@@ -169,7 +233,35 @@ namespace LMS.Controllers
 				document.FileContent = FileDet;
 				db.Documents.Add(document);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
+
+            }
+            else
+            {
+                ViewBag.file = "Select file Please";
+                return View(document);
+            }
+        }
+
+        // POST: Documents/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadDocumentActivity([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId,ActivityId")] Document document, HttpPostedFileBase FILE)
+        {
+            if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
+            {
+
+				Stream str = FILE.InputStream;
+				BinaryReader Br = new BinaryReader(str);
+				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
+				document.TimeStamp = DateTime.Now;
+				document.FileContent = FileDet;
+				db.Documents.Add(document);
+				db.SaveChanges();
+				return RedirectToAction("IndexDocumentActivity", "Documents", new { id = document.ActivityId });
+
 
 			}
 			else
@@ -179,47 +271,16 @@ namespace LMS.Controllers
 			}
 		}
 
-		
 
-		//// GET: Documents/Edit/5
-		//public ActionResult Edit(int? id)
-		//{
-		//	if (id == null)
-		//	{
-		//		return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-		//	}
-		//	Document document = db.Documents.Find(id);
-		//	if (document == null)
-		//	{
-		//		return HttpNotFound();
-		//	}
-		//	ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", document.ActivityId);
-		//	ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", document.CourseId);
-		//	ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", document.ModuleId);
-		//	return View(document);
-		//}
 
-		//// POST: Documents/Edit/5
-		//// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		//// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Edit([Bind(Include = "Id,Name,Description,TimeStamp,OwnerId,CourseId,ModuleId,ActivityId")] Document document)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		db.Entry(document).State = EntityState.Modified;
-		//		db.SaveChanges();
-		//		return RedirectToAction("Index");
-		//	}
-		//	ViewBag.ActivityId = new SelectList(db.Activities, "Id", "Name", document.ActivityId);
-		//	ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name", document.CourseId);
-		//	ViewBag.ModuleId = new SelectList(db.Modules, "Id", "Name", document.ModuleId);
-		//	return View(document);
-		//}
+
+
+
+
+
 
 		// GET: Documents/Delete/5
-		public ActionResult Delete(int? id)
+		public ActionResult DeleteCourseDocument(int? id)
 		{
 			if (id == null)
 			{
@@ -234,15 +295,79 @@ namespace LMS.Controllers
 		}
 
 		// POST: Documents/Delete/5
-		[HttpPost, ActionName("Delete")]
+		[HttpPost, ActionName("DeleteCourseDocument")]
 		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(int id)
+		public ActionResult DeleteCourseDocument(int id)
 		{
+
 			Document document = db.Documents.Find(id);
+			var courseid = document.CourseId;
 			db.Documents.Remove(document);
 			db.SaveChanges();
-			return RedirectToAction("Index");
+			return RedirectToAction("IndexDocumentCourse", new { id = courseid });
 		}
+
+		// GET: Documents/Delete/5
+		public ActionResult DeleteModuleDocument(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+
+		// POST: Documents/Delete/5
+		[HttpPost, ActionName("DeleteModuleDocument")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteModuleDocument(int id)
+		{
+			Document document = db.Documents.Find(id);
+			var Moduleid = document.ModuleId;
+			db.Documents.Remove(document);
+			db.SaveChanges();
+			return RedirectToAction("IndexDocumentModule", new { id = Moduleid });
+		}
+
+
+
+		// GET: Documents/Delete/5
+		public ActionResult DeleteActivityDocument(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Document document = db.Documents.Find(id);
+			if (document == null)
+			{
+				return HttpNotFound();
+			}
+			return View(document);
+		}
+
+		// POST: Documents/Delete/5
+		[HttpPost, ActionName("DeleteActivityDocument")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteActivityDocument(int id)
+		{
+
+			Document document = db.Documents.Find(id);
+			var Activityid = document.ActivityId;
+			db.Documents.Remove(document);
+			db.SaveChanges();
+			return RedirectToAction("IndexDocumentActivity", new { id = Activityid });
+		}
+
+
+
+
+
 
 		protected override void Dispose(bool disposing)
 		{

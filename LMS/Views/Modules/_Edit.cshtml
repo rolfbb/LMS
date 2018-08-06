@@ -1,7 +1,7 @@
 ﻿@model LMS.ViewModels.Module.ModuleEditViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit AjaxTEst";
 }
 <div class=@Model.DatabaseModified>
     @using (Ajax.BeginForm(
@@ -9,7 +9,7 @@
                       {
                           HttpMethod = "post",
                           InsertionMode = InsertionMode.Replace,
-                          UpdateTargetId = "editform",
+                          UpdateTargetId = @Model.AjaxUpdateTarget,
                           OnSuccess = "OnAjaxRequestSuccess",
                           OnBegin = "OnAjaxRequestBegin",
                           OnFailure = "OnAjaxRequestFailure",
