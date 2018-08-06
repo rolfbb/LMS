@@ -232,6 +232,7 @@
     <Compile Include="ViewModels\Activity\ActivityTableViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
     <Compile Include="ViewModels\Course\CourseViewModel.cs" />
+    <Compile Include="ViewModels\Documents\UploadDocumentViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleCreateViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleEditViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleTableViewModel.cs" />
@@ -359,6 +360,8 @@
     <Content Include="Views\Shared\_ModuleInfoEditDel.cshtml" />
     <Content Include="Views\Shared\_Modules.cshtml" />
     <Content Include="Views\Shared\_Activity.cshtml" />
+    <Content Include="Views\Documents\_UploadDocumentModule.cshtml" />
+    <Content Include="Views\Shared\_ActivityInfoEditDel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

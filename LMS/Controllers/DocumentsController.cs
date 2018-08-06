@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using LMS.Models;
+using LMS.ViewModels.Documents;
 using LMS.ViewModels.Module;
 using Microsoft.AspNet.Identity;
 
@@ -31,34 +32,25 @@ namespace LMS.Controllers
             if (Request.IsAjaxRequest())
             {
                 return PartialView(documents.ToList());
-
             }
 
 			return View(documents.ToList());
 		}
+
 		public ActionResult IndexDocumentActivity(int id)
 		{
 			var documents = db.Documents.Where(c => c.ActivityId == id);
 			return View(documents.ToList());
 		}
 
-
-
-
 		[HttpGet]
 		public FileResult DownLoadFile(int id)
 		{
 
 			byte[] Document = db.Documents.Where(w => w.Id == id).Select(c => c.FileContent).FirstOrDefault();
-
-
 			return File(Document, "pdf");
 
 		}
-
-
-
-
 
 		// GET: Documents/Details/5
 		public ActionResult DetailsCourse(int? id)
@@ -112,23 +104,9 @@ namespace LMS.Controllers
 
 			return PartialView(doc);
 		}
-
-		// GET: Documents/Create
-		public ActionResult UploadDocumentModule(int id)
-		{
-			var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
-			Document doc = new Document()
-			{
-				ModuleId = id,
-				CourseId = courseId,
-				UserId = User.Identity.GetUserId()
-			};
-                
-			return PartialView(doc);
-		}
+	
 		public ActionResult UploadDocumentActivity(int id)
-		{
-
+        { 
 			var moduleId = db.Activities.Where(c => c.Id == id).Select(w => w.ModuleId).FirstOrDefault();
 			var courseId = db.Modules.Where(c => c.Id == moduleId).Select(w => w.CourseId).FirstOrDefault();
 			Document doc = new Document()
@@ -141,6 +119,7 @@ namespace LMS.Controllers
 
 			return PartialView(doc);
 		}
+
 		// POST: Documents/Create
 		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
 		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -148,10 +127,8 @@ namespace LMS.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult UploadDocumentCourse([Bind(Include = "Id,Name,Description,UserId,CourseId")] Document document, HttpPostedFileBase FILE)
 		{
-
 			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
 			{
-
 				Stream str = FILE.InputStream;
 				BinaryReader Br = new BinaryReader(str);
 				byte[] FileDet = Br.ReadBytes((Int32)str.Length);
@@ -160,7 +137,6 @@ namespace LMS.Controllers
 				db.Documents.Add(document);
 				db.SaveChanges();
 				return RedirectToAction("IndexDocumentCourse", "Documents", new { id = document.CourseId });
-
 			}
 			else
 			{
@@ -168,14 +144,28 @@ namespace LMS.Controllers
 				return View(document);
 			}
 		}
-		// POST: Documents/Create
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
+
+        // GET: Documents/Create
+        public ActionResult UploadDocumentModule(int id, string updateTarget)
+        {
+            var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
+            UploadDocumentViewModel doc = new UploadDocumentViewModel()
+            {
+                ModuleId = id,
+                CourseId = courseId,
+                UserId = User.Identity.GetUserId(),
+                UpdateTarget = "Module"+id
+            };
+            return PartialView("UploadDocumentModule", doc);
+        }
+
+        // POST: Documents/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
 		{
-
 			if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
 			{
 				Stream str = FILE.InputStream;
@@ -194,10 +184,12 @@ namespace LMS.Controllers
                 ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(moduleDb);
                 moduleVM.CollapseId = "collapse" + document.ModuleId;
 
-                return PartialView("_ModuleInfoEditDel", moduleVM);
+                //return PartialView("_ModuleInfoEditDel", moduleVM);
+                return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId});
+
                 //return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
 
-			}
+            }
 			else
 			{
 				ViewBag.file = "Select file Please";
@@ -233,14 +225,6 @@ namespace LMS.Controllers
 				return View(document);
 			}
 		}
-
-
-
-
-
-
-
-
 
 		// GET: Documents/Delete/5
 		public ActionResult DeleteCourseDocument(int? id)
@@ -297,8 +281,6 @@ namespace LMS.Controllers
 			return RedirectToAction("IndexDocumentModule", new { id = Moduleid });
 		}
 
-
-
 		// GET: Documents/Delete/5
 		public ActionResult DeleteActivityDocument(int? id)
 		{
@@ -326,11 +308,6 @@ namespace LMS.Controllers
 			db.SaveChanges();
 			return RedirectToAction("IndexDocumentActivity", new { id = Activityid });
 		}
-
-
-
-
-
 
 		protected override void Dispose(bool disposing)
 		{

@@ -20,5 +20,8 @@ namespace LMS.ViewModels.Activity
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }        
         public String AssignmentStatus { get; set; }
+        public int NrOfDocuments { get; set; }
+        public String EditDelDetailsId { get; set; }
+        public String CollapseId { get; set; }
     }
 }

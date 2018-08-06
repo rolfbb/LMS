@@ -1,9 +1,5 @@
 ﻿@model LMS.ViewModels.Module.ModuleTableViewModel
-@using LMS.ViewModels.Module
 
-@{
-    ViewBag.Title = "Index";
-}
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -33,7 +29,6 @@
                 @Html.DisplayNameFor(model => model.EndDate)
             </div>
             <div class="col-md-2">
-
             </div>
             <div class="col-md-2">
                 @Html.DisplayName("Documents")
@@ -45,14 +40,8 @@
             {
                 module.CollapseId = "collapse" + module.Id;
                 module.EditDelDetailsId = "edd" + module.Id;
-                @Html.Partial("_Module", module);
-                @*@Html.Partial("_Module", new ModuleViewModel(){
-                     ActivitiesVM = module.ActivitiesVM,
-                     CollapseId = "collapse" + module.Id,
-                     EditDelDetailsId = "edd" + module.Id*@
-               //Module = module
-           //})
+                @Html.Partial("_Module", module);               
             }
-            </div>
+        </div>
     }
 </div>

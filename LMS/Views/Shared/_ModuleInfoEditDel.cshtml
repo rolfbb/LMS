@@ -2,10 +2,8 @@
 
 @{
     var editDelId = "ModEditDel" + @Model.Id;
-    //var nrOfDocs = Model.Documents.Count();
 }
 <div class="well" style="background-color:ghostwhite">
-
     <div class="panel-heading">
         <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
@@ -50,15 +48,17 @@
                     </div>
 
                     <div class="col-md-2">
-                        <div class="ajaxLink btn btn-default btn-sm">
-                            @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Id }, new AjaxOptions
-                            {
+                        @if (User.IsInRole("Teacher") || true)
+                        {
+                            <div class="ajaxLink btn btn-default btn-sm">
+                                @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Id, updateTarget = editDelId }, new AjaxOptions {
                                 UpdateTargetId = editDelId,
                                 InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                                HttpMethod = "GET", // <-- HTTP method
-                            })
-                        </div>
-                        @if (User.IsInRole("Student"))
+                                 HttpMethod="GET" , // <-- HTTP method
+                                                                                                        });
+                            </div>
+                        }
+                        @if (User.IsInRole("Student") || true)
                         {
                             <div class="ajaxLink btn btn-default btn-sm">
                                 @Ajax.ActionLink(Model.NrOfDocuments+"", "IndexDocumentModule", "Documents", new { id = Model.Id }, new AjaxOptions
@@ -76,4 +76,3 @@
     </h4>
     <div id=@editDelId> </div>
 </div>
-

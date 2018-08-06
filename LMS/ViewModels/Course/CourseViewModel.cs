@@ -18,7 +18,7 @@ namespace LMS.ViewModels.Course
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
-
+        public bool DelayedAssignMent { get; set; }
         public List<ModuleViewModel> ModulesVM { get; set; }
     }
 }

@@ -604,6 +604,7 @@ namespace LMS.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
         private List<ApplicationUser> empty = new List<ApplicationUser>();
 
