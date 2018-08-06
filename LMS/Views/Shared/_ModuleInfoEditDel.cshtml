@@ -48,14 +48,14 @@
                     </div>
 
                     <div class="col-md-2">
-                        @if (User.IsInRole("Teacher") || true)
+                        @if (User.IsInRole("Teacher"))
                         {
                             <div class="ajaxLink btn btn-default btn-sm">
-                                @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Id, updateTarget = editDelId }, new AjaxOptions {
+                                @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Id }, new AjaxOptions {
                                 UpdateTargetId = editDelId,
                                 InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                                  HttpMethod="GET" , // <-- HTTP method
-                                                                                                        });
+                                                    })
                             </div>
                         }
                         @if (User.IsInRole("Student") || true)
