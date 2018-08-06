@@ -207,10 +207,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Migrations\201808021103048_Add property to activity type.cs" />
-    <Compile Include="Migrations\201808021103048_Add property to activity type.Designer.cs">
-      <DependentUpon>201808021103048_Add property to activity type.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -322,7 +318,6 @@
     <Content Include="Views\Modules\Delete.cshtml" />
     <Content Include="Views\Modules\Details.cshtml" />
     <Content Include="Views\Modules\Edit.cshtml" />
-    <Content Include="Views\CourseDetails\_ModulesOld.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />
@@ -378,11 +373,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808021103048_Add property to activity type.resx">
-      <DependentUpon>201808021103048_Add property to activity type.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -47,17 +47,17 @@
         @if (User.IsInRole("Teacher"))
         {
             <div class="ajaxLink btn btn-default btn-sm">
-                @Ajax.ActionLink("Upload", "UploadDocumentModule", "Documents", new { id = Model.Id, updateTarget = editDelId }, new AjaxOptions {
+                @Ajax.ActionLink("Upload", "UploadDocumentActvity", "Documents", new { id = Model.Id, updateTarget = editDelId }, new AjaxOptions {
                 UpdateTargetId = editDelId,
                 InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                  HttpMethod="GET" , // <-- HTTP method
-                                                                                        });
+                 })
             </div>
         }
         @if (User.IsInRole("Student") || true)
         {
             <div class="ajaxLink btn btn-default btn-sm">
-                @Ajax.ActionLink(Model.NrOfDocuments+"", "IndexDocumentModule", "Documents", new { id = Model.Id }, new AjaxOptions
+                @Ajax.ActionLink(Model.NrOfDocuments+"", "IndexDocumentActivity", "Documents", new { id = Model.Id }, new AjaxOptions
            {
                UpdateTargetId = editDelId,
                InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element

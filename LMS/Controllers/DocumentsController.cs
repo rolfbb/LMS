@@ -232,9 +232,6 @@ namespace LMS.Controllers
 
                 //return PartialView("_ModuleInfoEditDel", moduleVM);
                 return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId });
-
-                //return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
-
             }
             else
             {
