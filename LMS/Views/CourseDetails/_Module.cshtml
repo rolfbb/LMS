@@ -1,0 +1,70 @@
+﻿@model LMS.ViewModels.Module.ModuleViewModel
+@using LMS.ViewModels.Activity
+
+<div id="@Model.Module.Id">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
+					<div class="well" style="background-color:ghostwhite">
+						<div class="row">
+							@{var nameId = "Module" + @Model.Module.Id + "Name";}
+							<div class="col-md-2" id=@nameId>
+								@Html.DisplayFor(modelItem => Model.Module.Name)
+							</div>
+							@{var description = "Module" + @Model.Module.Id + "Description";}
+							<div class="col-md-3" id=@description>
+								@Html.DisplayFor(modelItem => Model.Module.Description)
+							</div>
+							@{var startDate = "Module" + @Model.Module.Id + "StartDate";}
+							<div class="col-md-2" id=@startDate>
+								@Html.DisplayFor(modelItem => Model.Module.StartDate)
+							</div>
+							@{var endDate = "Module" + @Model.Module.Id + "EndDate";}
+							<div class="col-md-2" id=@endDate>
+								@Html.DisplayFor(modelItem => Model.Module.EndDate)
+							</div>
+							<div class="col-md-3">
+								@if (User.IsInRole("Teacher"))
+								{
+									<div class="ajaxLink btn btn-info btn-sm">
+										@Ajax.ActionLink("Edit", "Edit", "Modules", new { id = Model.Module.Id }, new AjaxOptions
+										{
+											UpdateTargetId = Model.EditDelDetailsId,
+											InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+											HttpMethod = "GET", // <-- HTTP method
+										})
+									</div>
+
+									<div class="ajaxLink btn btn-info btn-sm">
+										@Ajax.ActionLink("Delete", "Delete", "Modules", new { id = Model.Module.Id }, new AjaxOptions
+										{
+											UpdateTargetId = Model.EditDelDetailsId,
+											InsertionMode = InsertionMode.Replace,
+											HttpMethod = "GET",
+										})
+									</div>
+
+								}
+							</div>
+							<div class="col-md-4 col-md-offset-8">
+								@Html.ActionLink("Add Document", "UploadDocumentModule", "Documents", new { id = Model.Module.Id }, null) <span>|</span>
+								@Html.ActionLink("Module Document", "IndexDocumentModule", "Documents", new { id = Model.Module.Id }, null)
+							</div>
+						</div>
+					</div>
+				</a>
+			</h4>
+		</div>
+		<div id=@Model.EditDelDetailsId> </div>
+		<div id="@Model.CollapseId" class="panel-collapse collapse">
+			<div class="panel-body">
+				@Html.Partial("_Activities", new ActivityTableViewModel()
+				{
+					Activities = Model.Module.Activities,
+					ModuleId = Model.Module.Id
+				})
+			</div>
+		</div>
+	</div>
+</div>
