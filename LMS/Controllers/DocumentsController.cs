@@ -39,59 +39,57 @@ namespace LMS.Controllers
         public ActionResult IndexDocumentActivity(int id)
         {
             var documents = db.Documents.Where(c => c.ActivityId == id);
-            return View(documents.ToList());
+
+
+            //var currentActivity = db.Activities.Find(id);
+            //var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
+
+            var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
+            var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+            List<Document> empty = new List<Document>();
+            //Student+ assignment
+            if (User.IsInRole("Student") && TypeId == AssignmentId)
+            {
+                if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
+                {
+                    return View(empty);
+                }
+                else
+                {
+                    var alldocuments = db.Documents.Where(c => c.ActivityId == id);
+                    var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
+                    var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
+                    List<Document> docList = new List<Document>();
+                    foreach (var item in teacher)
+                    {
+                        foreach (var item1 in alldocuments)
+                        {
+                            if (item1.UserId == item.Id)
+                            {
+                                docList.Add(item1);
+                            }
+                        }
+                    }
+                    //Teacher+ assignment
+                    documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
+                    foreach (var item in documents)
+                    {
+                        docList.Add(item);
+                    }
+                    return View(docList);
+                }
+            }
+            //both without ASSIGNMENT
+            else
+            {
+                //documents = db.Documents.Where(c => c.ActivityId == id).ToList();
+            }
+            return View(documents);
         }
 
-
-			//var currentActivity = db.Activities.Find(id);
-			//var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
-
-			var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
-			var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
-			List<Document> empty = new List<Document>();
-			//Student+ assignment
-			if (User.IsInRole("Student") && TypeId == AssignmentId)
-			{
-				if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
-				{
-					return View(empty);
-				}
-				else
-				{
-					var alldocuments = db.Documents.Where(c => c.ActivityId == id);
-					var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
-					var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
-					List<Document> docList = new List<Document>();
-					foreach (var item in teacher)
-					{
-						foreach (var item1 in alldocuments)
-						{
-							if (item1.UserId == item.Id)
-							{
-								docList.Add(item1);
-							}
-						}
-					}
-					//Teacher+ assignment
-					var documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
-					foreach (var item in documents)
-					{
-						docList.Add(item);
-					}
-					return View(docList);
-				}
-			}
-			//both without ASSIGNMENT
-			else
-			{
-				documents = db.Documents.Where(c => c.ActivityId == id).ToList();
-			}
-			return View(documents);
-		}
-
-		[HttpGet]
-		public FileResult DownLoadFile(int id)
-		{
+        [HttpGet]
+        public FileResult DownLoadFile(int id)
+        {
 
             byte[] Document = db.Documents.Where(w => w.Id == id).Select(c => c.FileContent).FirstOrDefault();
             return File(Document, "pdf");
@@ -214,7 +212,7 @@ namespace LMS.Controllers
         public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
         {
             var moduleDb = db.Modules.Find(document.ModuleId);
-      
+
             if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
             {
                 Stream str = FILE.InputStream;
