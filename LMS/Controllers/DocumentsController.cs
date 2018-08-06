@@ -7,10 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using AutoMapper;
 using LMS.Models;
 using LMS.ViewModels.Documents;
-using LMS.ViewModels.Module;
 using Microsoft.AspNet.Identity;
 
 namespace LMS.Controllers
@@ -23,77 +21,70 @@ namespace LMS.Controllers
         public ActionResult IndexDocumentCourse(int id)
         {
             var documents = db.Documents.Where(c => c.CourseId == id && c.ModuleId == null && c.ActivityId == null);
+            if (Request.IsAjaxRequest())
+                return PartialView(documents.ToList());
             return View(documents.ToList());
         }
-
         public ActionResult IndexDocumentModule(int id)
         {
             var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
             if (Request.IsAjaxRequest())
-            {
                 return PartialView(documents.ToList());
-            }
             return View(documents.ToList());
         }
 
+
         public ActionResult IndexDocumentActivity(int id)
         {
-            var documents = db.Documents.Where(c => c.ActivityId == id);
+            var userlist = db.Users.ToList();
+            AllDocuments allDoc = new AllDocuments();
+            var documents = db.Documents.Where(c => c.ActivityId == id).ToList();
+            var currentActivity = db.Activities.Find(id);
+            var TeacherRoleId = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
+            var StudentRoleId = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+            var ActivityTypeId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+            //if (currentActivity.TypeId == ActivityTypeId)
+            //{
+            var d = User.Identity.GetUserId();
+            var studentDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(StudentRoleId)).ToList();
+            var TeacherDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
+
+            allDoc.UL = userlist;
+            allDoc.StudentDoc = studentDokumentsForActivity;
+            allDoc.TeacherDoc = TeacherDokumentsForActivity;
+            List<AllDocuments> ALLDOCUMENT = new List<AllDocuments>();
+            ALLDOCUMENT.Add(allDoc);
+            if (Request.IsAjaxRequest())
+                return PartialView(ALLDOCUMENT);
+
+            return View(ALLDOCUMENT);
+            //}
+            //else if (User.IsInRole("Teacher") && currentActivity.TypeId == ActivityTypeId)
+            //{
+            //	var d = User.Identity.GetUserId();
+            //	var studentDokumentsForActivity = db.Documents.Where(c => c.ActivityId == id).ToList();
+            //	var TeacherDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
 
 
-            //var currentActivity = db.Activities.Find(id);
-            //var studentDokumentsForActivity = currentActivity.Documents.Where(d => d.User.Roles)
+            //	allDoc.StudentDoc = studentDokumentsForActivity;
+            //	allDoc.TeacherDoc = TeacherDokumentsForActivity;
+            //	return View(allDoc);
+            //}
 
-            var TypeId = db.Activities.FirstOrDefault(c => c.Id == id).TypeId;
-            var AssignmentId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
-            List<Document> empty = new List<Document>();
-            //Student+ assignment
-            if (User.IsInRole("Student") && TypeId == AssignmentId)
-            {
-                if (db.Documents.Where(c => c.ActivityId == id).ToList().Count() == 0)
-                {
-                    return View(empty);
-                }
-                else
-                {
-                    var alldocuments = db.Documents.Where(c => c.ActivityId == id);
-                    var TeacherRoleId = db.Roles.FirstOrDefault(w => w.Name == "Teacher").Id;
-                    var teacher = db.Users.Where(w => w.Roles.Select(q => q.RoleId).Contains(TeacherRoleId));
-                    List<Document> docList = new List<Document>();
-                    foreach (var item in teacher)
-                    {
-                        foreach (var item1 in alldocuments)
-                        {
-                            if (item1.UserId == item.Id)
-                            {
-                                docList.Add(item1);
-                            }
-                        }
-                    }
-                    //Teacher+ assignment
-                    documents = db.Documents.Where(c => c.ActivityId == id && c.UserId == User.Identity.GetUserId());
-                    foreach (var item in documents)
-                    {
-                        docList.Add(item);
-                    }
-                    return View(docList);
-                }
-            }
-            //both without ASSIGNMENT
-            else
-            {
-                //documents = db.Documents.Where(c => c.ActivityId == id).ToList();
-            }
-            return View(documents);
+            //else
+            //{
+            //	allDoc.STUDENTTEACHERDoc = documents;
+            //	return View(documents);
+            //}
         }
+
+
 
         [HttpGet]
         public FileResult DownLoadFile(int id)
         {
-
             byte[] Document = db.Documents.Where(w => w.Id == id).Select(c => c.FileContent).FirstOrDefault();
             return File(Document, "pdf");
-
         }
 
         // GET: Documents/Details/5
@@ -145,8 +136,43 @@ namespace LMS.Controllers
                 CourseId = id,
                 UserId = User.Identity.GetUserId()
             };
+            if (Request.IsAjaxRequest())
+            {
+                UploadDocumentViewModel docVM = new UploadDocumentViewModel()
+                {
+                    //ModuleId = id,
+                    CourseId = id,
+                    UserId = User.Identity.GetUserId(),
+                    UpdateTarget = "Course" + id
+                };
+                return PartialView(docVM);
+            }
 
-            return PartialView(doc);
+            return View(doc);
+        }
+
+        // GET: Documents/Create
+        public ActionResult UploadDocumentModule(int id)
+        {
+            var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
+            Document doc = new Document()
+            {
+                ModuleId = id,
+                CourseId = courseId,
+                UserId = User.Identity.GetUserId()
+            };
+            if (Request.IsAjaxRequest())
+            {
+                UploadDocumentViewModel docVM = new UploadDocumentViewModel()
+                {
+                    ModuleId = id,
+                    CourseId = courseId,
+                    UserId = User.Identity.GetUserId(),
+                    //UpdateTarget = "Module" + id
+                };
+                return PartialView(docVM);
+            }
+            return View(doc);
         }
 
         public ActionResult UploadDocumentActivity(int id)
@@ -160,10 +186,12 @@ namespace LMS.Controllers
                 CourseId = courseId,
                 UserId = User.Identity.GetUserId()
             };
-
-            return PartialView(doc);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(doc);
+            }
+            return View(doc);
         }
-
         // POST: Documents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -171,8 +199,10 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UploadDocumentCourse([Bind(Include = "Id,Name,Description,UserId,CourseId")] Document document, HttpPostedFileBase FILE)
         {
+
             if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
             {
+
                 Stream str = FILE.InputStream;
                 BinaryReader Br = new BinaryReader(str);
                 byte[] FileDet = Br.ReadBytes((Int32)str.Length);
@@ -180,7 +210,9 @@ namespace LMS.Controllers
                 document.FileContent = FileDet;
                 db.Documents.Add(document);
                 db.SaveChanges();
-                return RedirectToAction("IndexDocumentCourse", "Documents", new { id = document.CourseId });
+                return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId });
+                //return RedirectToAction("IndexDocumentCourse", "Documents", new { id = document.CourseId });
+
             }
             else
             {
@@ -188,22 +220,6 @@ namespace LMS.Controllers
                 return View(document);
             }
         }
-
-        // GET: Documents/Create
-        public ActionResult UploadDocumentModule(int id, string updateTarget)
-        {
-            var courseId = db.Modules.Where(c => c.Id == id).Select(w => w.CourseId).FirstOrDefault();
-            UploadDocumentViewModel doc = new UploadDocumentViewModel()
-            {
-                ModuleId = id,
-                CourseId = courseId,
-                UserId = User.Identity.GetUserId(),
-                UpdateTarget = "Module" + id
-            };
-            return PartialView(doc);
-            //return PartialView("UploadDocumentModule", doc);
-        }
-
         // POST: Documents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -211,10 +227,10 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
         {
-            var moduleDb = db.Modules.Find(document.ModuleId);
 
             if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
             {
+
                 Stream str = FILE.InputStream;
                 BinaryReader Br = new BinaryReader(str);
                 byte[] FileDet = Br.ReadBytes((Int32)str.Length);
@@ -222,29 +238,14 @@ namespace LMS.Controllers
                 document.FileContent = FileDet;
                 db.Documents.Add(document);
                 db.SaveChanges();
-
-                //ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(moduleDb);
-                //var documents = db.Documents.Where(doc => doc.ModuleId == moduleDb.Id).ToList();
-                //moduleDb.Documents = documents;
-                //var nrOfDocs = moduleDb.Documents.Count();
-
-                //moduleVM.CollapseId = "collapse" + document.ModuleId;
-
-                //return PartialView("_ModuleInfoEditDel", moduleVM);
                 return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId });
+                //return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
+
             }
             else
             {
-                UploadDocumentViewModel doc = new UploadDocumentViewModel()
-                {
-                    ModuleId = moduleDb.Id,
-                    CourseId = moduleDb.CourseId,
-                    UserId = User.Identity.GetUserId(),
-                    UpdateTarget = "Module" + moduleDb.Id
-                };
-
                 ViewBag.file = "Select file Please";
-                return PartialView(doc);
+                return View(document);
             }
         }
 
@@ -255,7 +256,6 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UploadDocumentActivity([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId,ActivityId")] Document document, HttpPostedFileBase FILE)
         {
-
             if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
             {
 
@@ -266,9 +266,8 @@ namespace LMS.Controllers
                 document.FileContent = FileDet;
                 db.Documents.Add(document);
                 db.SaveChanges();
-                return RedirectToAction("IndexDocumentActivity", "Documents", new { id = document.ActivityId });
-
-
+                return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId });
+                //return RedirectToAction("IndexDocumentActivity", "Documents", new { id = document.ActivityId });
             }
             else
             {

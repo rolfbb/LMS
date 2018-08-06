@@ -30,8 +30,8 @@
 
         @foreach (var activity in Model.ActivitiesVM.OrderByDescending(m => m.StartDate))
         {
-            activity.CollapseId = "collapse" + activity.Id;
-            activity.EditDelDetailsId = "edd" + activity.Id;
+            //activity.CollapseId = "actcollapse" + activity.Id;
+            activity.EditDelDetailsId = "actedd" + activity.Id;
             @Html.Partial("_Activity", activity);
         }
     </div>
