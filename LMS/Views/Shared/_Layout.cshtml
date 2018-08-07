@@ -41,25 +41,29 @@
 						<li>@Html.ActionLink(User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
 						@if (User.IsInRole("Teacher"))
 						{
-							<li>@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-							<li>@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-							<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                        
+                            <li><span style="background-color: #ff6a00 ;font-size: x-large">@Html.ActionLink("Courses", "Index", "Courses", routeValues: null, htmlAttributes: new { id = "registerLink" })</span></li>
+                            
+                            <li><span style="background-color: #ff6a00 ;font-size: x-large">@Html.ActionLink("Users", "UserListAction", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</span></li>
+                           
+                            <li><span style="background-color: #ff6a00 ;font-size: x-large">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</span></li>
 
-						}
-						else
-						{
-							<li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>
+                            }
+                            else
+                            {
+                            <li>@Html.ActionLink("User list for student", "UserListActionforStudent", "Account")</li>
 
-						}
-					</ul>
+                            }
+</ul>
 
 					<div class="col-md-5">
-						@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-						{
-							@Html.AntiForgeryToken()
-							<a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-						}
-					</div>
+                        
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+}
+</div>
 				</div>
 			}
 		</div>
