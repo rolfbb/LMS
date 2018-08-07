@@ -1,18 +1,18 @@
 ﻿@model LMS.ViewModels.Module.ModuleTableViewModel
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
-        </div>
-        <div class="col-md-3 pull-right">
-            @if (User.IsInRole("Teacher"))
-            {
+    @if (User.IsInRole("Teacher"))
+    {
+        <div class="row">
+            <div class="col-md-9">
+                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
+            </div>
+            <div class="col-md-3 pull-right">
                 @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, null) <span>|</span>
                 @Html.ActionLink("Course Document", "IndexDocumentCourse", "Documents", new { id = Model.CourseId }, null)
-            }
+            </div>
         </div>
-    </div>
+    }
     @if (Model.ModulesVM.Any())
     {
         <div class="row">
@@ -40,7 +40,7 @@
             {
                 module.CollapseId = "collapse" + module.Id;
                 module.EditDelDetailsId = "edd" + module.Id;
-                @Html.Partial("_Module", module);               
+                @Html.Partial("_Module", module);
             }
         </div>
     }

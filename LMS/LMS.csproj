@@ -335,7 +335,7 @@
     <Content Include="Views\Account\UserListAction.cshtml" />
     <Content Include="Views\CourseDetails\_Header.cshtml" />
     <Content Include="Views\CourseDetails\Index.cshtml" />
-    <Content Include="Views\CourseDetails\EditTemp.cshtml" />
+    <Content Include="Views\CourseDetails\Edit.cshtml" />
     <Content Include="Views\Account\UserListActionforStudent.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
