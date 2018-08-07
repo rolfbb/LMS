@@ -58,7 +58,8 @@
                                                     })
                             </div>
                         }
-                        @if (User.IsInRole("Student") || true)
+
+                        @*@if (User.IsInRole("Student"))
                         {
                             <div class="ajaxLink btn btn-default btn-sm">
                                 @Ajax.ActionLink(Model.NrOfDocuments+"", "IndexDocumentModule", "Documents", new { id = Model.Id }, new AjaxOptions
@@ -68,7 +69,7 @@
                                HttpMethod = "GET", // <-- HTTP method
                            })
                             </div>
-                        }
+                        }*@
                     </div>
                 </div>
     </div>

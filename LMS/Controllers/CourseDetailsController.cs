@@ -30,6 +30,10 @@ namespace LMS.Controllers
             return docs;
         }
 
+        /*private bool ActivityHasDocument(Activity activity, String userName) {
+            return db.Documents.Any(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);    
+        }*/
+
         // GET: CourseDetails/1
         public ActionResult Index(int? id)
         {
@@ -48,6 +52,8 @@ namespace LMS.Controllers
             var modulesVM = new List<ModuleViewModel>();
             //Store all assignmnents where deadline has been passes
             List<Activity> assignments = new List<Activity>();
+            //UserList.FirstOrDefault(w => w.Id == item.UserId)
+            var userName = User.Identity.GetUserName();
             foreach (var module in course.Modules)
             {
                 ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(module);
@@ -57,6 +63,13 @@ namespace LMS.Controllers
                     if (activity.Type.Description == "Assignment" && activity.EndDate < DateTime.Now)
                         assignments.Add(activity);
                     var activityVM = Mapper.Map<Activity, ActivityViewModel>(activity);
+                    if (activity.Type.Description == "Assignment" && User.IsInRole("Student")) {
+                        var studDocs= db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
+                        activityVM.StudentUploadedSolution = studDocs.Any();
+                        if (activityVM.StudentUploadedSolution)
+                            activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;                     
+                    }
+
                     activityVM.Description = activity.Type.Description;
                     activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
                     activitiesVM.Add(activityVM);                 
@@ -65,7 +78,7 @@ namespace LMS.Controllers
                 moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id);
                 modulesVM.Add(moduleVM);
             }
-
+            
             var UploadedInTime = from assignment in assignments
                                  join studentdoc in db.Documents.Where(doc => doc.User.Name == User.Identity.Name) on
                                  assignment.Id equals studentdoc.ActivityId
