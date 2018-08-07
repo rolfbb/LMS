@@ -17,7 +17,7 @@ namespace LMS.Models
 
         public System.Data.Entity.DbSet<LMS.Models.Course> Courses { get; set; }
 
-        public System.Data.Entity.DbSet<LMS.Models.Module> Module { get; set; }
+        public System.Data.Entity.DbSet<LMS.Models.Module> Modules { get; set; }
 
         public System.Data.Entity.DbSet<LMS.Models.Activity> Activities { get; set; }
 
