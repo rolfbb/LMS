@@ -18,8 +18,7 @@ namespace LMS.ViewModels.Module
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
-        
+        public DateTime EndDate { get; set; }     
         public String EditDelDetailsId { get; set; }
         public String CollapseId { get; set; }
         public String AssignmentStatus { get; set; }
