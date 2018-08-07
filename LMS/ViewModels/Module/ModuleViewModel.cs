@@ -26,5 +26,6 @@ namespace LMS.ViewModels.Module
         public int NrOfDocuments { get; set; }
         public bool DelayedAssignMent { get; set; }
         public List<ActivityViewModel> ActivitiesVM { get; set; }
+
     }
 }
