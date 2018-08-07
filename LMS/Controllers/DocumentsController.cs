@@ -45,7 +45,7 @@ namespace LMS.Controllers
             var ActivityTypeId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
             //if (currentActivity.TypeId == ActivityTypeId)
             //{
-            var d = User.Identity.GetUserId();
+            //var d = User.Identity.GetUserId();
             var studentDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(StudentRoleId)).ToList();
             var TeacherDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
 
