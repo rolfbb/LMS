@@ -3,9 +3,9 @@
 @{
     var editDelId = "ModEditDel" + @Model.Id;
 }
-<div class="well" style="background-color:ghostwhite">
+@*<div class="well" style="background-color:ghostwhite">*@
     <div class="panel-heading">
-        <h4 class="panel-title">
+        @*<h4 class="panel-title">*@
             <a data-toggle="collapse" data-parent="#module-accordion" href="#@Model.CollapseId">
                 <div class="row">
                     @{var nameId = "Module" + @Model.Id + "Name";}
@@ -73,6 +73,6 @@
                 </div>
     </div>
     </a>
-    </h4>
+    @*</h4>*@
     <div id=@editDelId> </div>
-</div>
+@*</div>*@
