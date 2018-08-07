@@ -103,7 +103,7 @@ namespace LMS.Controllers
         {
             Course course = db.Courses.Find(id);
 
-            var modules = db.Module.Where(m => m.CourseId == course.Id);
+            var modules = db.Modules.Where(m => m.CourseId == course.Id);
             var allActiv = new List<Activity>();
             var allDoc = new List<Document>();
 
@@ -135,7 +135,7 @@ namespace LMS.Controllers
             db.Activities.RemoveRange(allActiv);
             db.SaveChanges();
 
-            db.Module.RemoveRange(modules);
+            db.Modules.RemoveRange(modules);
             db.SaveChanges();
 
 
