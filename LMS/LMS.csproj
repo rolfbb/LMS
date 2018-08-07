@@ -238,6 +238,7 @@
     <Compile Include="ViewModels\Module\ModuleCreateViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleEditViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleTableViewModel.cs" />
+    <Compile Include="ViewModels\Module\ModuleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-beagle.css" />
