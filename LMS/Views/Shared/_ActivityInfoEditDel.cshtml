@@ -56,7 +56,7 @@
             </div>
         }
 
-        @{ if (User.IsInRole("Teacher") || !Model.StudentUploadedSolution)
+        @{ if (User.IsInRole("Teacher") || (!Model.StudentUploadedSolution && Model.Description=="Assignment"))
             {
                 <div class="ajaxLink btn btn-default btn-sm">
                     @Ajax.ActionLink("Upload", "UploadDocumentActivity", "Documents", new { id = Model.Id }, new AjaxOptions
