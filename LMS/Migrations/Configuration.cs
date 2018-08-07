@@ -63,7 +63,7 @@ namespace LMS.Migrations
                 new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[5].Id },
             };
 
-            db.Module.AddOrUpdate(m => new { m.Name, m.StartDate }, modules);
+            db.Modules.AddOrUpdate(m => new { m.Name, m.StartDate }, modules);
             db.SaveChanges();
             return modules;
         }
