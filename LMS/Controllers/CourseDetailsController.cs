@@ -67,8 +67,7 @@ namespace LMS.Controllers
                         var studDocs= db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
                         activityVM.StudentUploadedSolution = studDocs.Any();
                         if (activityVM.StudentUploadedSolution)
-                            activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;
-                        activityVM.StudentUploadedSolution = ActivityHasDocument(activity, User.Identity.GetUserName());
+                            activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;                     
                     }
 
                     activityVM.Description = activity.Type.Description;
