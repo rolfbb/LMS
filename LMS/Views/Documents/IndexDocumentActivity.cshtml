@@ -8,196 +8,201 @@
     var UserList = Model.Select(i => i.UL).First().ToList();
 }
 
-<h2>Index</h2>
-
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.Raw("Activity Name")
-        </th>
-
-        <th>
-            @Html.Raw("Document Name")
-        </th>
-        <th>
-            @Html.Raw("Description")
-        </th>
-        <th>
-            @Html.Raw("Upload Time")
-        </th>
-        <th>
-            @Html.Raw("User")
-        </th>
-        <th>
-
-        </th>
-
-    </tr>
-
-    @foreach (var item in Teachertlist)
+<div class="well" style="background-color:#ccfa58">
+    @if (Teachertlist.Any())
     {
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.Raw("Activity Name")
+                </th>
+
+                <th>
+                    @Html.Raw("Document Name")
+                </th>
+                <th>
+                    @Html.Raw("Description")
+                </th>
+                <th>
+                    @Html.Raw("Upload Time")
+                </th>
+                <th>
+                    @Html.Raw("User")
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+
+            @foreach (var item in Teachertlist)
+            {
+                <tr>
+                    <td>
+                        @item.Activity.Name
+                    </td>
+
+                    <td>
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.TimeStamp
+                    </td>
+                    <td>
+                        @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
+                        @Html.Raw(username)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
+                        @if (User.IsInRole("Teacher"))
+                        {
+
+                            @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
+
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    }
+
+    @*<div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>
+    <div class="col-12"></div>*@
+    <table class="table">
         <tr>
-            <td>
-                @item.Activity.Name
-            </td>
+            <th>
+                @Html.Raw("Activity Name")
+            </th>
 
-            <td>
-                @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
-            </td>
-            <td>
-                @item.Description
-            </td>
-            <td>
-                @item.TimeStamp
-            </td>
-            <td>
-                @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
-                @Html.Raw(username)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
-                @if (User.IsInRole("Teacher"))
-                {
+            <th>
+                @Html.Raw("Document Name")
+            </th>
+            <th>
+                @Html.Raw("Description")
+            </th>
+            <th>
+                @Html.Raw("Upload Time")
+            </th>
+            <th>
+                @Html.Raw("User")
+            </th>
+            <th>
 
-                    @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
+            </th>
 
-                }
-            </td>
         </tr>
-    }
+        @{var studentlist1 = studentlist.Where(w => w.UserId == User.Identity.GetUserId()).ToList(); }
 
-</table>
-
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<div class="col-12"></div>
-<table class="table">
-    <tr>
-        <th>
-            @Html.Raw("Activity Name")
-        </th>
-
-        <th>
-            @Html.Raw("Document Name")
-        </th>
-        <th>
-            @Html.Raw("Description")
-        </th>
-        <th>
-            @Html.Raw("Upload Time")
-        </th>
-        <th>
-            @Html.Raw("User")
-        </th>
-        <th>
-
-        </th>
-
-    </tr>
-    @{var studentlist1 = studentlist.Where(w => w.UserId == User.Identity.GetUserId()).ToList(); }
-
-    @if (User.IsInRole("Student"))
-    {
-        foreach (var item in studentlist1)
+        @if (User.IsInRole("Student"))
         {
-            <tr>
-                <td>
-                    @item.Activity.Name
-                </td>
-                <td>
-                    @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>
-                    @item.TimeStamp
-                </td>
-                <td>
-                    @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
-                    @Html.Raw(username)
-                </td>
-                <td>
-                    @{if (item.TimeStamp >= item.Activity.StartDate && item.TimeStamp <= item.Activity.EndDate)
-                        {
-                            <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+            foreach (var item in studentlist1)
+            {
+                <tr>
+                    <td>
+                        @item.Activity.Name
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.TimeStamp
+                    </td>
+                    <td>
+                        @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
+                        @Html.Raw(username)
+                    </td>
+                    <td>
+                        @{if (item.TimeStamp >= item.Activity.StartDate && item.TimeStamp <= item.Activity.EndDate)
+                            {
+                                <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-ok" style="color:red"></span>
+                            }
                         }
-                        else
-                        {
-                            <span class="glyphicon glyphicon-ok" style="color:red"></span>
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
 
 
-                    @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
+                        @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
 
-                </td>
+                    </td>
 
-            </tr>
+                </tr>
+            }
         }
-    }
-    else
-    {
-        foreach (var item in studentlist)
+        else
         {
-            <tr>
-                <td>
-                    @item.Activity.Name
-                </td>
-                <td>
-                    @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>
-                    @item.TimeStamp
-                </td>
-                <td>
-                    @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
-                    @Html.Raw(username)
-                </td>
-                <td>
-                    @{if (item.TimeStamp >= item.Activity.StartDate && item.TimeStamp <= item.Activity.EndDate)
-                        {
-                            <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+            foreach (var item in studentlist)
+            {
+                <tr>
+                    <td>
+                        @item.Activity.Name
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        @item.TimeStamp
+                    </td>
+                    <td>
+                        @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
+                        @Html.Raw(username)
+                    </td>
+                    <td>
+                        @{if (item.TimeStamp >= item.Activity.StartDate && item.TimeStamp <= item.Activity.EndDate)
+                            {
+                                <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-ok" style="color:red"></span>
+                            }
                         }
-                        else
-                        {
-                            <span class="glyphicon glyphicon-ok" style="color:red"></span>
-                        }
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "DetailsActivity", new { id = item.Id }) |
 
 
-                    @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
+                        @Html.ActionLink("Delete", "DeleteActivityDocument", new { id = item.Id })
 
-                </td>
+                    </td>
 
-            </tr>
+                </tr>
+            }
         }
-    }
-</table>
+    </table>
+</div>
