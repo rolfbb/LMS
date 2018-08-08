@@ -83,7 +83,7 @@ namespace LMS.Controllers
                     activitiesVM.Add(activityVM);
                 }
                 moduleVM.ActivitiesVM = activitiesVM;
-                moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id);
+                moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id && doc.ActivityId==null);
                 modulesVM.Add(moduleVM);
             }
 
