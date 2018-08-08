@@ -160,7 +160,7 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-          
+
             return View(course);
         }
 

@@ -1,0 +1,55 @@
+﻿@model LMS.ViewModels.Module.ModuleTableViewModel
+
+<br>
+<div class="container">
+
+    <div class="row">
+        @*<div class="col-md-9">
+                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
+            </div>*@
+        <div class="col-md-3 pull-right">
+            @if (User.IsInRole("Teacher"))
+            {
+                @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, null) <span>|</span>
+                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
+
+            }
+        </div>
+    </div>
+
+    <br>
+    <div class="well" style="background-color:ghostwhite">
+        @if (Model.ModulesVM.Any())
+        {
+
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </div>
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-2">
+                    @Html.DisplayName("Documents")
+                </div>
+            </div>
+
+            <div class="panel-group" id="module-accordion">
+                @foreach (var module in Model.ModulesVM.OrderByDescending(m => m.StartDate))
+                {
+                    module.CollapseId = "collapse" + module.Id;
+                    module.EditDelDetailsId = "edd" + module.Id;
+                    @Html.Partial("_Module", module);
+                }
+            </div>
+        }
+    </div>
+</div>

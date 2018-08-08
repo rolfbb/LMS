@@ -69,6 +69,7 @@ namespace LMS.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Module module = db.Modules.Find(id);
+            var nrOfDocs = module.Documents.Count();
             if (module == null)
             {
                 return HttpNotFound();
@@ -79,7 +80,7 @@ namespace LMS.Controllers
             {
                 return PartialView("_Edit", model);
             }
-            return View("_Edit",model);
+            return View("_Edit", model);
         }
 
         // POST: Modules/Edit/5
@@ -98,9 +99,25 @@ namespace LMS.Controllers
                     db.SaveChanges();
                     if (Request.IsAjaxRequest())
                     {
-                        ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
-                        moduleEditVM.DatabaseModified = "DbChanged";
-                        return PartialView("_Edit",moduleEditVM);
+                        //module.Activities = db.Activities.Where(act => act.ModuleId == module.Id).ToList();
+                        //var moduleDb = db.Modules.Include(t=> t.Documents).FirstOrDefault(m=> m.Id == module.Id);
+                        //moduleDb.Documents= db.Documents.Where(doc)
+                        var moduleDb = db.Modules.Find(module.Id);
+                        var documents = db.Documents.Where(doc => doc.ModuleId == moduleDb.Id).ToList();
+                        moduleDb.Documents = documents;
+                        var nrOfDocs = moduleDb.Documents.Count();
+                        ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(module);
+                        moduleVM.CollapseId = "collapse" + module.Id;
+                        //ModuleViewModel viewModel = new ModuleViewModel()
+                        //{
+                        //    Module = moduleDb,
+                        //    CollapseId = "collapse" + module.Id
+                        //};
+                        return PartialView("_ModuleInfoEditDel", moduleVM);
+                        
+                        //ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
+                        //moduleEditVM.DatabaseModified = "DbChanged";
+                        //return PartialView("_Edit", moduleEditVM);
                     }
                     return RedirectToAction("Index", "CourseDetails", new { id = course.Id });
                 }

@@ -1,0 +1,86 @@
+﻿@model LMS.ViewModels.Activity.ActivityViewModel
+
+@{
+    var editDelId = "ActEditDel" + @Model.Id;
+}
+<div class="row">
+    @{var nameId = "Activity" + @Model.Id + "Name";}
+    <div class="col-md-2" id=@nameId>
+        @Html.DisplayFor(modelItem => Model.Name)
+    </div>
+    @{var description = "Activity" + @Model.Id + "Description";}
+    <div class="col-md-2" id=@description>
+        @Html.DisplayFor(modelItem => Model.Description)
+    </div>
+    @{var startDate = "Activity" + @Model.Id + "StartDate";}
+    <div class="col-md-2" id=@startDate>
+        @Html.DisplayFor(modelItem => Model.StartDate)
+    </div>
+    @{var endDate = "Activity" + @Model.Id + "EndDate";}
+    <div class="col-md-2" id=@endDate>
+        @Html.DisplayFor(modelItem => Model.EndDate)
+    </div>
+    <div class="col-md-2">
+        @if (User.IsInRole("Teacher"))
+        {
+            <div class="ajaxLink btn btn-default btn-sm">
+                @Ajax.ActionLink("Edit", "Edit", "Activities", new { id = Model.Id }, new AjaxOptions
+                {
+                    UpdateTargetId = editDelId,
+                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                    HttpMethod = "GET", // <-- HTTP method
+                })
+            </div>
+
+            <div class="ajaxLink btn btn-default btn-sm">
+                @Ajax.ActionLink("Delete", "Delete", "Activities", new { id = Model.Id }, new AjaxOptions
+                {
+                    UpdateTargetId = editDelId,
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET",
+                })
+            </div>
+        }
+    </div>
+
+    <div class="col-md-2">
+        @if (true)
+        {
+            <div class="ajaxLink btn btn-default btn-sm">
+                @Ajax.ActionLink(Model.NrOfDocuments + "", "IndexDocumentActivity", "Documents", new { id = Model.Id }, new AjaxOptions
+           {
+               UpdateTargetId = editDelId,
+               InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+               HttpMethod = "GET", // <-- HTTP method
+           })
+            </div>
+        }
+
+        @{ if (User.IsInRole("Teacher") || (!Model.StudentUploadedSolution && Model.Description=="Assignment"))
+            {
+                <div class="ajaxLink btn btn-default btn-sm">
+                    @Ajax.ActionLink("Upload", "UploadDocumentActivity", "Documents", new { id = Model.Id }, new AjaxOptions
+               {
+                   UpdateTargetId = editDelId,
+                   InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                   HttpMethod = "GET", // <-- HTTP method
+               })
+                </div>
+            }
+        }
+
+        @{if (User.IsInRole("Student") && Model.StudentUploadedSolution)
+            {
+                if (!Model.StudentMissedDeadline)
+                {
+                    <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
+                }
+                else
+                {
+                    <span class="glyphicon glyphicon-ok" style="color:red"></span>
+                }
+            }
+        }
+    </div>
+</div>
+<div id=@editDelId> </div>

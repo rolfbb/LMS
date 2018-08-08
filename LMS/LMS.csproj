@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -207,6 +208,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ModulesController.cs" />
+    <Compile Include="Models\AllDocuments.cs" />
     <Compile Include="Models\DateRange.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -230,6 +232,9 @@
     <Compile Include="ViewModels\Activity\ActivityDeleteViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityEditViewModel.cs" />
     <Compile Include="ViewModels\Activity\ActivityTableViewModel.cs" />
+    <Compile Include="ViewModels\Activity\ActivityViewModel.cs" />
+    <Compile Include="ViewModels\Course\CourseViewModel.cs" />
+    <Compile Include="ViewModels\Documents\UploadDocumentViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleCreateViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleEditViewModel.cs" />
     <Compile Include="ViewModels\Module\ModuleTableViewModel.cs" />
@@ -315,7 +320,6 @@
     <Content Include="Views\Modules\Delete.cshtml" />
     <Content Include="Views\Modules\Details.cshtml" />
     <Content Include="Views\Modules\Edit.cshtml" />
-    <Content Include="Views\CourseDetails\_Modules.cshtml" />
     <Content Include="Views\Activities\Create.cshtml" />
     <Content Include="Views\Activities\Delete.cshtml" />
     <Content Include="Views\Activities\Details.cshtml" />
@@ -340,7 +344,7 @@
     <Content Include="Views\Documents\DeleteCourseDocument.cshtml" />
     <Content Include="Views\Documents\DetailsCourse.cshtml" />
     <Content Include="Views\Documents\IndexDocumentCourse.cshtml" />
-    <Content Include="Views\CourseDetails\_Activities.cshtml" />
+    <Content Include="Views\Shared\_Activities.cshtml" />
     <Content Include="Views\Documents\UploadDocumentModule.cshtml" />
     <Content Include="Views\Documents\UploadDocumentActivity.cshtml" />
     <Content Include="Views\Documents\UploadDocumentCourse.cshtml" />
@@ -352,8 +356,13 @@
     <Content Include="Views\Documents\DeleteActivityDocument.cshtml" />
     <Content Include="Views\Modules\_Edit.cshtml" />
     <Content Include="Views\Modules\_EditSuccess.cshtml" />
-    <Content Include="Views\CourseDetails\_Module.cshtml" />
+    <Content Include="Views\Shared\_Module.cshtml" />
     <Content Include="Views\Modules\_Delete.cshtml" />
+    <Content Include="Views\Shared\_ModuleInfoEditDel.cshtml" />
+    <Content Include="Views\Shared\_Modules.cshtml" />
+    <Content Include="Views\Shared\_Activity.cshtml" />
+    <Content Include="Views\Documents\_UploadDocumentModule.cshtml" />
+    <Content Include="Views\Shared\_ActivityInfoEditDel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -366,6 +375,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

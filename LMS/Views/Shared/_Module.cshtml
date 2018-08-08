@@ -1,0 +1,18 @@
+﻿@model LMS.ViewModels.Module.ModuleViewModel
+@using LMS.ViewModels.Activity
+
+<div class="panel panel-default">
+    @{var modId = "Module" + @Model.Id; }
+    <div id=@modId>
+        @Html.Partial("_ModuleInfoEditDel", Model)
+    </div>
+    <div id="@Model.CollapseId" class="panel-collapse collapse">
+        <div class="panel-body">
+            @Html.Partial("_Activities", new ActivityTableViewModel()
+       {
+           ActivitiesVM = Model.ActivitiesVM,
+           ModuleId = Model.Id
+       })
+        </div>
+    </div>
+</div>

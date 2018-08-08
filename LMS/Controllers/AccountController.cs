@@ -1,5 +1,4 @@
-﻿
-using LMS.Models;
+﻿using LMS.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -212,7 +211,7 @@ namespace LMS.Controllers
 
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+                    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName = "Student");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -240,7 +239,7 @@ namespace LMS.Controllers
         [AllowAnonymous]
         public ActionResult RegisterStudent()
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "Id", "Name");
+            ViewBag.CourseId = db.Courses;
 
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
@@ -261,7 +260,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
-                Course course = new Course();
+               Course course = new Course();
                 user.CourseId = course.Id;
 
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -604,6 +603,7 @@ namespace LMS.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
         private List<ApplicationUser> empty = new List<ApplicationUser>();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace LMS.Models
 {
@@ -24,5 +25,6 @@ namespace LMS.Models
         public object UserProfiles { get; internal set; }
 
         public System.Data.Entity.DbSet<LMS.Models.Document> Documents { get; set; }
+        public IEnumerable<object> Activity { get; internal set; }
     }
 }
