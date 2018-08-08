@@ -73,25 +73,25 @@
     }
 
     @*<div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>
-    <div class="col-12"></div>*@
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>
+        <div class="col-12"></div>*@
     <table class="table">
         <tr>
             <th>
@@ -115,6 +115,7 @@
             </th>
 
         </tr>
+        @*//Filterera document på students id*@
         @{var studentlist1 = studentlist.Where(w => w.UserId == User.Identity.GetUserId()).ToList(); }
 
         @if (User.IsInRole("Student"))
@@ -163,6 +164,7 @@
         }
         else
         {
+            //For läraren visar vi document för alla studenter
             foreach (var item in studentlist)
             {
                 <tr>
@@ -182,6 +184,7 @@
                         @{var username = UserList.FirstOrDefault(w => w.Id == item.UserId).Name; }
                         @Html.Raw(username)
                     </td>
+
                     <td>
                         @{if (item.TimeStamp >= item.Activity.StartDate && item.TimeStamp <= item.Activity.EndDate)
                             {

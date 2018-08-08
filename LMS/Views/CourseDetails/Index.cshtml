@@ -2,6 +2,24 @@
 @using LMS.Models
 @using LMS.ViewModels.Module
 <script>
+
+
+    function moduleedit() {
+        alert("closeModuleEdit" + targetDiv);
+        $(".ModuleEditDel").text = "test";
+    }
+
+    function hidemodedit()
+    {
+        alert("test");
+        $(".ModuleEditDel").html = "test";
+    }
+
+    function close(targetDiv) {
+        alert("close" + targetDiv);
+        $(targetDiv).text = "test";
+    }
+
     function OnAjaxRequestSuccess() {
         //alert("Ajax Success");
         /*
