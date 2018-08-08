@@ -18,22 +18,6 @@ namespace LMS.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        private IQueryable<ApplicationUser> GetUsersInRole(string role)
-        {
-            var teacherId = db.Roles.FirstOrDefault(m => m.Name == role).Id;
-            return db.Users.Where(u => u.Roles.Select(r => r.RoleId).Contains(teacherId));
-        }
-
-        private IQueryable<Document> Documents(string role)
-        {
-            var docs = db.Documents.Where(d => GetUsersInRole(role).Select(t => t.Id).Contains(d.UserId));
-            return docs;
-        }
-
-        /*private bool ActivityHasDocument(Activity activity, String userName) {
-            return db.Documents.Any(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);    
-        }*/
-
         // GET: CourseDetails/1
         public ActionResult Index(int? id)
         {
@@ -51,8 +35,7 @@ namespace LMS.Controllers
 
             var modulesVM = new List<ModuleViewModel>();
             //Store all assignmnents where deadline has been passes
-            List<Activity> assignments = new List<Activity>();
-            //UserList.FirstOrDefault(w => w.Id == item.UserId)
+            //List<Activity> assignmentsWithPassedDeadline = new List<Activity>();
             var userName = User.Identity.GetUserName();
             foreach (var module in course.Modules)
             {
@@ -60,53 +43,28 @@ namespace LMS.Controllers
                 List<ActivityViewModel> activitiesVM = new List<ActivityViewModel>();
                 foreach (var activity in module.Activities)
                 {
-                    if (activity.Type.Description == "Assignment" && activity.EndDate < DateTime.Now)
-                        assignments.Add(activity);
+                    //if (activity.Type.Description == "Assignment" && activity.EndDate < DateTime.Now)
+                    //assignmentsWithPassedDeadline.Add(activity);
                     var activityVM = Mapper.Map<Activity, ActivityViewModel>(activity);
-                    
                     if (activity.Type.Description == "Assignment" && User.IsInRole("Student"))
                     {
                         var studDocs = db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
                         activityVM.StudentUploadedSolution = studDocs.Any();
                         if (activityVM.StudentUploadedSolution)
                             activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;
-                        //activityVM.NrOfDocuments = studDocs.Count();
                     }
 
                     activityVM.Description = activity.Type.Description;
-                    //if (User.IsInRole("Teacher"))
-                        activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
-                    //else
-                    //{
-                    //    var studDocs = db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);                         
-                    //}
+                    activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
                     activitiesVM.Add(activityVM);
                 }
                 moduleVM.ActivitiesVM = activitiesVM;
-                moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id && doc.ActivityId==null);
+                moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id && doc.ActivityId == null);
                 modulesVM.Add(moduleVM);
             }
 
             CourseViewModel courseVM = Mapper.Map<Course, CourseViewModel>(course);
             courseVM.ModulesVM = modulesVM;
-
-            /*
-            var UploadedInTime = from assignment in assignments
-                                 join studentdoc in db.Documents.Where(doc => doc.User.Name == User.Identity.Name) on
-                                 assignment.Id equals studentdoc.ActivityId
-                                 where (assignment.EndDate >= studentdoc.TimeStamp)
-                                 select assignment;
-
-            var delayedAssignments = assignments.Except(UploadedInTime);
-            
-            if (User.IsInRole("Student"))
-            {
-                courseVM.DelayedAssignMent = delayedAssignments.Any();
-                foreach (var moduleVM in modulesVM) {
-                    moduleVM.DelayedAssignMent= delayedAssignments.Any(ass=> ass.ModuleId==moduleVM.Id);
-                }
-            }*/
-
             return View(courseVM);
         }
 
