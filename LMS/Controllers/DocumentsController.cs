@@ -161,17 +161,18 @@ namespace LMS.Controllers
                 CourseId = courseId,
                 UserId = User.Identity.GetUserId()
             };
-            if (Request.IsAjaxRequest())
-            {
-                UploadDocumentViewModel docVM = new UploadDocumentViewModel()
-                {
-                    ModuleId = id,
-                    CourseId = courseId,
-                    UserId = User.Identity.GetUserId(),
-                    //UpdateTarget = "Module" + id
-                };
-                return PartialView(docVM);
-            }
+            //if (Request.IsAjaxRequest())
+            //{
+            //    UploadDocumentViewModel docVM = new UploadDocumentViewModel()
+            //    {
+            //        ModuleId = id,
+            //        CourseId = courseId,
+            //        UserId = User.Identity.GetUserId(),
+            //        //UpdateTarget = "Module" + id
+            //    };
+            //    return PartialView(docVM);
+            //}
+
             return View(doc);
         }
 
@@ -186,10 +187,10 @@ namespace LMS.Controllers
                 CourseId = courseId,
                 UserId = User.Identity.GetUserId()
             };
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView(doc);
-            }
+            //if (Request.IsAjaxRequest())
+            //{
+            //    return PartialView(doc);
+            //}
             return View(doc);
         }
         // POST: Documents/Create
@@ -240,7 +241,6 @@ namespace LMS.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index", "CourseDetails", new { id = document.CourseId });
                 //return RedirectToAction("IndexDocumentModule", "Documents", new { id = document.ModuleId });
-
             }
             else
             {
