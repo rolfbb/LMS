@@ -38,12 +38,12 @@ namespace LMS.Migrations
         private static Course[] AddCourses(ApplicationDbContext db)
         {
             var courses = new[] {
-                new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-10") },
+                new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-30") },
                 new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2018-03-10") },
                 new Course { Name = "Java English", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-08-10") },
                 new Course { Name = "IT Support", Description = "IT course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-10-10") },
                 new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2018-03-27"), EndDate=DateTime.Parse("2018-08-10") },
-                new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-08-10") }
+                new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-08-25") }
             };
 
             db.Courses.AddOrUpdate(c => new { c.Name, c.StartDate }, courses);
@@ -58,7 +58,7 @@ namespace LMS.Migrations
                 new Module { Name = "C#", Description = "Object Orientation, LINQ" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2017-11-29"), CourseId = courses[1].Id },
                 new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2017-12-01"), EndDate=DateTime.Parse("2018-01-01"), CourseId = courses[1].Id },
                 new Module { Name = "Bootstrap 3", Description = "Dynamic Web pages" , StartDate=DateTime.Parse("2018-05-10"), EndDate=DateTime.Parse("2018-05-16"), CourseId = courses[5].Id },
-                new Module { Name = "Scrum", Description = "Agile Teamwork" , StartDate=DateTime.Parse("2018-07-20"), EndDate=DateTime.Parse("2018-08-10"), CourseId = courses[5].Id },
+                new Module { Name = "Scrum", Description = "Agile Teamwork" , StartDate=DateTime.Parse("2018-07-20"), EndDate=DateTime.Parse("2018-08-15"), CourseId = courses[5].Id },
                 new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2018-05-17"), EndDate=DateTime.Parse("2018-06-15"), CourseId = courses[5].Id },
                 new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[5].Id },
             };
