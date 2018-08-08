@@ -63,22 +63,34 @@ namespace LMS.Controllers
                     if (activity.Type.Description == "Assignment" && activity.EndDate < DateTime.Now)
                         assignments.Add(activity);
                     var activityVM = Mapper.Map<Activity, ActivityViewModel>(activity);
-                    if (activity.Type.Description == "Assignment" && User.IsInRole("Student")) {
-                        var studDocs= db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
+                    
+                    if (activity.Type.Description == "Assignment" && User.IsInRole("Student"))
+                    {
+                        var studDocs = db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
                         activityVM.StudentUploadedSolution = studDocs.Any();
                         if (activityVM.StudentUploadedSolution)
-                            activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;                     
+                            activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;
+                        //activityVM.NrOfDocuments = studDocs.Count();
                     }
 
                     activityVM.Description = activity.Type.Description;
-                    activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
-                    activitiesVM.Add(activityVM);                 
+                    //if (User.IsInRole("Teacher"))
+                        activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
+                    //else
+                    //{
+                    //    var studDocs = db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);                         
+                    //}
+                    activitiesVM.Add(activityVM);
                 }
                 moduleVM.ActivitiesVM = activitiesVM;
                 moduleVM.NrOfDocuments = db.Documents.Count(doc => doc.ModuleId == module.Id);
                 modulesVM.Add(moduleVM);
             }
-            
+
+            CourseViewModel courseVM = Mapper.Map<Course, CourseViewModel>(course);
+            courseVM.ModulesVM = modulesVM;
+
+            /*
             var UploadedInTime = from assignment in assignments
                                  join studentdoc in db.Documents.Where(doc => doc.User.Name == User.Identity.Name) on
                                  assignment.Id equals studentdoc.ActivityId
@@ -87,15 +99,13 @@ namespace LMS.Controllers
 
             var delayedAssignments = assignments.Except(UploadedInTime);
             
-            CourseViewModel courseVM = Mapper.Map<Course, CourseViewModel>(course);
-            courseVM.ModulesVM = modulesVM;
             if (User.IsInRole("Student"))
             {
                 courseVM.DelayedAssignMent = delayedAssignments.Any();
                 foreach (var moduleVM in modulesVM) {
                     moduleVM.DelayedAssignMent= delayedAssignments.Any(ass=> ass.ModuleId==moduleVM.Id);
                 }
-            }
+            }*/
 
             return View(courseVM);
         }
