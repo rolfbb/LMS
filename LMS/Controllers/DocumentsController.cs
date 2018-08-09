@@ -263,7 +263,6 @@ namespace LMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult UploadDocumentModule([Bind(Include = "Id,Name,Description,UserId,CourseId,ModuleId")] Document document, HttpPostedFileBase FILE)
         {
-
             if (ModelState.IsValid && FILE != null && FILE.ContentLength > 0)
             {
 
@@ -280,6 +279,9 @@ namespace LMS.Controllers
             else
             {
                 ViewBag.file = "Select file Please";
+                //UploadDocumentViewModel model = new UploadDocumentViewModel() {
+                //    ;
+                //}
                 return View(document);
             }
         }
