@@ -6,18 +6,18 @@
         @*<div class="col-md-9">
                 @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
             </div>*@
-        <div class="col-md-3 pull-right">
+        <div class="col-md-3 pull-right" style="font-size: medium;color:#166eae">
             @if (User.IsInRole("Teacher"))
             {
-                @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, null) <span>|</span>
-                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
+                @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { @style = "font-weight:bold;", id = Model.CourseId }, null) <span>|</span>
+                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId}, null)
 
             }
         </div>
     </div>
 
     <br>
-    <div class="well" style="background-color:ghostwhite">
+    <div class="well" style="background-color:ghostwhite; font-size: medium">
         @if (Model.ModulesVM.Any())
         {
         <div class="row">
@@ -33,22 +33,17 @@
 
             <div class="row">
                 <div class="col-md-2">
-                    @Html.DisplayNameFor(model => model.Name)
-                </div>
+                    <span style="color:#0094ff; font-size: medium">@Html.DisplayNameFor(model => model.Name)</span></div>
                 <div class="col-md-2">
-                    @Html.DisplayNameFor(model => model.Description)
-                </div>
+                    <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.Description)</span></div>
                 <div class="col-md-2">
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </div>
+                    <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.StartDate)</span></div>
                 <div class="col-md-2">
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </div>
+                    <span style="color:#0094ff; font-size: medium">  @Html.DisplayNameFor(model => model.EndDate)</span></div>
                 <div class="col-md-2">
                 </div>
                 <div class="col-md-2">
-                    @Html.DisplayName("Documents")
-                </div>
+                    <span style="color:#0094ff; font-size: medium">   @Html.DisplayName("Documents")</span></div>
             </div>
 
             <div class="panel-group" id="module-accordion">

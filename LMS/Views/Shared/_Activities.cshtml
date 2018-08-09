@@ -10,22 +10,22 @@
     <div class="well">
         <div class="row ">
             <div class="col-md-2">
-                @Html.DisplayName("Name")
+                <span style="color:#0094ff; font-size: medium">@Html.DisplayName("Name")</span>
             </div>
             <div class="col-md-2">
-                @Html.DisplayName("Type Description")
+                <span style="color:#0094ff; font-size: medium">@Html.DisplayName("Type Description")</span>
             </div>
             <div class="col-md-2">
-                @Html.DisplayName("Start Date")
+                <span style="color:#0094ff; font-size: medium">@Html.DisplayName("Start Date")</span>
             </div>
             <div class="col-md-2">
-                @Html.DisplayName("End Date")
+                <span style="color:#0094ff; font-size: medium">@Html.DisplayName("End Date")</span>
             </div>
             <div class="col-md-2">
             </div>
             <div class="col-md-2">
-                @Html.DisplayName("Documents")
-            </div>
+                <span style="color:#0094ff; font-size: medium">@Html.DisplayName("Documents")</span>
+</div>
         </div>
 
         @foreach (var activity in Model.ActivitiesVM.OrderByDescending(m => m.StartDate))
