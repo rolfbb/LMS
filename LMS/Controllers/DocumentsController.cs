@@ -33,7 +33,6 @@ namespace LMS.Controllers
             return View(documents.ToList());
         }
 
-
         public ActionResult IndexDocumentActivity(int id)
         {
             var userlist = db.Users.ToList();
@@ -76,9 +75,45 @@ namespace LMS.Controllers
             //	allDoc.STUDENTTEACHERDoc = documents;
             //	return View(documents);
             //}
+        }   
+
+        public ActionResult StudentAssignmentSolutions(int id)
+        {
+            var userlist = db.Users.ToList();
+            AllDocuments allDoc = new AllDocuments();
+            var documents = db.Documents.Where(c => c.ActivityId == id).ToList();
+            var currentActivity = db.Activities.Find(id);
+            var StudentRoleId = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+            var ActivityTypeId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+            var studentDokumentsForActivity = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(StudentRoleId)).ToList();
+          
+            allDoc.UL = userlist;
+            allDoc.StudentDoc = studentDokumentsForActivity;
+            List<AllDocuments> ALLDOCUMENT = new List<AllDocuments>();
+            ALLDOCUMENT.Add(allDoc);
+            if (Request.IsAjaxRequest())
+                return PartialView(ALLDOCUMENT);
+            return View(ALLDOCUMENT);
         }
 
+        //public ActionResult ModuleAssignmentSolutions(int id)
+        //{
+        //    var userlist = db.Users.ToList();
+        //    AllDocuments allDoc = new AllDocuments();
+        //    var documents = db.Documents.Where(c => c.ModuleId == id).ToList();
+        //    //var currentActivity = db.Activities.Find(id);
+        //    var StudentRoleId = db.Roles.FirstOrDefault(m => m.Name == "Student").Id;
+        //    var ActivityTypeId = db.ActivityTypes.FirstOrDefault(m => m.Description == "Assignment").Id;
+        //    var studentDokumentsForModule = currentActivity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(StudentRoleId)).ToList();
 
+        //    allDoc.UL = userlist;
+        //    allDoc.StudentDoc = studentDokumentsForActivity;
+        //    List<AllDocuments> ALLDOCUMENT = new List<AllDocuments>();
+        //    ALLDOCUMENT.Add(allDoc);
+        //    if (Request.IsAjaxRequest())
+        //        return PartialView(ALLDOCUMENT);
+        //    return View(ALLDOCUMENT);
+        //}
 
         [HttpGet]
         public FileResult DownLoadFile(int id)
@@ -136,17 +171,17 @@ namespace LMS.Controllers
                 CourseId = id,
                 UserId = User.Identity.GetUserId()
             };
-            if (Request.IsAjaxRequest())
-            {
-                UploadDocumentViewModel docVM = new UploadDocumentViewModel()
-                {
-                    //ModuleId = id,
-                    CourseId = id,
-                    UserId = User.Identity.GetUserId(),
-                    UpdateTarget = "Course" + id
-                };
-                return PartialView(docVM);
-            }
+            //if (Request.IsAjaxRequest())
+            //{
+            //    UploadDocumentViewModel docVM = new UploadDocumentViewModel()
+            //    {
+            //        //ModuleId = id,
+            //        CourseId = id,
+            //        UserId = User.Identity.GetUserId(),
+            //        UpdateTarget = "Course" + id
+            //    };
+            //    return PartialView(docVM);
+            //}
 
             return View(doc);
         }
