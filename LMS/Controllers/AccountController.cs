@@ -209,8 +209,8 @@ namespace LMS.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
 
 
-                //if (result.Succeeded)
-                //{
+                if (result.Succeeded)
+                {
                 //    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName = "Student");
                 //    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
@@ -221,8 +221,8 @@ namespace LMS.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("UserListAction", "Account");
-                //}
-                //AddErrors(result);
+                }
+                AddErrors(result);
             }
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
