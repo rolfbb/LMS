@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.TimeStamp)
         </th>
         <th>
-         User
+            @Html.DisplayName("User")
         </th>
 		
     </tr>
@@ -43,7 +43,7 @@
 			@Html.DisplayFor(modelItem => item.TimeStamp)
 		</td>
 		<td>
-			@Html.DisplayFor(modelItem => item.UserId)
+			@Html.DisplayFor(modelItem => item.User.Name)
 		</td>
 		
 		<td>
