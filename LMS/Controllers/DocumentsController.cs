@@ -20,11 +20,13 @@ namespace LMS.Controllers
         // GET: Documents
         public ActionResult IndexDocumentCourse(int id)
         {
+            ViewBag.CourseId = id;
             var documents = db.Documents.Where(c => c.CourseId == id && c.ModuleId == null && c.ActivityId == null);
             if (Request.IsAjaxRequest())
                 return PartialView(documents.ToList());
             return View(documents.ToList());
         }
+
         public ActionResult IndexDocumentModule(int id)
         {
             var documents = db.Documents.Where(c => c.ModuleId == id && c.ActivityId == null);
@@ -149,6 +151,7 @@ namespace LMS.Controllers
             }
             return View(document);
         }
+
         public ActionResult DetailsActivity(int? id)
         {
             if (id == null)
@@ -166,6 +169,7 @@ namespace LMS.Controllers
         // GET: Documents/Create
         public ActionResult UploadDocumentCourse(int id)
         {
+            ViewBag.CourseId = id;
             Document doc = new Document()
             {
                 CourseId = id,

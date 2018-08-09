@@ -4,54 +4,58 @@
     ViewBag.Title = "Index";
 }
 
-<table class="table">
-    <tr>
-    
-       
-        <th>
-            @Html.DisplayNameFor(model => model.Module.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeStamp)
-        </th>
-        <th>
-            @Html.DisplayName("User")
-        </th>
-		
-    </tr>
+<div class="well" style="background-color:#ccfa58">
+    @if (Model.Any())
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Module.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TimeStamp)
+                </th>
+                <th>
+                    @Html.DisplayName("User")
+                </th>
+            </tr>
 
-@foreach (var item in Model) {
-	<tr>
-	
-		
-		<td>
-			@Html.DisplayFor(modelItem => item.Module.Name)
-		</td>
-		<td>
-			@Html.ActionLink(item.Name, "DownLoadFile","Documents", new { id = item.Id },null)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.Description)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.TimeStamp)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => item.User.Name)
-		</td>
-		
-		<td>
-			@*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-			@Html.ActionLink("Details", "DetailsModule", new { id = item.Id }) |
-			@Html.ActionLink("Delete", "DeleteModuleDocument", new { id = item.Id })
-		</td>
-	</tr>
-}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Module.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, new { target = "_blank" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeStamp)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Name)
+                    </td>
 
-</table>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                        @Html.ActionLink("Details", "DetailsModule", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteModuleDocument", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <h1>No documents</h1>
+    }
+</div>

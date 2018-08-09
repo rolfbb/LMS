@@ -24,7 +24,7 @@ namespace LMS.ViewModels.Module
         public DateTime EndDate { get; set; }
 
         public int CourseId { get; set; }
-
+        public bool Created { get; set; }
         public SelectList SelectCourse { get; set; }
     }
 }
