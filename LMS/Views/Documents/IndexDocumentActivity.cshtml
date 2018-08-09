@@ -137,7 +137,7 @@
                         @Html.Raw(username)
                     </td>
                     <td>
-                        //A solution should not exist in database before startdate
+                        @*//A solution should not exist in database before startdate*@
                         @{if (@*item.TimeStamp >= item.Activity.StartDate &&*@ item.TimeStamp <= item.Activity.EndDate)
                             {
                                 <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>
