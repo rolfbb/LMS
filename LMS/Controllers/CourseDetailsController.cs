@@ -37,25 +37,30 @@ namespace LMS.Controllers
             //Store all assignmnents where deadline has been passes
             //List<Activity> assignmentsWithPassedDeadline = new List<Activity>();
             var userName = User.Identity.GetUserName();
+            var TeacherRoleId = db.Roles.FirstOrDefault(m => m.Name == "Teacher").Id;
             foreach (var module in course.Modules)
             {
                 ModuleViewModel moduleVM = Mapper.Map<Module, ModuleViewModel>(module);
                 List<ActivityViewModel> activitiesVM = new List<ActivityViewModel>();
                 foreach (var activity in module.Activities)
                 {
-                    //if (activity.Type.Description == "Assignment" && activity.EndDate < DateTime.Now)
-                    //assignmentsWithPassedDeadline.Add(activity);
                     var activityVM = Mapper.Map<Activity, ActivityViewModel>(activity);
                     if (activity.Type.Description == "Assignment" && User.IsInRole("Student"))
                     {
                         var studDocs = db.Documents.Where(doc => doc.ActivityId == activity.Id && doc.User.UserName == userName);
+                        //Copied from documents controller..
+                        var teacherDocs = activity.Documents.Where(w => w.User.Roles.Select(q => q.RoleId).Contains(TeacherRoleId)).ToList();
                         activityVM.StudentUploadedSolution = studDocs.Any();
                         if (activityVM.StudentUploadedSolution)
                             activityVM.StudentMissedDeadline = studDocs.FirstOrDefault().TimeStamp > activity.EndDate;
+                        activityVM.NrOfDocuments = studDocs.Count() + teacherDocs.Count();
                     }
 
                     activityVM.Description = activity.Type.Description;
-                    activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
+                    //The teacher can see all documents
+                    if (User.IsInRole("Teacher"))
+                        activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
+
                     activitiesVM.Add(activityVM);
                 }
                 moduleVM.ActivitiesVM = activitiesVM;
