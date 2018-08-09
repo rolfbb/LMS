@@ -56,7 +56,7 @@
             </div>
         }
 
-        @{ if (User.IsInRole("Teacher") || (!Model.StudentUploadedSolution && Model.Description=="Assignment"))
+        @{ if (User.IsInRole("Teacher") || (!Model.StudentUploadedSolution && Model.Description == "Assignment"))
             {
                 <div class="ajaxLink btn btn-default btn-sm">
                     @Ajax.ActionLink("Upload", "UploadDocumentActivity", "Documents", new { id = Model.Id }, new AjaxOptions
@@ -67,6 +67,18 @@
                })
                 </div>
             }
+        }
+
+        @if (User.IsInRole("Teacher") && Model.Description == "Assignment")
+        {
+            <div class="ajaxLink btn btn-default btn-sm">
+                @Ajax.ActionLink("Sol", "StudentAssignmentSolutions", "Documents", new { id = Model.Id }, new AjaxOptions
+           {
+               UpdateTargetId = editDelId,
+               InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+               HttpMethod = "GET", // <-- HTTP method
+           })
+            </div>
         }
 
         @{if (User.IsInRole("Student") && Model.StudentUploadedSolution)

@@ -412,6 +412,7 @@
     <Content Include="Views\Shared\_Activity.cshtml" />
     <Content Include="Views\Documents\_UploadDocumentModule.cshtml" />
     <Content Include="Views\Shared\_ActivityInfoEditDel.cshtml" />
+    <Content Include="Views\Documents\StudentAssignmentSolutions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
