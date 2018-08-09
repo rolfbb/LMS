@@ -74,7 +74,7 @@ namespace LMS.Controllers
                     }
 
                     activityVM.Description = activity.Type.Description;
-                    if (User.IsInRole("Teacher"))
+                    //if (User.IsInRole("Teacher"))
                         activityVM.NrOfDocuments = db.Documents.Count(doc => doc.ActivityId == activity.Id);
                     activitiesVM.Add(activityVM);
                 }
