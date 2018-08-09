@@ -88,7 +88,11 @@ namespace LMS.Controllers
                 {
                     var userId = User.Identity.GetUserId();
                     ApplicationUser CurrentUser = db.Users.FirstOrDefault(u => u.Id == userId);
-                    return RedirectToAction("Index", "CourseDetails", new { id = CurrentUser.CourseId });
+                    //Temporar fix sometimes we are logged in with cashe but might have changed database so currentuser == null
+                    if (CurrentUser == null)
+                        LogOff();
+                    else
+                        return RedirectToAction("Index", "CourseDetails", new { id = CurrentUser.CourseId });
                 }
             }
             ViewBag.ReturnUrl = returnUrl;
@@ -211,8 +215,8 @@ namespace LMS.Controllers
 
                 if (result.Succeeded)
                 {
-                //    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName = "Student");
-                //    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    //    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName = "Student");
+                    //    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -260,7 +264,7 @@ namespace LMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
-               Course course = new Course();
+                Course course = new Course();
                 user.CourseId = course.Id;
 
                 var result = await UserManager.CreateAsync(user, model.Password);
