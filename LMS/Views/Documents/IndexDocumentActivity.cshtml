@@ -42,7 +42,7 @@
                     </td>
 
                     <td>
-                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, new{target = "_blank"})
                     </td>
                     <td>
                         @item.Description
@@ -65,31 +65,9 @@
                     </td>
                 </tr>
             }
-
         </table>
-
     }
 
-    @*<div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>
-        <div class="col-12"></div>*@
     @if (User.IsInRole("Student"))
     {
         studentlist = studentlist.Where(w => w.UserId == User.Identity.GetUserId()).ToList();
@@ -124,7 +102,7 @@
                         @item.Activity.Name
                     </td>
                     <td>
-                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, null)
+                        @Html.ActionLink(item.Name, "DownLoadFile", "Documents", new { id = item.Id }, new { target = "_blank" })
                     </td>
                     <td>
                         @item.Description
@@ -137,7 +115,7 @@
                         @Html.Raw(username)
                     </td>
                     <td>
-                        //A solution should not exist in database before startdate
+                        @*//A solution should not exist in database before startdate*@
                         @{if (@*item.TimeStamp >= item.Activity.StartDate &&*@ item.TimeStamp <= item.Activity.EndDate)
                             {
                                 <span class="glyphicon glyphicon-ok" style="color:forestgreen"></span>

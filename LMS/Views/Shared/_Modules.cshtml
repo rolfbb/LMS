@@ -6,55 +6,93 @@
         @*<div class="col-md-9">
                 @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)
             </div>*@
-        <div class="col-md-3 pull-right" style="font-size: medium;color:#166eae">
+        <div class="col-md-4 pull-right" style="font-size: medium;color:#166eae">
+            <div class="ajaxLink btn btn-default btn-sm">
+                @Ajax.ActionLink("Show documents", "IndexDocumentCourse", "Documents", new { id = Model.CourseId }, new AjaxOptions
+           {
+               UpdateTargetId = "courseadd",
+               InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+               HttpMethod = "GET", // <-- HTTP method
+           })
+            </div>
+            @*@Html.ActionLink("Show Documents", "IndexDocumentCourse", "Documents", new { @style = "font-weight:bold;", id = Model.CourseId }, null) <span>|</span>*@
             @if (User.IsInRole("Teacher"))
             {
-                @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { @style = "font-weight:bold;", id = Model.CourseId }, null) <span>|</span>
-                @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId}, null)
-
+                <div class="ajaxLink btn btn-default btn-sm">
+                    @Ajax.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, new AjaxOptions
+               {
+                   UpdateTargetId = "courseadd",
+                   InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                   HttpMethod = "GET", // <-- HTTP method
+               })
+                </div>
+                <div class="ajaxLink btn btn-default btn-sm">
+                    @Ajax.ActionLink("Add Module", "Create", "Modules", new { courseId = Model.CourseId }, new AjaxOptions
+               {
+                   UpdateTargetId = "courseadd",
+                   InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                   HttpMethod = "GET", // <-- HTTP method
+               })
+                </div>
+                @*@Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, new { @class = "ajaxLink btn btn-default btn-sm" }) <span>|</span>
+                    @Html.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { @style = "font-weight:bold;", id = Model.CourseId }, null) <span>|</span>
+                    @Html.ActionLink("Add Module", "Create", "Modules", new { @class = "btn btn-primary", courseId = Model.CourseId }, null)*@
             }
         </div>
     </div>
-
+    <div id="courseadd"></div>
     <br>
     <div class="well" style="background-color:ghostwhite; font-size: medium">
         @if (Model.ModulesVM.Any())
         {
-        <div class="row">
-            <div class="panel panel-primary filterable">
-                    <div class="panel-heading">
-                    <h6 class="panel-title">Modules</h6>
-                    @*<div class="pull-right">
-                        <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>Filter courses</button>
-                        <button class="btn btn-default btn-xs"><span class="glyphicon"></span>Add Course</button>
-                    </div>*@
-                </div>
-            </div>
-
             <div class="row">
-                <div class="col-md-2">
-                    <span style="color:#0094ff; font-size: medium">@Html.DisplayNameFor(model => model.Name)</span></div>
-                <div class="col-md-2">
-                    <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.Description)</span></div>
-                <div class="col-md-2">
-                    <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.StartDate)</span></div>
-                <div class="col-md-2">
-                    <span style="color:#0094ff; font-size: medium">  @Html.DisplayNameFor(model => model.EndDate)</span></div>
-                <div class="col-md-2">
+                <div class="panel panel-primary filterable">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">Modules</h6>
+                        @*<div class="ajaxLink btn btn-default btn-sm">
+                                 @Ajax.ActionLink("Add Document", "UploadDocumentCourse", "Documents", new { id = Model.CourseId }, new AjaxOptions
+                            {
+                                UpdateTargetId = "courseadd",
+                                InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                HttpMethod = "GET", // <-- HTTP method
+                            })
+                             </div>*@
+                        @*<div class="pull-right">
+                                <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>Filter courses</button>
+                                <button class="btn btn-default btn-xs"><span class="glyphicon"></span>Add Course</button>
+                            </div>*@
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <span style="color:#0094ff; font-size: medium">   @Html.DisplayName("Documents")</span></div>
-            </div>
 
-            <div class="panel-group" id="module-accordion">
-                @foreach (var module in Model.ModulesVM.OrderByDescending(m => m.StartDate))
-                {
-                    module.CollapseId = "collapse" + module.Id;
-                    module.EditDelDetailsId = "edd" + module.Id;
-                    @Html.Partial("_Module", module);
-                }
+                <div class="row">
+                    <div class="col-md-2">
+                        <span style="color:#0094ff; font-size: medium">@Html.DisplayNameFor(model => model.Name)</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.Description)</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span style="color:#0094ff; font-size: medium"> @Html.DisplayNameFor(model => model.StartDate)</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span style="color:#0094ff; font-size: medium">  @Html.DisplayNameFor(model => model.EndDate)</span>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        <span style="color:#0094ff; font-size: medium">   @Html.DisplayName("Documents")</span>
+                    </div>
+                </div>
+
+                <div class="panel-group" id="module-accordion">
+                    @foreach (var module in Model.ModulesVM.OrderByDescending(m => m.StartDate))
+                    {
+                        module.CollapseId = "collapse" + module.Id;
+                        module.EditDelDetailsId = "edd" + module.Id;
+                        @Html.Partial("_Module", module);
+                    }
+                </div>
             </div>
-        </div>
         }
     </div>
 </div>

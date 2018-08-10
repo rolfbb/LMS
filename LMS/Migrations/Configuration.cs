@@ -38,8 +38,8 @@ namespace LMS.Migrations
         private static Course[] AddCourses(ApplicationDbContext db)
         {
             var courses = new[] {
-                new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-30") },
-                new Course { Name = "Asp.NET", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2018-03-10") },
+                new Course { Name = "Python", Description = "programming course" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-08-30") },
+                new Course { Name = "Java2", Description = "programming course" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2018-03-10") },
                 new Course { Name = "Java English", Description = "programming course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-08-10") },
                 new Course { Name = "IT Support", Description = "IT course" , StartDate=DateTime.Parse("2018-04-03"), EndDate=DateTime.Parse("2018-10-10") },
                 new Course { Name = "Java", Description = "programming course" , StartDate=DateTime.Parse("2018-03-27"), EndDate=DateTime.Parse("2018-08-10") },
@@ -57,10 +57,10 @@ namespace LMS.Migrations
                 new Module { Name = "Spring", Description = "A framework" , StartDate=DateTime.Parse("2017-03-10"), EndDate=DateTime.Parse("2017-04-10"), CourseId = courses[0].Id },
                 new Module { Name = "C#", Description = "Object Orientation, LINQ" , StartDate=DateTime.Parse("2017-10-25"), EndDate=DateTime.Parse("2017-11-29"), CourseId = courses[1].Id },
                 new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2017-12-01"), EndDate=DateTime.Parse("2018-01-01"), CourseId = courses[1].Id },
-                new Module { Name = "Bootstrap 3", Description = "Dynamic Web pages" , StartDate=DateTime.Parse("2018-05-10"), EndDate=DateTime.Parse("2018-05-16"), CourseId = courses[5].Id },
-                new Module { Name = "Scrum", Description = "Agile Teamwork" , StartDate=DateTime.Parse("2018-07-20"), EndDate=DateTime.Parse("2018-08-15"), CourseId = courses[5].Id },
-                new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2018-05-17"), EndDate=DateTime.Parse("2018-06-15"), CourseId = courses[5].Id },
-                new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[5].Id },
+                new Module { Name = "Bootstrap 3", Description = "Dynamic Web pages" , StartDate=DateTime.Parse("2018-05-10"), EndDate=DateTime.Parse("2018-05-16"), CourseId = courses[courses.Length-1].Id },
+                new Module { Name = "Scrum", Description = "Agile Teamwork" , StartDate=DateTime.Parse("2018-07-20"), EndDate=DateTime.Parse("2018-08-15"), CourseId = courses[courses.Length-1].Id },
+                new Module { Name = "MVC", Description = "Model View Controller" , StartDate=DateTime.Parse("2018-05-17"), EndDate=DateTime.Parse("2018-06-15"), CourseId = courses[courses.Length-1].Id },
+                new Module { Name = "Java EE", Description = "Java Enterprice Edition" , StartDate=DateTime.Parse("2018-03-10"), EndDate=DateTime.Parse("2018-04-10"), CourseId = courses[courses.Length-1].Id },
             };
 
             db.Modules.AddOrUpdate(m => new { m.Name, m.StartDate }, modules);
@@ -75,7 +75,7 @@ namespace LMS.Migrations
             foreach (var email in studentEmails)
             {
                 if (db.Users.Any(u => u.UserName == email)) continue;
-                var user = new ApplicationUser { UserName = email, Email = email, Name = GetNameFromEmail(email), CourseId = courses[5].Id };
+                var user = new ApplicationUser { UserName = email, Email = email, Name = GetNameFromEmail(email), CourseId = courses[courses.Length-1].Id };
 
                 var result = userManager.Create(user, "aliali");
                 userManager.AddToRole(user.Id, "Student");
@@ -141,7 +141,7 @@ namespace LMS.Migrations
             var activitiesList = new List<Activity>();
             foreach (var module in modules) {
                 var actStartDate = module.StartDate;
-                var actEndDate = actStartDate.AddDays(2);
+                var actEndDate = actStartDate.AddDays(5);
                 var activityCount = 0;
                 while (actEndDate < module.EndDate) {
                     Activity activity = new Activity {
@@ -154,7 +154,7 @@ namespace LMS.Migrations
                     };
                     activitiesList.Add(activity);
                     actStartDate = actEndDate.AddDays(1);
-                    actEndDate = actStartDate.AddDays(gen.Next(3));
+                    actEndDate = actStartDate.AddDays(gen.Next(8));
                     activityCount++;
                 }
             }

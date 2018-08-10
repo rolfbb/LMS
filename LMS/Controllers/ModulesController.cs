@@ -36,7 +36,10 @@ namespace LMS.Controllers
                 StartDate = course.StartDate,
                 EndDate = course.EndDate,
                 CourseId = course.Id,
+                Created = false
             };
+            if (Request.IsAjaxRequest())
+                return PartialView("_Create", model);
             return View(model);
         }
 
@@ -54,10 +57,23 @@ namespace LMS.Controllers
                 {
                     db.Modules.Add(module);
                     db.SaveChanges();
+                    if (Request.IsAjaxRequest())
+                    {
+                        ModuleCreateViewModel vm = new ModuleCreateViewModel()
+                        {
+                            StartDate = course.StartDate,
+                            EndDate = course.EndDate,
+                            CourseId = course.Id,
+                            Created = true
+                        };
+                        return PartialView("_Created", module);
+                    }
                     return RedirectToAction("Index", "CourseDetails", new { id = module.CourseId });
                 }
             }
             ModuleCreateViewModel model = Mapper.Map<Module, ModuleCreateViewModel>(module);
+            if (Request.IsAjaxRequest())
+                return PartialView("_Create", model);
             return View(model);
         }
 
@@ -114,7 +130,7 @@ namespace LMS.Controllers
                         //    CollapseId = "collapse" + module.Id
                         //};
                         return PartialView("_ModuleInfoEditDel", moduleVM);
-                        
+
                         //ModuleEditViewModel moduleEditVM = Mapper.Map<Module, ModuleEditViewModel>(module);
                         //moduleEditVM.DatabaseModified = "DbChanged";
                         //return PartialView("_Edit", moduleEditVM);
@@ -124,7 +140,7 @@ namespace LMS.Controllers
             }
             ModuleEditViewModel model = Mapper.Map<Module, ModuleEditViewModel>(module);
             model.DatabaseModified = "DbUnchanged";
-            return View("_Edit",model);
+            return View("_Edit", model);
         }
 
         // GET: Modules/Delete/5
@@ -139,7 +155,7 @@ namespace LMS.Controllers
             {
                 return HttpNotFound();
             }
-            return PartialView("_Delete",module);
+            return PartialView("_Delete", module);
         }
 
         // POST: Modules/Delete/5
